@@ -1,0 +1,8 @@
+{
+  "name": "@smartsell/brand",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./tokens.css": "./tokens.css"
+  }
+}

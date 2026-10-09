@@ -1,0 +1,10 @@
+packages:
+  - apps/*
+  - packages/*
+fetchTimeout: 300000
+networkConcurrency: 4
+allowBuilds:
+  sharp: true
+  esbuild: true
+  '@swc/core': true
+  turbo: true

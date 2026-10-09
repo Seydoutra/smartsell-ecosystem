@@ -1,0 +1,13 @@
+{
+  "name": "@smartsell/content",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@smartsell/types": "workspace:*",
+    "@smartsell/routing": "workspace:*"
+  }
+}

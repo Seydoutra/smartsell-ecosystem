@@ -1,0 +1,25 @@
+{
+  "name": "smartsell-ecosystem",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build && node scripts/package-static.mjs",
+    "typecheck": "turbo run typecheck",
+    "test": "tsx --test tests/*.test.ts",
+    "check:export": "node scripts/check-export.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@types/node": "^24",
+    "prettier": "3.6.2",
+    "tsx": "^4.20.6",
+    "turbo": "2.11.7",
+    "typescript": "5.9.3"
+  }
+}

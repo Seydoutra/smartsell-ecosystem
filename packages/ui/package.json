@@ -1,0 +1,21 @@
+{
+  "name": "@smartsell/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./styles.css": "./styles.css"
+  },
+  "peerDependencies": {
+    "react": "^19"
+  },
+  "dependencies": {
+    "@smartsell/types": "workspace:*",
+    "@smartsell/content": "workspace:*",
+    "@smartsell/routing": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^19"
+  }
+}
