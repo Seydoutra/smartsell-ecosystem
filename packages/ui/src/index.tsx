@@ -1,6 +1,6 @@
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import { verticals } from '@smartsell/content';
-import { urlFor, routingConfig } from '@smartsell/routing';
+import { urlFor, withBasePath, routingConfig } from '@smartsell/routing';
 export { GlobalNavigation } from './navigation';
 export { Brand } from './brand';
 import { Brand } from './brand';
@@ -52,7 +52,7 @@ export function Footer() {
     <footer className="footer">
       <div className="container footer-grid">
         <div className="footer-brand">
-          <a href="/fr/" aria-label="Smartsell, accueil">
+          <a href={withBasePath('/fr/')} aria-label="Smartsell, accueil">
             <Brand />
           </a>
           <p>
@@ -77,10 +77,10 @@ export function Footer() {
         </nav>
         <nav aria-label="La maison">
           <p className="eyebrow">La maison</p>
-          <a href="/fr/#vision">Notre vision</a>
-          <a href="/fr/#produits">Nos produits</a>
-          <a href="/fr/#parcours">Continuer votre parcours</a>
-          <a href="/fr/#ecosystem">Trouver votre univers</a>
+          <a href={withBasePath('/fr/#vision')}>Notre vision</a>
+          <a href={withBasePath('/fr/#produits')}>Nos produits</a>
+          <a href={withBasePath('/fr/#parcours')}>Continuer votre parcours</a>
+          <a href={withBasePath('/fr/#ecosystem')}>Trouver votre univers</a>
         </nav>
       </div>
       <div className="container footer-bottom">

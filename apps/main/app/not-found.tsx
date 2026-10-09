@@ -1,3 +1,4 @@
+import { withBasePath } from '@smartsell/routing';
 export default function NotFound() {
   return (
     <main id="main" className="container section">
@@ -13,7 +14,7 @@ export default function NotFound() {
       <a
         className="button button--primary"
         style={{ marginTop: 32 }}
-        href="/fr/"
+        href={withBasePath('/fr/')}
       >
         Revenir à l’accueil ↗
       </a>

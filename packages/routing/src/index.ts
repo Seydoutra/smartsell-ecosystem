@@ -1,5 +1,25 @@
 import type { Locale, VerticalId } from '@smartsell/types';
+export const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(
+  /\/+$/,
+  '',
+);
+if (basePath && !/^\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/.test(basePath))
+  throw new Error(
+    'NEXT_PUBLIC_BASE_PATH must be a site mount such as /smartsell-ecosystem.',
+  );
+export function withBasePath(path: string, mount = basePath): string {
+  if (!path.startsWith('/') || path.startsWith('//') || !mount) return path;
+  if (
+    path === mount ||
+    path.startsWith(mount + '/') ||
+    path.startsWith(mount + '#') ||
+    path.startsWith(mount + '?')
+  )
+    return path;
+  return mount + path;
+}
 export interface RouteConfig {
+  basePath?: string;
   origins?: Partial<Record<VerticalId, string>>;
 }
 export const verticalIds = [
@@ -39,7 +59,10 @@ export function urlFor(
       throw new Error('Vertical origins must be HTTPS origins.');
     return `${parsed.origin}/${locale}/${tail ? tail + '/' : ''}`;
   }
-  return `/${locale}/${vertical === 'main' ? '' : vertical + '/'}${tail ? tail + '/' : ''}`;
+  return withBasePath(
+    `/${locale}/${vertical === 'main' ? '' : vertical + '/'}${tail ? tail + '/' : ''}`,
+    config.basePath ?? basePath,
+  );
 }
 export const routingConfig: RouteConfig = {
   origins: {

@@ -56,6 +56,7 @@ Les catalogues, formations, contenus éditoriaux, réservations, authentificatio
 Copier `.env.example` vers `apps/main/.env.local`. Les variables `NEXT_PUBLIC_*` sont publiques et injectées au build : ne jamais y placer un secret. Rebuilder après modification.
 
 - `NEXT_PUBLIC_SITE_URL` : origine du site.
+- `NEXT_PUBLIC_BASE_PATH` : vide sur un domaine dédié ; `/smartsell-ecosystem` pour GitHub Pages. À définir au build, avec la même valeur pour `pnpm check:export`.
 - `NEXT_PUBLIC_INDEXABLE=false` : défaut ; robots et métadonnées bloquent l’indexation de la prévisualisation.
 - `NEXT_PUBLIC_MANAGEMENT_URL` : URL du produit existant.
 - `NEXT_PUBLIC_*_ORIGIN` : laisser vide tant que la verticale n’a pas son propre déploiement. Une origine HTTPS validée remplace `/fr/academy/.../` par `https://academy.example/fr/.../`.
@@ -66,4 +67,13 @@ La version française est publiée en phase 1. Les types préparent `en`, sans a
 
 Le dépôt est autonome. `main` représente la version vérifiée ; `develop` sert de point de départ aux prochaines phases. Les changements passent par des branches `feat/*` et des pull requests. La CI vérifie types, routage, build et liens internes exportés. Aucun déploiement automatique vers Management n’est configuré.
 
-Sites est identifié par `.openai/hosting.json`. La première publication reste privée. Une ouverture au public et l’activation de l’indexation nécessitent une décision de lancement.
+L’hébergement demandé est GitHub Pages. Dans **Settings → Pages → Build and deployment → Source**, choisir **GitHub Actions**. Le workflow `Publish GitHub Pages` vérifie puis publie chaque push sur `main`, avec le préfixe `/smartsell-ecosystem`. Il peut aussi être lancé depuis **Actions → Publish GitHub Pages → Run workflow**. L’adresse cible du site est `https://seydoutra.github.io/smartsell-ecosystem/fr/`.
+
+GitHub Pages nécessite un dépôt public avec l’offre actuelle du propriétaire ; le passage en public a été autorisé. Le garde d’indexation reste désactivé (`NEXT_PUBLIC_INDEXABLE=false`) tant que la phase de fondation est en cours. Sites conserve son identité dans `.openai/hosting.json`, mais aucun déploiement Sites n’est actif.
+
+Pour vérifier localement le même export :
+
+```sh
+NEXT_PUBLIC_BASE_PATH=/smartsell-ecosystem NEXT_PUBLIC_SITE_URL=https://seydoutra.github.io pnpm build
+NEXT_PUBLIC_BASE_PATH=/smartsell-ecosystem pnpm check:export
+```

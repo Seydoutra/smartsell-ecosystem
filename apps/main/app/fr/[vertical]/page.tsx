@@ -2,7 +2,12 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { verticals } from '@smartsell/content';
 import { ButtonLink, SectionHeading } from '@smartsell/ui';
-import { routingConfig, urlFor, managementUrl } from '@smartsell/routing';
+import {
+  withBasePath,
+  routingConfig,
+  urlFor,
+  managementUrl,
+} from '@smartsell/routing';
 export const dynamicParams = false;
 export function generateStaticParams() {
   return verticals.map((v) => ({ vertical: v.id }));
@@ -39,7 +44,7 @@ export default async function VerticalPage({
     <main id="main">
       <section className={`vertical-hero vertical-hero--${v.theme}`}>
         <div className="container">
-          <a className="breadcrumb" href="/fr/">
+          <a className="breadcrumb" href={withBasePath('/fr/')}>
             SMARTSELL / LA MAISON
           </a>
           <p className="eyebrow">

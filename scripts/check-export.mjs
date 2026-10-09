@@ -2,6 +2,7 @@ import { readdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = path.resolve('dist');
+const mount = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/+$/, '');
 async function filesAt(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const nested = await Promise.all(
@@ -21,16 +22,28 @@ let checked = 0;
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
   const pagePath =
+    mount +
     '/' +
     path
       .relative(root, file)
       .replaceAll(path.sep, '/')
       .replace(/index\.html$/, '');
-  for (const match of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
-    const value = match[1].replaceAll('&amp;', '&');
+  for (const element of html.matchAll(/<[^>]+\b(?:href|src)="[^"]+"[^>]*>/g)) {
+    if (/\brel="(?:preconnect|dns-prefetch)"/.test(element[0])) continue;
+    const value = element[0]
+      .match(/\b(?:href|src)="([^"]+)"/)[1]
+      .replaceAll('&amp;', '&');
     if (/^(?:https?:|mailto:|tel:|data:|\/\/)/.test(value)) continue;
     const url = new URL(value, 'https://local.invalid' + pagePath);
-    let target = path.join(root, decodeURIComponent(url.pathname));
+    if (mount && !url.pathname.startsWith(mount + '/')) {
+      failures.add(`${pagePath}: target escapes site mount ${value}`);
+      continue;
+    }
+    let target = path.join(
+      root,
+      decodeURIComponent(url.pathname.slice(mount.length)),
+    );
+
     try {
       const info = await stat(target);
       if (info.isDirectory()) target = path.join(target, 'index.html');

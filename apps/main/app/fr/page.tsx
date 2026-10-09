@@ -1,15 +1,22 @@
 import type { Metadata } from 'next';
 import { ButtonLink, SectionHeading } from '@smartsell/ui';
 import { verticals, products, nextJourney } from '@smartsell/content';
-import { routingConfig, urlFor } from '@smartsell/routing';
+import { withBasePath, routingConfig, urlFor } from '@smartsell/routing';
 import { absoluteUrl } from '@smartsell/seo';
-export const metadata: Metadata = { alternates: { canonical: '/fr/' } };
+export const metadata: Metadata = {
+  alternates: { canonical: withBasePath('/fr/') },
+};
 export default function Home() {
   return (
     <main id="main">
       <section className="hero">
         <div className="hero-watermark" aria-hidden="true">
-          <img src="/brand/icon-yellow.png" width="3240" height="3240" alt="" />
+          <img
+            src={withBasePath('/brand/icon-yellow.png')}
+            width="3240"
+            height="3240"
+            alt=""
+          />
         </div>
         <div className="container hero-grid">
           <div className="hero-content">
@@ -328,8 +335,8 @@ export default function Home() {
             '@context': 'https://schema.org',
             '@type': 'Organization',
             name: 'Smartsell',
-            url: absoluteUrl('/fr/'),
-            logo: absoluteUrl('/brand/wordmark-purple.png'),
+            url: absoluteUrl(withBasePath('/fr/')),
+            logo: absoluteUrl(withBasePath('/brand/wordmark-purple.png')),
             description:
               'Un écosystème digital et créatif : Agency, Academy, Media, Studios et Labs.',
           }).replace(/</g, '\\u003c'),

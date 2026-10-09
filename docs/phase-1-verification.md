@@ -22,3 +22,10 @@ Périmètre : monorepo, design system, navigation globale et homepage. Les pages
 Les vérifications visuelles ont été réalisées dans le navigateur intégré Codex sur l’export de production servi localement. Aucun score Lighthouse ni audit exhaustif de conformité WCAG n’est revendiqué. La prévisualisation locale est non indexable. Le projet Sites enregistré est privé ; sa publication reste bloquée par la revue automatique de la session, qui refuse la transmission au processus de publication.
 
 La CI exécute format, types, routage, build et contrôle de l’export sur `main`, `develop` et les pull requests.
+
+## Préparation GitHub Pages — 9 octobre 2026
+
+- Workflow `Publish GitHub Pages` ajouté : vérifications, export statique, artifact Pages et déploiement sur chaque push de `main`, ou lancement manuel.
+- Préfixe `/smartsell-ecosystem` appliqué au routage, navigation, recherche, logos, redirection, métadonnées et fichiers Next.js. Les liens vers Management conservent leur URL externe.
+- Types, 3 tests de routage, formatage et builds à la racine et sous le préfixe GitHub Pages vérifiés. Pour chaque export : 11 pages HTML et 439 liens/fichiers internes vérifiés. Les liens de préconnexion sont exclus du contrôle de navigation.
+- Le propriétaire a autorisé le passage du dépôt en public. GitHub a demandé une réauthentification du propriétaire avant ce changement ; l’activation de Pages et la vérification en ligne suivent cette étape.

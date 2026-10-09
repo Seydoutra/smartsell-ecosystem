@@ -1,5 +1,10 @@
 import type { SearchEntry, Vertical } from '@smartsell/types';
-import { urlFor, routingConfig, managementUrl } from '@smartsell/routing';
+import {
+  urlFor,
+  withBasePath,
+  routingConfig,
+  managementUrl,
+} from '@smartsell/routing';
 export const verticals: readonly Vertical[] = [
   {
     id: 'agency',
@@ -107,7 +112,7 @@ export const searchEntries: readonly SearchEntry[] = [
     title: 'La maison Smartsell',
     summary:
       'Notre vision : relier création, apprentissage, information, production et innovation.',
-    url: '/fr/#vision',
+    url: withBasePath('/fr/#vision'),
     type: 'La maison',
   },
 ];

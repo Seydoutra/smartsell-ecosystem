@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { verticals, searchEntries } from '@smartsell/content';
-import { routingConfig, urlFor } from '@smartsell/routing';
+import { withBasePath, routingConfig, urlFor } from '@smartsell/routing';
 import type { VerticalId } from '@smartsell/types';
 import { Brand } from './brand';
 function closeOnEscape(event: KeyboardEvent<HTMLDialogElement>) {
@@ -35,7 +35,11 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
       </a>
       <header className="site-header">
         <div className="container header-inner">
-          <a className="home-link" href="/fr/" aria-label="Smartsell, accueil">
+          <a
+            className="home-link"
+            href={withBasePath('/fr/')}
+            aria-label="Smartsell, accueil"
+          >
             <Brand variant="yellow" />
           </a>
           <nav className="desktop-universes" aria-label="Navigation globale">
@@ -122,7 +126,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
           </button>
         </div>
         <nav aria-label="Navigation mobile">
-          <a href="/fr/" onClick={() => menu.current?.close()}>
+          <a href={withBasePath('/fr/')} onClick={() => menu.current?.close()}>
             La maison <span>↗</span>
           </a>
           {verticals.map((v) => (

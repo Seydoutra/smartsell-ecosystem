@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { urlFor } from '../packages/routing/src/index';
+import { urlFor, withBasePath } from '../packages/routing/src/index';
 test('URLs portable between path and subdomain without changing content paths', () => {
   assert.equal(
     urlFor('academy', 'fr', 'courses/design'),
@@ -33,5 +33,33 @@ test('Origins reject unsafe or path-based values and content paths cannot escape
   assert.equal(
     urlFor('media', 'fr', 'article/une idée'),
     '/fr/media/article/une%20id%C3%A9e/',
+  );
+});
+
+test('Project hosting keeps navigation and assets inside its mount without changing external products', () => {
+  const basePath = '/smartsell-ecosystem';
+  assert.equal(
+    urlFor('academy', 'fr', 'courses/design', { basePath }),
+    '/smartsell-ecosystem/fr/academy/courses/design/',
+  );
+  assert.equal(
+    withBasePath('/brand/icon-yellow.png', basePath),
+    '/smartsell-ecosystem/brand/icon-yellow.png',
+  );
+  assert.equal(
+    withBasePath('/smartsell-ecosystem/fr/#vision', basePath),
+    '/smartsell-ecosystem/fr/#vision',
+  );
+  assert.equal(withBasePath('#vision', basePath), '#vision');
+  assert.equal(
+    withBasePath('https://seydoutra.github.io/smartsell-management/', basePath),
+    'https://seydoutra.github.io/smartsell-management/',
+  );
+  assert.equal(
+    urlFor('academy', 'fr', '', {
+      basePath,
+      origins: { academy: 'https://academy.smartsell.pro' },
+    }),
+    'https://academy.smartsell.pro/fr/',
   );
 });
