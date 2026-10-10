@@ -174,7 +174,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
           </button>
         </div>
         <label className="search-label" htmlFor="ecosystem-search">
-          Rechercher un univers ou un produit
+          Rechercher un site, une page ou un produit
         </label>
         <input
           id="ecosystem-search"
@@ -190,7 +190,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
         </p>
         <ul className="search-results">
           {results.map((entry) => (
-            <li key={entry.title}>
+            <li key={`${entry.url}-${entry.title}`}>
               <a href={entry.url} onClick={() => search.current?.close()}>
                 <small>{entry.type}</small>
                 <strong>{entry.title}</strong>

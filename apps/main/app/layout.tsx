@@ -5,6 +5,7 @@ import '@fontsource-variable/space-grotesk/wght.css';
 import '@smartsell/brand/tokens.css';
 import '@smartsell/ui/styles.css';
 import './globals.css';
+import { MotionLayer } from '@smartsell/ui/motion';
 import {
   siteUrl,
   title,
@@ -45,7 +46,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body id="top">{children}</body>
+      <body id="top">
+        {children}
+        <MotionLayer />
+      </body>
     </html>
   );
 }

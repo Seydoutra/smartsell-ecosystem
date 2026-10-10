@@ -13,5 +13,17 @@ const config: NextConfig = {
     '@smartsell/seo',
   ],
   poweredByHeader: false,
+  ...(process.env.NODE_ENV === 'development'
+    ? {
+        async rewrites() {
+          return ['agency', 'academy', 'media', 'studio', 'labs'].map(
+            (id, i) => ({
+              source: `/fr/${id}/:path*`,
+              destination: `http://127.0.0.1:${3001 + i}/fr/${id}/:path*`,
+            }),
+          );
+        },
+      }
+    : {}),
 };
 export default config;

@@ -20,7 +20,7 @@ export function withBasePath(path: string, mount = basePath): string {
 }
 export interface RouteConfig {
   basePath?: string;
-  origins?: Partial<Record<VerticalId, string>>;
+  origins?: Partial<Record<VerticalId | 'main', string>>;
 }
 export const verticalIds = [
   'agency',
@@ -45,7 +45,7 @@ export function urlFor(
   )
     throw new Error('Use a relative content path, without query or fragment.');
   const tail = segments.map((segment) => encodeURIComponent(segment)).join('/');
-  const origin = vertical === 'main' ? undefined : config.origins?.[vertical];
+  const origin = config.origins?.[vertical];
   if (origin) {
     const parsed = new URL(origin);
     if (
@@ -66,6 +66,8 @@ export function urlFor(
 }
 export const routingConfig: RouteConfig = {
   origins: {
+    main: process.env.NEXT_PUBLIC_MAIN_ORIGIN || undefined,
+    agency: process.env.NEXT_PUBLIC_AGENCY_ORIGIN || undefined,
     academy: process.env.NEXT_PUBLIC_ACADEMY_ORIGIN || undefined,
     media: process.env.NEXT_PUBLIC_MEDIA_ORIGIN || undefined,
     studio: process.env.NEXT_PUBLIC_STUDIO_ORIGIN || undefined,
@@ -75,3 +77,7 @@ export const routingConfig: RouteConfig = {
 export const managementUrl =
   process.env.NEXT_PUBLIC_MANAGEMENT_URL ||
   'https://seydoutra.github.io/smartsell-management/';
+
+export function assetUrl(path: string): string {
+  return withBasePath(path, process.env.NEXT_PUBLIC_APP_BASE_PATH ?? basePath);
+}

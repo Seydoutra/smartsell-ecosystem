@@ -7,8 +7,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build && node scripts/package-static.mjs",
+    "dev": "turbo run dev --concurrency=6",
+    "build": "turbo run build --concurrency=2 && node scripts/package-static.mjs",
     "typecheck": "turbo run typecheck",
     "test": "tsx --test tests/*.test.ts",
     "check:export": "node scripts/check-export.mjs",

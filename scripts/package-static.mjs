@@ -6,5 +6,10 @@ await readFile(resolve(out, 'fr/index.html'));
 await rm(resolve(root, 'dist'), { recursive: true, force: true });
 await mkdir(resolve(root, 'dist'), { recursive: true });
 await cp(out, resolve(root, 'dist'), { recursive: true });
+for (const id of ['agency', 'academy', 'media', 'studio', 'labs']) {
+  const appOut = resolve(root, 'apps', id, 'out');
+  await readFile(resolve(appOut, 'index.html'));
+  await cp(appOut, resolve(root, 'dist/fr', id), { recursive: true });
+}
 await writeFile(resolve(root, 'dist/.nojekyll'), '');
 console.log('Export statique prêt dans dist/.');

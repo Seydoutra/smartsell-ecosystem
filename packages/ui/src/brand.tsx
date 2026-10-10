@@ -1,4 +1,4 @@
-import { withBasePath } from '@smartsell/routing';
+import { assetUrl } from '@smartsell/routing';
 export function Brand({
   variant = 'purple',
   className = '',
@@ -9,7 +9,7 @@ export function Brand({
   return (
     <span className={`brand brand--${variant} ${className}`}>
       <img
-        src={withBasePath(`/brand/wordmark-${variant}.png`)}
+        src={assetUrl(`/brand/wordmark-${variant}.png`)}
         width="3240"
         height="3240"
         alt="Smartsell"

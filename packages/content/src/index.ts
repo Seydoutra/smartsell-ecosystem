@@ -1,4 +1,5 @@
 import type { SearchEntry, Vertical } from '@smartsell/types';
+import { getSitePages } from './sites';
 import {
   urlFor,
   withBasePath,
@@ -90,8 +91,8 @@ export const products = [
     category: 'BUSINESS OS · CRÉATEURS VISUELS',
     description:
       'Un univers produit pensé pour les photographes, vidéastes et créateurs visuels.',
-    state: 'Découvrir la vision Labs',
-    url: urlFor('labs', 'fr', '', routingConfig),
+    state: 'Découvrir la vision Obtura',
+    url: urlFor('labs', 'fr', 'products/obtura', routingConfig),
     external: false,
   },
 ] as const;
@@ -102,6 +103,22 @@ export const searchEntries: readonly SearchEntry[] = [
     url: urlFor(v.id, 'fr', '', routingConfig),
     type: 'Univers',
   })),
+  ...verticals.flatMap((v) =>
+    getSitePages(v.id)
+      .filter(
+        (p) =>
+          p.path &&
+          !['enroll', 'learn', 'dashboard', 'certificates', 'privacy'].includes(
+            p.kind || p.path,
+          ),
+      )
+      .map((p) => ({
+        title: `${v.name} · ${p.title}`,
+        summary: p.intro,
+        url: urlFor(v.id, 'fr', p.path, routingConfig),
+        type: v.name,
+      })),
+  ),
   ...products.map((p) => ({
     title: p.name,
     summary: p.description,

@@ -926,3 +926,115 @@
     padding: 40px 20px;
   }
 }
+
+/* Light, depth and rhythm for the house homepage. */
+.hero:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at var(--pointer-x, 65%) var(--pointer-y, 35%),
+    #9760b14d,
+    transparent 62%
+  );
+  pointer-events: none;
+}
+.hero:after {
+  content: '';
+  position: absolute;
+  inset: -35% 20%;
+  width: 85%;
+  border: 1px solid #f3e43325;
+  border-radius: 50%;
+  transform: rotate(-30deg) scaleY(0.5);
+  pointer-events: none;
+  animation: house-orbit 22s ease-in-out infinite;
+}
+.hero-watermark {
+  opacity: 0.09;
+  animation: house-float 15s ease-in-out infinite;
+}
+.hero-content {
+  animation: house-arrive 0.8s ease-out both;
+}
+.hero-universes {
+  padding: 25px;
+  border: 1px solid #ffffff20;
+  border-radius: 16px;
+  background: #24102a38;
+  backdrop-filter: blur(8px);
+}
+.ecosystem-card {
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+.ecosystem-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px #37114615;
+}
+.motion-switch {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 50;
+  border: 1px solid #aa8dbd70;
+  border-radius: 40px;
+  background: #1a1322ec;
+  color: #e4d4ec;
+  font: 500 10px var(--font-body);
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.motion-switch > span {
+  margin-right: 6px;
+}
+@keyframes house-orbit {
+  50% {
+    transform: rotate(-20deg) scaleY(0.65) translateY(30px);
+  }
+}
+@keyframes house-float {
+  50% {
+    transform: translateY(-20px) rotate(3deg);
+  }
+}
+@keyframes house-arrive {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+html[data-motion-paused='true'] *,
+html[data-motion-paused='true'] *:before,
+html[data-motion-paused='true'] *:after {
+  animation-play-state: paused !important;
+  transition-duration: 0s !important;
+  scroll-behavior: auto !important;
+}
+@media (max-width: 600px) {
+  .hero-universes {
+    padding: 20px;
+  }
+  .motion-switch {
+    font-size: 9px;
+    bottom: 12px;
+    right: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero:after,
+  .hero-watermark,
+  .hero-content {
+    animation: none !important;
+  }
+  .motion-switch {
+    display: none;
+  }
+}
+
+html[data-motion-paused='true'] .hero-content {
+  animation: none !important;
+}
