@@ -1,4 +1,5 @@
 'use client';
+import { ThemeToggle } from './signature';
 import { Icon } from './icons';
 import { useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
@@ -55,6 +56,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
             ))}
           </nav>
           <div className="header-actions">
+            <ThemeToggle />
             <a
               className="header-quote"
               href={urlFor('agency', 'fr', 'contact', routingConfig)}

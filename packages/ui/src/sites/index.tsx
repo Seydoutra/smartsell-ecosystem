@@ -21,7 +21,7 @@ import { Brand } from '../brand';
 import { ChangingHeadline, PreviewFrame } from '../experience';
 import { MotionLayer } from './motion';
 import { MotionText, AgencyRibbon, CampaignVisual } from './visuals';
-import { CountUp, PixelMosaic, ScrollLitText } from '../signature';
+import { CountUp, PixelMosaic, ScrollLitText, ThemeToggle } from '../signature';
 import { CtaLink, PhotoRail } from '../immersive';
 import { InnerCta, InnerHero, VerticalHome } from './universe';
 import { photos, type Photo } from '@smartsell/content/photos';
@@ -126,6 +126,7 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
               </a>
             ))}
           </nav>
+          <ThemeToggle />
           <details className="mobile-site-menu">
             <summary>
               Menu <span aria-hidden="true">+</span>

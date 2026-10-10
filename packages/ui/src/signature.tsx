@@ -80,8 +80,42 @@ export function IntroCurtain({
 
 /** Script en tête : n'affiche le rideau qu'une fois par site et par session. */
 export function IntroScript({ site }: { site: string }) {
-  const code = `var d=document.documentElement;d.dataset.sg='1';try{var k='sg-intro-${site}';if(sessionStorage.getItem(k)||sessionStorage.getItem('smartsell-motion-paused')==='true'){d.dataset.intro='skip'}else{sessionStorage.setItem(k,'1')}if(sessionStorage.getItem('sg-leaving')){d.dataset.intro='arrive';sessionStorage.removeItem('sg-leaving')}}catch(e){}`;
+  const native = site === 'academy' || site === 'media' ? 'light' : 'dark';
+  const code = `var d=document.documentElement;d.dataset.sg='1';d.dataset.native='${native}';try{var th=localStorage.getItem('smartsell-theme');if(th==='light'||th==='dark')d.dataset.theme=th}catch(e){}try{var k='sg-intro-${site}';if(sessionStorage.getItem(k)||sessionStorage.getItem('smartsell-motion-paused')==='true'){d.dataset.intro='skip'}else{sessionStorage.setItem(k,'1')}if(sessionStorage.getItem('sg-leaving')){d.dataset.intro='arrive';sessionStorage.removeItem('sg-leaving')}}catch(e){}`;
   return <script dangerouslySetInnerHTML={{ __html: code }} />;
+}
+
+/** Bascule entre mode clair et mode sombre, mémorisée pour le visiteur. */
+export function ThemeToggle() {
+  const [mode, setMode] = useState<'light' | 'dark'>('dark');
+  useEffect(() => {
+    const d = document.documentElement;
+    setMode(
+      (d.dataset.theme || d.dataset.native || 'dark') as 'light' | 'dark',
+    );
+  }, []);
+  const next = mode === 'dark' ? 'light' : 'dark';
+  return (
+    <button
+      type="button"
+      className={`sg-theme sg-theme-${mode}`}
+      aria-label={
+        next === 'light' ? 'Passer en mode clair' : 'Passer en mode sombre'
+      }
+      onClick={() => {
+        document.documentElement.dataset.theme = next;
+        try {
+          localStorage.setItem('smartsell-theme', next);
+        } catch {}
+        setMode(next);
+      }}
+    >
+      <span className="sg-theme-dot" aria-hidden="true" />
+      <span className="sg-theme-label">
+        {next === 'light' ? 'Clair' : 'Sombre'}
+      </span>
+    </button>
+  );
 }
 
 /** Transition sortante : couvre l'écran en pixels avant de changer de site. */

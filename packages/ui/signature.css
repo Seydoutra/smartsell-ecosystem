@@ -1133,3 +1133,170 @@ html[data-sg] .sg-highlight {
   height: 1.05em;
   vertical-align: middle;
 }
+
+/* ---------- Bouton clair / sombre ---------- */
+.sg-theme {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  background: transparent;
+  color: inherit;
+  font: 600 12px var(--font-body);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.sg-theme:hover {
+  border-color: currentColor;
+}
+.sg-theme-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+.sg-theme-light .sg-theme-dot {
+  background: linear-gradient(270deg, currentColor 50%, transparent 50%);
+}
+@media (max-width: 760px) {
+  .sg-theme-label {
+    display: none;
+  }
+}
+
+/*
+ * Modes clair et sombre : chaque univers garde son design d'origine par
+ * défaut. Un choix explicite retourne les surfaces de l'autre tonalité
+ * (inversion de luminance qui préserve les teintes) ; photos, vidéos,
+ * mosaïques et accents jaunes de la marque sont rétablis tels quels.
+ */
+html[data-theme='light'] body {
+  background: #f6f2ec;
+}
+html[data-theme='light'] :is(.site-agency, .site-studio, .site-labs) {
+  background: #f4f1ea;
+}
+html[data-theme='light']
+  :is(
+    .site-header,
+    .local-bar,
+    .footer,
+    .site-footer,
+    .ecosystem-bar,
+    .im-hero,
+    .hm-quick,
+    .im-section.im-dark,
+    .sg-manifesto,
+    .im-zoom,
+    .im-parallax,
+    .im-marquee-dark,
+    .sg-closing-card,
+    .uv-ag-hero,
+    .uv-ag-services,
+    .uv-ag-cta,
+    .uv-st-hero,
+    .uv-st-film,
+    .uv-st-spaces,
+    .uv-st-packs,
+    .uv-st-steps,
+    .uv-st-cta,
+    .uv-lb-hero,
+    .uv-lb-products,
+    .uv-lb-bento,
+    .uv-lb-research,
+    .uv-in-agency,
+    .uv-in-studio,
+    .uv-in-labs,
+    .uv-md-quote,
+    .uv-md-ticker,
+    .uv-ac-steps,
+    .uv-ac-formats,
+    .uv-cta-academy .uv-cta-card,
+    .uv-cta-media .uv-cta-card,
+    .uv-cta-studio .uv-cta-card,
+    .uv-cta-labs .uv-cta-card
+  ),
+html[data-theme='dark']
+  :is(
+    .site-academy .site-header,
+    .site-media .site-header,
+    .site-academy main > section:not(.uv-ac-steps, .uv-ac-formats, .uv-ac-cta),
+    .site-media main > section:not(.uv-md-quote),
+    .site-academy .site-footer,
+    .site-media .site-footer,
+    .uv-body,
+    .im-section.im-light,
+    #services .im-hscroll,
+    .im-marquee-light
+  ) {
+  filter: invert(1) hue-rotate(180deg);
+}
+html[data-theme='light']
+  :is(
+    .site-header,
+    .local-bar,
+    .footer,
+    .site-footer,
+    .ecosystem-bar,
+    .im-hero,
+    .hm-quick,
+    .im-section.im-dark,
+    .sg-manifesto,
+    .im-zoom,
+    .im-parallax,
+    .im-marquee-dark,
+    .sg-closing-card,
+    .uv-ag-hero,
+    .uv-ag-services,
+    .uv-ag-cta,
+    .uv-st-hero,
+    .uv-st-film,
+    .uv-st-spaces,
+    .uv-st-packs,
+    .uv-st-steps,
+    .uv-st-cta,
+    .uv-lb-hero,
+    .uv-lb-products,
+    .uv-lb-bento,
+    .uv-lb-research,
+    .uv-in-agency,
+    .uv-in-studio,
+    .uv-in-labs,
+    .uv-md-quote,
+    .uv-md-ticker,
+    .uv-ac-steps,
+    .uv-ac-formats,
+    .uv-cta-academy .uv-cta-card,
+    .uv-cta-media .uv-cta-card,
+    .uv-cta-studio .uv-cta-card,
+    .uv-cta-labs .uv-cta-card
+  )
+  :is(img, video, canvas, .im-cta-yellow, .sg-highlight, .header-quote),
+html[data-theme='dark']
+  :is(
+    .site-academy .site-header,
+    .site-media .site-header,
+    .site-academy main > section:not(.uv-ac-steps, .uv-ac-formats, .uv-ac-cta),
+    .site-media main > section:not(.uv-md-quote),
+    .site-academy .site-footer,
+    .site-media .site-footer,
+    .uv-body,
+    .im-section.im-light,
+    #services .im-hscroll,
+    .im-marquee-light
+  )
+  :is(img, video, canvas, .im-cta-yellow, .sg-highlight, .header-quote) {
+  filter: invert(1) hue-rotate(180deg);
+}
+html[data-theme='dark'] :is(.site-academy, .site-media) {
+  background: #100d14;
+}
+html[data-theme='dark'] .sg-closing {
+  background: #0f0814;
+}
+html[data-theme='dark'] .uv-ac-cta {
+  background: #3a3200;
+}
