@@ -5,6 +5,12 @@ import '@smartsell/brand/tokens.css';
 import '@smartsell/ui/styles.css';
 import '@smartsell/ui/sites.css';
 import '@smartsell/ui/experience.css';
+import '@smartsell/ui/signature.css';
+import {
+  IntroCurtain,
+  IntroScript,
+  SiteTransitions,
+} from '@smartsell/ui/signature';
 import { indexable, siteUrl } from '@smartsell/seo';
 import { assetUrl } from '@smartsell/routing';
 export const metadata: Metadata = {
@@ -15,8 +21,17 @@ export const metadata: Metadata = {
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
-      <body id="top">{children}</body>
+    <html lang="fr" suppressHydrationWarning>
+      <body id="top">
+        <IntroScript site="agency" />
+        <IntroCurtain
+          name="Agency"
+          tagline="Créer · Site Smartsell"
+          tone="agency"
+        />
+        {children}
+        <SiteTransitions />
+      </body>
     </html>
   );
 }

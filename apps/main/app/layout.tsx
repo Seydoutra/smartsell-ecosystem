@@ -6,7 +6,13 @@ import '@smartsell/brand/tokens.css';
 import '@smartsell/ui/styles.css';
 import './globals.css';
 import '@smartsell/ui/experience.css';
+import '@smartsell/ui/signature.css';
 import { MotionLayer } from '@smartsell/ui/motion';
+import {
+  IntroCurtain,
+  IntroScript,
+  SiteTransitions,
+} from '@smartsell/ui/signature';
 import {
   siteUrl,
   title,
@@ -46,9 +52,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <body id="top">
+        <IntroScript site="main" />
+        <IntroCurtain name="Smartsell" tagline="Une maison. Cinq sites." />
         {children}
+        <SiteTransitions />
         <MotionLayer />
       </body>
     </html>
