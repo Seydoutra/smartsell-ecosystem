@@ -6,93 +6,129 @@ import {
   routingConfig,
   managementUrl,
   locale,
+  t,
 } from '@smartsell/routing';
 export const verticals: readonly Vertical[] = [
   {
     id: 'agency',
     name: 'Agency',
-    verb: 'Créer',
+    verb: t('Créer', 'Create'),
     number: '01',
-    headline: 'Des marques qui avancent.',
-    description:
+    headline: t('Des marques qui avancent.', 'Brands that move forward.'),
+    description: t(
       'De la stratégie à l’expérience digitale, nous donnons une direction aux marques et une forme à leurs ambitions.',
+      'From strategy to digital experience, we give brands a direction and their ambitions a shape.',
+    ),
     focus: [
-      'Stratégie & identité',
-      'Digital & produit',
-      'Marketing & contenus',
+      t('Stratégie & identité', 'Strategy & identity'),
+      t('Digital & produit', 'Digital & product'),
+      t('Marketing & contenus', 'Marketing & content'),
     ],
-    journey: 'Construire votre marque',
+    journey: t('Construire votre marque', 'Build your brand'),
     theme: 'light',
   },
   {
     id: 'academy',
     name: 'Academy',
-    verb: 'Apprendre',
+    verb: t('Apprendre', 'Learn'),
     number: '02',
-    headline: 'Les compétences ouvrent des possibilités.',
-    description:
+    headline: t(
+      'Les compétences ouvrent des possibilités.',
+      'Skills open possibilities.',
+    ),
+    description: t(
       'Apprendre, pratiquer et évoluer. Un univers pour développer les compétences qui font grandir les talents et les équipes.',
-    focus: ['Marketing & création', 'Web, IA & data', 'Formations entreprises'],
-    journey: 'Développer vos compétences',
+      'Learn, practise and grow. A universe to develop the skills that help talents and teams grow.',
+    ),
+    focus: [
+      t('Marketing & création', 'Marketing & creative'),
+      t('Web, IA & data', 'Web, AI & data'),
+      t('Formations entreprises', 'Corporate training'),
+    ],
+    journey: t('Développer vos compétences', 'Develop your skills'),
     theme: 'light',
   },
   {
     id: 'media',
     name: 'Media',
-    verb: 'Comprendre',
+    verb: t('Comprendre', 'Understand'),
     number: '03',
-    headline: 'Lire le changement.',
-    description:
+    headline: t('Lire le changement.', 'Read the change.'),
+    description: t(
       'Tech, business et culture créative : comprendre les idées, les outils et les voix qui transforment la Guinée et l’Afrique.',
+      'Tech, business and creative culture: understand the ideas, tools and voices transforming Guinea and Africa.',
+    ),
     focus: [
-      'Tech & intelligence artificielle',
+      t('Tech & intelligence artificielle', 'Tech & artificial intelligence'),
       'Business & entrepreneurs',
-      'Afrique & culture créative',
+      t('Afrique & culture créative', 'Africa & creative culture'),
     ],
-    journey: 'Comprendre ce qui vient',
+    journey: t('Comprendre ce qui vient', 'Understand what’s coming'),
     theme: 'light',
   },
   {
     id: 'studio',
     name: 'Studios',
-    verb: 'Produire',
+    verb: t('Produire', 'Produce'),
     number: '04',
-    headline: 'Votre idée. Notre espace.',
-    description:
+    headline: t('Votre idée. Notre espace.', 'Your idea. Our space.'),
+    description: t(
       'Un univers dédié à l’image, au son et à la production. Pour les créateurs, les marques et les histoires qui méritent de prendre forme.',
-    focus: ['Photo & vidéo', 'Podcast & interview', 'Contenus de marque'],
-    journey: 'Donner forme à vos contenus',
+      'A universe dedicated to image, sound and production. For creators, brands and stories that deserve to take shape.',
+    ),
+    focus: [
+      t('Photo & vidéo', 'Photo & video'),
+      'Podcast & interview',
+      t('Contenus de marque', 'Brand content'),
+    ],
+    journey: t('Donner forme à vos contenus', 'Shape your content'),
     theme: 'dark',
   },
   {
     id: 'labs',
     name: 'Labs',
-    verb: 'Innover',
+    verb: t('Innover', 'Innovate'),
     number: '05',
-    headline: 'Des problèmes réels. Des produits utiles.',
-    description:
+    headline: t(
+      'Des problèmes réels. Des produits utiles.',
+      'Real problems. Useful products.',
+    ),
+    description: t(
       'Nous ne faisons pas qu’utiliser la technologie. Nous construisons des outils numériques pour les entreprises et les créateurs.',
-    focus: ['Smartsell Management', 'Obtura', 'IA & automatisation'],
-    journey: 'Construire les outils de demain',
+      'We don’t just use technology. We build digital tools for businesses and creators.',
+    ),
+    focus: [
+      'Smartsell Management',
+      'Obtura',
+      t('IA & automatisation', 'AI & automation'),
+    ],
+    journey: t('Construire les outils de demain', 'Build tomorrow’s tools'),
     theme: 'purple',
   },
 ];
 export const products = [
   {
     name: 'Smartsell Management',
-    category: 'CRM · VENTES · OPÉRATIONS',
-    description:
+    category: t('CRM · VENTES · OPÉRATIONS', 'CRM · SALES · OPERATIONS'),
+    description: t(
       'Clients, projets, planning et finances : un produit pour réunir le travail de votre entreprise.',
-    state: 'Découvrir le produit',
+      'Clients, projects, planning and finances: one product to bring your company’s work together.',
+    ),
+    state: t('Découvrir le produit', 'Discover the product'),
     url: managementUrl,
     external: true,
   },
   {
     name: 'Obtura',
-    category: 'BUSINESS OS · CRÉATEURS VISUELS',
-    description:
+    category: t(
+      'BUSINESS OS · CRÉATEURS VISUELS',
+      'BUSINESS OS · VISUAL CREATORS',
+    ),
+    description: t(
       'Un univers produit pensé pour les photographes, vidéastes et créateurs visuels.',
-    state: 'Découvrir la vision Obtura',
+      'A product universe designed for photographers, videographers and visual creators.',
+    ),
+    state: t('Découvrir la vision Obtura', 'Discover the Obtura vision'),
     url: urlFor('labs', locale, 'products/obtura', routingConfig),
     external: false,
   },
@@ -102,7 +138,7 @@ export const searchEntries: readonly SearchEntry[] = [
     title: `Smartsell ${v.name}`,
     summary: `${v.verb}. ${v.description}`,
     url: urlFor(v.id, locale, '', routingConfig),
-    type: 'Univers',
+    type: t('Univers', 'Universe'),
   })),
   ...verticals.flatMap((v) =>
     getSitePages(v.id)
@@ -124,39 +160,53 @@ export const searchEntries: readonly SearchEntry[] = [
     title: p.name,
     summary: p.description,
     url: p.url,
-    type: 'Produit',
+    type: t('Produit', 'Product'),
   })),
   {
-    title: 'La maison Smartsell',
-    summary:
+    title: t('La maison Smartsell', 'The Smartsell house'),
+    summary: t(
       'Agence de communication et de marketing digital : stratégie, réseaux sociaux, publicité, production, web et formation.',
+      'Communication and digital marketing agency: strategy, social media, advertising, production, web and training.',
+    ),
     url: withBasePath(`/${locale}/#manifeste`),
-    type: 'La maison',
+    type: t('La maison', 'The house'),
   },
 ];
 export const nextJourney = [
   {
-    step: 'Une idée',
-    title: 'Poser la direction',
-    copy: 'La stratégie et le design donnent un cap à votre marque.',
+    step: t('Une idée', 'An idea'),
+    title: t('Poser la direction', 'Set the direction'),
+    copy: t(
+      'La stratégie et le design donnent un cap à votre marque.',
+      'Strategy and design give your brand a heading.',
+    ),
     vertical: 'agency',
   },
   {
-    step: 'Une compétence',
-    title: 'Développer le savoir-faire',
-    copy: 'La formation transforme une intention en pratique.',
+    step: t('Une compétence', 'A skill'),
+    title: t('Développer le savoir-faire', 'Develop know-how'),
+    copy: t(
+      'La formation transforme une intention en pratique.',
+      'Training turns an intention into practice.',
+    ),
     vertical: 'academy',
   },
   {
-    step: 'Un contenu',
-    title: 'Passer à la production',
-    copy: 'L’image et le son donnent une forme à votre histoire.',
+    step: t('Un contenu', 'A piece of content'),
+    title: t('Passer à la production', 'Move into production'),
+    copy: t(
+      'L’image et le son donnent une forme à votre histoire.',
+      'Image and sound give your story a shape.',
+    ),
     vertical: 'studio',
   },
   {
-    step: 'Un outil',
-    title: 'Faire avancer le quotidien',
-    copy: 'Des produits numériques relient vos opérations.',
+    step: t('Un outil', 'A tool'),
+    title: t('Faire avancer le quotidien', 'Move daily work forward'),
+    copy: t(
+      'Des produits numériques relient vos opérations.',
+      'Digital products connect your operations.',
+    ),
     vertical: 'labs',
   },
 ] as const;

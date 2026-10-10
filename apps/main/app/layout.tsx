@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title,
     description,
     type: 'website',
-    locale: 'fr_GN',
+    locale: locale === 'en' ? 'en_GB' : 'fr_GN',
     siteName: 'Smartsell',
     images: [
       {

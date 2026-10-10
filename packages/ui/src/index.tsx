@@ -6,6 +6,7 @@ import {
   withBasePath,
   routingConfig,
   locale,
+  t,
 } from '@smartsell/routing';
 export { GlobalNavigation } from './navigation';
 export { Brand } from './brand';
@@ -64,22 +65,33 @@ export function Footer() {
     <footer className="footer">
       <div className="container footer-grid">
         <div className="footer-brand">
-          <a href={withBasePath(`/${locale}/`)} aria-label="Smartsell, accueil">
+          <a
+            href={withBasePath(`/${locale}/`)}
+            aria-label={t('Smartsell, accueil', 'Smartsell, home')}
+          >
             <Brand variant="white" />
           </a>
           <p>
-            Avec vous,
+            {t('Avec vous,', 'With you,')}
             <br />
-            de bout en bout.
+            {t('de bout en bout.', 'from start to finish.')}
           </p>
           <span>
-            Conakry, Guinée.
+            {t('Conakry, Guinée.', 'Conakry, Guinea.')}
             <br />
-            Agence de communication & marketing digital.
+            {t(
+              'Agence de communication & marketing digital.',
+              'Communication & digital marketing agency.',
+            )}
           </span>
         </div>
-        <nav aria-label="Univers dans le pied de page">
-          <p className="eyebrow">L’écosystème</p>
+        <nav
+          aria-label={t(
+            'Univers dans le pied de page',
+            'Universes in the footer',
+          )}
+        >
+          <p className="eyebrow">{t('L’écosystème', 'The ecosystem')}</p>
           {verticals.map((v) => (
             <a key={v.id} href={urlFor(v.id, locale, '', routingConfig)}>
               {v.name}
@@ -89,19 +101,32 @@ export function Footer() {
             </a>
           ))}
         </nav>
-        <nav aria-label="La maison">
-          <p className="eyebrow">La maison</p>
-          <a href={withBasePath(`/${locale}/#services`)}>Nos expertises</a>
-          <a href={withBasePath(`/${locale}/#methode`)}>Notre méthode</a>
-          <a href={withBasePath(`/${locale}/#manifeste`)}>Notre conviction</a>
-          <a href={withBasePath(`/${locale}/#ecosystem`)}>Nos cinq univers</a>
+        <nav aria-label={t('La maison', 'The house')}>
+          <p className="eyebrow">{t('La maison', 'The house')}</p>
+          <a href={withBasePath(`/${locale}/#services`)}>
+            {t('Nos expertises', 'Our expertise')}
+          </a>
+          <a href={withBasePath(`/${locale}/#methode`)}>
+            {t('Notre méthode', 'Our method')}
+          </a>
+          <a href={withBasePath(`/${locale}/#manifeste`)}>
+            {t('Notre conviction', 'Our conviction')}
+          </a>
+          <a href={withBasePath(`/${locale}/#ecosystem`)}>
+            {t('Nos cinq univers', 'Our five universes')}
+          </a>
         </nav>
       </div>
       <div className="container footer-bottom">
         <span>© {new Date().getUTCFullYear()} Smartsell</span>
-        <span>Créer. Apprendre. Comprendre. Produire. Innover.</span>
+        <span>
+          {t(
+            'Créer. Apprendre. Comprendre. Produire. Innover.',
+            'Create. Learn. Understand. Produce. Innovate.',
+          )}
+        </span>
         <a href="#top">
-          Retour en haut <Icon name="arrowUp" />
+          {t('Retour en haut', 'Back to top')} <Icon name="arrowUp" />
         </a>
       </div>
     </footer>

@@ -50,16 +50,21 @@ import {
   urlFor,
   managementUrl,
   locale,
+  t,
 } from '@smartsell/routing';
 import { absoluteUrl } from '@smartsell/seo';
 import type { VerticalId } from '@smartsell/types';
 export const metadata: Metadata = {
   title: {
-    absolute:
+    absolute: t(
       'Smartsell — Agence de communication & marketing digital à Conakry',
+      'Smartsell — Communication & digital marketing agency in Conakry',
+    ),
   },
-  description:
+  description: t(
     'Stratégie de marque, réseaux sociaux, publicité digitale, production photo et vidéo, sites web, formation et outils : Smartsell fait parler votre marque.',
+    'Brand strategy, social media, digital advertising, photo and video production, websites, training and tools: Smartsell gets your brand talked about.',
+  ),
   alternates: { canonical: withBasePath(`/${locale}/`) },
 };
 const go = (vertical: VerticalId, path = '') =>
@@ -67,209 +72,334 @@ const go = (vertical: VerticalId, path = '') =>
 const contact = go('agency', 'contact');
 
 const quick: [VerticalId, string, string][] = [
-  ['agency', 'Être vu & choisi', 'Stratégie, création, campagnes'],
-  ['academy', 'Monter en compétences', 'Formations pratiques'],
-  ['media', 'Comprendre ce qui vient', 'Tech, business, culture'],
-  ['studio', 'Produire un contenu', 'Photo, vidéo, podcast'],
-  ['labs', 'Piloter son activité', 'Produits numériques'],
+  [
+    'agency',
+    t('Être vu & choisi', 'Get seen & chosen'),
+    t('Stratégie, création, campagnes', 'Strategy, creative, campaigns'),
+  ],
+  [
+    'academy',
+    t('Monter en compétences', 'Build your skills'),
+    t('Formations pratiques', 'Hands-on training'),
+  ],
+  [
+    'media',
+    t('Comprendre ce qui vient', 'Understand what’s next'),
+    'Tech, business, culture',
+  ],
+  [
+    'studio',
+    t('Produire un contenu', 'Produce content'),
+    t('Photo, vidéo, podcast', 'Photo, video, podcast'),
+  ],
+  [
+    'labs',
+    t('Piloter son activité', 'Run your business'),
+    t('Produits numériques', 'Digital products'),
+  ],
 ];
 
 const journeys: Journey[] = [
   {
     id: 'entreprise',
-    label: 'une entreprise',
-    headline: 'Structurer votre marque et faire grandir vos équipes.',
+    label: t('une entreprise', 'a company'),
+    headline: t(
+      'Structurer votre marque et faire grandir vos équipes.',
+      'Structure your brand and grow your teams.',
+    ),
     photo: photos.meeting,
     steps: [
       {
         site: 'Agency',
-        title: 'Clarifier votre positionnement',
-        copy: 'Un atelier stratégique pour aligner marque, publics et messages.',
+        title: t('Clarifier votre positionnement', 'Clarify your positioning'),
+        copy: t(
+          'Un atelier stratégique pour aligner marque, publics et messages.',
+          'A strategy workshop to align brand, audiences and messages.',
+        ),
         href: go('agency', 'services/strategie'),
       },
       {
         site: 'Academy',
-        title: 'Former votre équipe marketing',
-        copy: 'Des parcours sur mesure, pensés pour vos outils et vos objectifs.',
+        title: t('Former votre équipe marketing', 'Train your marketing team'),
+        copy: t(
+          'Des parcours sur mesure, pensés pour vos outils et vos objectifs.',
+          'Tailored learning paths designed around your tools and goals.',
+        ),
         href: go('academy', 'corporate'),
       },
       {
         site: 'Labs',
-        title: 'Piloter clients et ventes',
-        copy: 'Smartsell Management réunit clients, projets, planning et finances.',
+        title: t('Piloter clients et ventes', 'Manage clients and sales'),
+        copy: t(
+          'Smartsell Management réunit clients, projets, planning et finances.',
+          'Smartsell Management brings clients, projects, planning and finances together.',
+        ),
         href: managementUrl,
       },
     ],
-    cta: { href: contact, label: 'Demander un devis' },
+    cta: { href: contact, label: t('Demander un devis', 'Get a quote') },
   },
   {
     id: 'entrepreneur',
-    label: 'un entrepreneur',
-    headline: 'Lancer une marque qu’on remarque dès le premier jour.',
+    label: t('un entrepreneur', 'an entrepreneur'),
+    headline: t(
+      'Lancer une marque qu’on remarque dès le premier jour.',
+      'Launch a brand people notice from day one.',
+    ),
     photo: photos.founder,
     steps: [
       {
         site: 'Agency',
-        title: 'Créer votre identité',
-        copy: 'Nom, logo, couleurs et ton : une marque cohérente partout.',
+        title: t('Créer votre identité', 'Create your identity'),
+        copy: t(
+          'Nom, logo, couleurs et ton : une marque cohérente partout.',
+          'Name, logo, colours and tone: a brand that is consistent everywhere.',
+        ),
         href: go('agency', 'services/branding'),
       },
       {
         site: 'Studios',
-        title: 'Produire vos premiers contenus',
-        copy: 'Une Creator Session pour tourner plusieurs formats courts d’un coup.',
+        title: t(
+          'Produire vos premiers contenus',
+          'Produce your first content',
+        ),
+        copy: t(
+          'Une Creator Session pour tourner plusieurs formats courts d’un coup.',
+          'A Creator Session to shoot several short formats in one go.',
+        ),
         href: go('studio', 'packs/creator'),
       },
       {
         site: 'Agency',
-        title: 'Lancer votre première campagne',
-        copy: 'Meta, Google ou TikTok : un budget maîtrisé, des résultats suivis.',
+        title: t(
+          'Lancer votre première campagne',
+          'Launch your first campaign',
+        ),
+        copy: t(
+          'Meta, Google ou TikTok : un budget maîtrisé, des résultats suivis.',
+          'Meta, Google or TikTok: a controlled budget, tracked results.',
+        ),
         href: go('agency', 'services/performance'),
       },
     ],
-    cta: { href: contact, label: 'Lancer mon projet' },
+    cta: { href: contact, label: t('Lancer mon projet', 'Start my project') },
   },
   {
     id: 'talent',
-    label: 'un talent',
-    headline: 'Apprendre un métier du digital en pratiquant.',
+    label: t('un talent', 'a talent'),
+    headline: t(
+      'Apprendre un métier du digital en pratiquant.',
+      'Learn a digital profession by practising it.',
+    ),
     photo: photos.learner,
     steps: [
       {
         site: 'Academy',
-        title: 'Choisir votre module',
-        copy: 'Marketing, design, web, IA, data ou vidéo : huit terrains de pratique.',
+        title: t('Choisir votre module', 'Choose your course'),
+        copy: t(
+          'Marketing, design, web, IA, data ou vidéo : huit terrains de pratique.',
+          'Marketing, design, web, AI, data or video: eight fields to practise.',
+        ),
         href: go('academy', 'courses'),
       },
       {
         site: 'Academy',
-        title: 'Essayer une leçon',
-        copy: 'Trois leçons d’aperçu par module, avec exercice et quiz.',
+        title: t('Essayer une leçon', 'Try a lesson'),
+        copy: t(
+          'Trois leçons d’aperçu par module, avec exercice et quiz.',
+          'Three preview lessons per course, with exercises and quizzes.',
+        ),
         href: go('academy', 'courses/marketing-digital'),
       },
       {
         site: 'Agency',
-        title: 'Rejoindre le collectif',
-        copy: 'Créatifs, stratèges, développeurs : présentez votre travail.',
+        title: t('Rejoindre le collectif', 'Join the collective'),
+        copy: t(
+          'Créatifs, stratèges, développeurs : présentez votre travail.',
+          'Creatives, strategists, developers: show us your work.',
+        ),
         href: go('agency', 'careers'),
       },
     ],
-    cta: { href: go('academy', 'courses'), label: 'Voir les modules' },
+    cta: {
+      href: go('academy', 'courses'),
+      label: t('Voir les modules', 'See the courses'),
+    },
   },
   {
     id: 'createur',
-    label: 'un créateur',
-    headline: 'Donner une image et une voix à vos idées.',
+    label: t('un créateur', 'a creator'),
+    headline: t(
+      'Donner une image et une voix à vos idées.',
+      'Give your ideas an image and a voice.',
+    ),
     photo: photos.podcastWhite,
     steps: [
       {
         site: 'Studios',
-        title: 'Réserver un plateau',
-        copy: 'Photo, vidéo ou podcast : choisissez l’espace qui vous ressemble.',
+        title: t('Réserver un plateau', 'Book a set'),
+        copy: t(
+          'Photo, vidéo ou podcast : choisissez l’espace qui vous ressemble.',
+          'Photo, video or podcast: choose the space that suits you.',
+        ),
         href: go('studio', 'spaces'),
       },
       {
         site: 'Studios',
-        title: 'Lancer votre podcast',
-        copy: 'Conducteur, installation audio et enregistrement accompagné.',
+        title: t('Lancer votre podcast', 'Launch your podcast'),
+        copy: t(
+          'Conducteur, installation audio et enregistrement accompagné.',
+          'Running order, audio setup and supported recording.',
+        ),
         href: go('studio', 'packs/podcast'),
       },
       {
         site: 'Academy',
-        title: 'Maîtriser la vidéo',
-        copy: 'Tournage, montage et formats courts pour les réseaux.',
+        title: t('Maîtriser la vidéo', 'Master video'),
+        copy: t(
+          'Tournage, montage et formats courts pour les réseaux.',
+          'Shooting, editing and short formats for social media.',
+        ),
         href: go('academy', 'courses/creation-video'),
       },
     ],
-    cta: { href: go('studio', 'booking'), label: 'Préparer ma session' },
+    cta: {
+      href: go('studio', 'booking'),
+      label: t('Préparer ma session', 'Prepare my session'),
+    },
   },
   {
     id: 'institution',
-    label: 'une institution',
-    headline: 'Informer, mobiliser et rendre votre action visible.',
+    label: t('une institution', 'an institution'),
+    headline: t(
+      'Informer, mobiliser et rendre votre action visible.',
+      'Inform, mobilise and make your work visible.',
+    ),
     photo: photos.partners,
     steps: [
       {
         site: 'Agency',
-        title: 'Construire une campagne d’information',
-        copy: 'Messages clairs, contenus adaptés, diffusion multicanale.',
+        title: t(
+          'Construire une campagne d’information',
+          'Build an awareness campaign',
+        ),
+        copy: t(
+          'Messages clairs, contenus adaptés, diffusion multicanale.',
+          'Clear messages, adapted content, multichannel distribution.',
+        ),
         href: go('agency', 'services/contenus'),
       },
       {
         site: 'Studios',
-        title: 'Filmer une prise de parole',
-        copy: 'Une interview soignée, de la préparation au tournage.',
+        title: t('Filmer une prise de parole', 'Film a statement'),
+        copy: t(
+          'Une interview soignée, de la préparation au tournage.',
+          'A polished interview, from preparation to shoot.',
+        ),
         href: go('studio', 'packs/interview'),
       },
       {
         site: 'Media',
-        title: 'Suivre les idées qui comptent',
-        copy: 'Analyses et guides sur la tech, le business et la création.',
+        title: t(
+          'Suivre les idées qui comptent',
+          'Follow the ideas that matter',
+        ),
+        copy: t(
+          'Analyses et guides sur la tech, le business et la création.',
+          'Analyses and guides on tech, business and creativity.',
+        ),
         href: go('media', 'latest'),
       },
     ],
-    cta: { href: contact, label: 'Parlons de votre mission' },
+    cta: {
+      href: contact,
+      label: t('Parlons de votre mission', 'Let’s talk about your mission'),
+    },
   },
 ];
 
 const services: HorizontalItem[] = [
   {
-    label: '01 · Stratégie',
-    title: 'Stratégie & identité de marque',
-    copy: 'Positionnement, plateforme de marque, logo et univers visuel : des fondations solides pour être reconnu au premier regard.',
+    label: t('01 · Stratégie', '01 · Strategy'),
+    title: t('Stratégie & identité de marque', 'Brand strategy & identity'),
+    copy: t(
+      'Positionnement, plateforme de marque, logo et univers visuel : des fondations solides pour être reconnu au premier regard.',
+      'Positioning, brand platform, logo and visual universe: solid foundations to be recognised at first glance.',
+    ),
     photo: photos.meeting,
     href: go('agency', 'services/strategie'),
-    cta: 'Construire ma marque',
+    cta: t('Construire ma marque', 'Build my brand'),
   },
   {
     label: '02 · Social media',
-    title: 'Réseaux sociaux & communauté',
-    copy: 'Ligne éditoriale, posts, Reels et animation de communauté, au rythme de votre audience et de vos temps forts.',
+    title: t('Réseaux sociaux & communauté', 'Social media & community'),
+    copy: t(
+      'Ligne éditoriale, posts, Reels et animation de communauté, au rythme de votre audience et de vos temps forts.',
+      'Editorial line, posts, Reels and community management, at the pace of your audience and your key moments.',
+    ),
     photo: photos.phonePink,
     video: videos.phone,
     href: go('agency', 'services/social-media'),
-    cta: 'Booster mes réseaux',
+    cta: t('Booster mes réseaux', 'Boost my socials'),
   },
   {
-    label: '03 · Publicité',
-    title: 'Publicité digitale qui performe',
-    copy: 'Campagnes Meta, Google et TikTok ciblées, suivies et optimisées pour que chaque franc investi travaille pour vous.',
+    label: t('03 · Publicité', '03 · Advertising'),
+    title: t(
+      'Publicité digitale qui performe',
+      'Digital advertising that performs',
+    ),
+    copy: t(
+      'Campagnes Meta, Google et TikTok ciblées, suivies et optimisées pour que chaque franc investi travaille pour vous.',
+      'Targeted Meta, Google and TikTok campaigns, tracked and optimised so every franc invested works for you.',
+    ),
     photo: photos.phoneYellow,
     href: go('agency', 'services/performance'),
-    cta: 'Lancer une campagne',
+    cta: t('Lancer une campagne', 'Launch a campaign'),
   },
   {
     label: '04 · Production',
-    title: 'Photo, vidéo & podcast',
-    copy: 'Spots, portraits, captations et podcasts : nos studios donnent une image et une voix à vos histoires.',
+    title: t('Photo, vidéo & podcast', 'Photo, video & podcast'),
+    copy: t(
+      'Spots, portraits, captations et podcasts : nos studios donnent une image et une voix à vos histoires.',
+      'Ads, portraits, event coverage and podcasts: our studios give your stories an image and a voice.',
+    ),
     photo: photos.videoField,
     video: videos.camera,
     href: go('studio', 'booking'),
-    cta: 'Préparer un tournage',
+    cta: t('Préparer un tournage', 'Prepare a shoot'),
   },
   {
     label: '05 · Web',
-    title: 'Sites web & e-commerce',
-    copy: 'Des sites rapides, élégants et pensés pour convertir, de la vitrine à la boutique en ligne.',
+    title: t('Sites web & e-commerce', 'Websites & e-commerce'),
+    copy: t(
+      'Des sites rapides, élégants et pensés pour convertir, de la vitrine à la boutique en ligne.',
+      'Fast, elegant websites built to convert, from showcase sites to online shops.',
+    ),
     photo: photos.phoneDesk,
     href: go('agency', 'services/web-development'),
-    cta: 'Créer mon site',
+    cta: t('Créer mon site', 'Build my website'),
   },
   {
-    label: '06 · Formation',
-    title: 'Former vos équipes',
-    copy: 'Marketing digital, création de contenu, IA : vos équipes apprennent à faire grandir la marque en interne.',
+    label: t('06 · Formation', '06 · Training'),
+    title: t('Former vos équipes', 'Train your teams'),
+    copy: t(
+      'Marketing digital, création de contenu, IA : vos équipes apprennent à faire grandir la marque en interne.',
+      'Digital marketing, content creation, AI: your teams learn to grow the brand in-house.',
+    ),
     photo: photos.learnerFocus,
     href: go('academy', 'corporate'),
-    cta: 'Former mon équipe',
+    cta: t('Former mon équipe', 'Train my team'),
   },
   {
-    label: '07 · Outils',
-    title: 'Outils & automatisation',
-    copy: 'CRM, tableaux de bord et automatisations : Smartsell Labs construit les outils qui vous font gagner du temps.',
+    label: t('07 · Outils', '07 · Tools'),
+    title: t('Outils & automatisation', 'Tools & automation'),
+    copy: t(
+      'CRM, tableaux de bord et automatisations : Smartsell Labs construit les outils qui vous font gagner du temps.',
+      'CRM, dashboards and automations: Smartsell Labs builds the tools that save you time.',
+    ),
     photo: photos.founder,
     href: go('labs', 'products'),
-    cta: 'Découvrir nos outils',
+    cta: t('Découvrir nos outils', 'Discover our tools'),
   },
 ];
 
@@ -281,22 +411,45 @@ const slidePhotos: Record<VerticalId, Photo> = {
   labs: photos.manager,
 };
 const slidePitch: Record<VerticalId, string> = {
-  agency:
+  agency: t(
     'Stratégie, création et campagnes digitales pour les marques qui veulent compter sur leur marché.',
-  academy:
+    'Strategy, creative and digital campaigns for brands that want to count in their market.',
+  ),
+  academy: t(
     'Des formations pratiques en marketing digital, design, web et IA, pour les talents comme pour les équipes.',
-  media:
+    'Hands-on training in digital marketing, design, web and AI, for talents and teams alike.',
+  ),
+  media: t(
     'Le média qui décrypte la tech, le business et la culture créative, depuis la Guinée et l’Afrique.',
-  studio:
+    'The media decoding tech, business and creative culture, from Guinea and Africa.',
+  ),
+  studio: t(
     'Plateaux photo, vidéo et podcast pour produire des contenus qui arrêtent le défilement.',
-  labs: 'Des produits numériques, comme Smartsell Management, pour piloter clients, projets et ventes.',
+    'Photo, video and podcast sets to produce content that stops the scroll.',
+  ),
+  labs: t(
+    'Des produits numériques, comme Smartsell Management, pour piloter clients, projets et ventes.',
+    'Digital products, like Smartsell Management, to manage clients, projects and sales.',
+  ),
 };
 const slideSecondary: Record<VerticalId, { href: string; label: string }> = {
-  agency: { href: contact, label: 'Demander un devis' },
-  academy: { href: go('academy', 'courses'), label: 'Voir les modules' },
-  media: { href: go('media', 'latest'), label: 'Lire les articles' },
-  studio: { href: go('studio', 'booking'), label: 'Simuler une réservation' },
-  labs: { href: managementUrl, label: 'Découvrir Management' },
+  agency: { href: contact, label: t('Demander un devis', 'Get a quote') },
+  academy: {
+    href: go('academy', 'courses'),
+    label: t('Voir les modules', 'See the courses'),
+  },
+  media: {
+    href: go('media', 'latest'),
+    label: t('Lire les articles', 'Read the articles'),
+  },
+  studio: {
+    href: go('studio', 'booking'),
+    label: t('Simuler une réservation', 'Try a booking'),
+  },
+  labs: {
+    href: managementUrl,
+    label: t('Découvrir Management', 'Discover Management'),
+  },
 };
 const slides: Slide[] = verticals.map((v) => ({
   id: v.id,
@@ -304,7 +457,7 @@ const slides: Slide[] = verticals.map((v) => ({
   name: v.name,
   pitch: slidePitch[v.id],
   photo: slidePhotos[v.id],
-  primary: { href: go(v.id), label: `Entrer dans ${v.name}` },
+  primary: { href: go(v.id), label: `${t('Entrer dans', 'Enter')} ${v.name}` },
   secondary: slideSecondary[v.id],
   links: siteMenus[v.id]
     .slice(0, 4)
@@ -339,114 +492,162 @@ const articlePhotos: Photo[] = [
 
 const spacesPanels: Panel[] = [
   {
-    kicker: 'Studios · Plateau photo',
-    title: 'Portraits, produits, séries de marque.',
-    copy: 'Fonds interchangeables, zone lumière et table de prise de vue pour des images qui vous ressemblent.',
+    kicker: t('Studios · Plateau photo', 'Studios · Photo set'),
+    title: t(
+      'Portraits, produits, séries de marque.',
+      'Portraits, products, brand series.',
+    ),
+    copy: t(
+      'Fonds interchangeables, zone lumière et table de prise de vue pour des images qui vous ressemblent.',
+      'Interchangeable backdrops, a lighting area and a shooting table for images that look like you.',
+    ),
     photo: photos.cameraClose,
     href: go('studio', 'spaces/photo'),
-    cta: 'Découvrir le plateau photo',
+    cta: t('Découvrir le plateau photo', 'Discover the photo set'),
   },
   {
-    kicker: 'Studios · Plateau vidéo',
-    title: 'Interviews, formats de marque, créations.',
-    copy: 'Un cadre modulable avec éclairage et retour image pour des prises de parole soignées.',
+    kicker: t('Studios · Plateau vidéo', 'Studios · Video set'),
+    title: t(
+      'Interviews, formats de marque, créations.',
+      'Interviews, brand formats, creations.',
+    ),
+    copy: t(
+      'Un cadre modulable avec éclairage et retour image pour des prises de parole soignées.',
+      'A modular frame with lighting and monitoring for polished talks.',
+    ),
     photo: photos.videoField,
     video: videos.camera,
     href: go('studio', 'spaces/video'),
-    cta: 'Découvrir le plateau vidéo',
+    cta: t('Découvrir le plateau vidéo', 'Discover the video set'),
   },
   {
-    kicker: 'Studios · Espace podcast',
-    title: 'Conversations enregistrées, audio et vidéo.',
-    copy: 'Table de conversation, micros et retour casque : votre émission prend forme.',
+    kicker: t('Studios · Espace podcast', 'Studios · Podcast room'),
+    title: t(
+      'Conversations enregistrées, audio et vidéo.',
+      'Recorded conversations, audio and video.',
+    ),
+    copy: t(
+      'Table de conversation, micros et retour casque : votre émission prend forme.',
+      'Conversation table, microphones and headphone monitoring: your show takes shape.',
+    ),
     photo: photos.podcastNeon,
     video: videos.podcast,
     href: go('studio', 'spaces/podcast'),
-    cta: 'Découvrir l’espace podcast',
+    cta: t('Découvrir l’espace podcast', 'Discover the podcast room'),
   },
 ];
 
 const people: Panel[] = [
   {
-    kicker: 'Métier · Stratégie',
-    title: 'Les stratèges',
-    copy: 'Ils écoutent, analysent votre marché et transforment une ambition en plan d’action clair.',
+    kicker: t('Métier · Stratégie', 'Craft · Strategy'),
+    title: t('Les stratèges', 'The strategists'),
+    copy: t(
+      'Ils écoutent, analysent votre marché et transforment une ambition en plan d’action clair.',
+      'They listen, analyse your market and turn an ambition into a clear action plan.',
+    ),
     photo: photos.partners,
     href: go('agency', 'services/strategie'),
-    cta: 'Travailler avec eux',
+    cta: t('Travailler avec eux', 'Work with them'),
   },
   {
-    kicker: 'Métier · Création',
-    title: 'Les créatifs',
-    copy: 'Directeurs artistiques, designers et rédacteurs : ils donnent une forme et une voix à votre marque.',
+    kicker: t('Métier · Création', 'Craft · Creative'),
+    title: t('Les créatifs', 'The creatives'),
+    copy: t(
+      'Directeurs artistiques, designers et rédacteurs : ils donnent une forme et une voix à votre marque.',
+      'Art directors, designers and copywriters: they give your brand a shape and a voice.',
+    ),
     photo: photos.portraitWall,
     href: go('agency', 'work'),
-    cta: 'Voir leurs explorations',
+    cta: t('Voir leurs explorations', 'See their explorations'),
   },
   {
-    kicker: 'Métier · Production',
-    title: 'Les producteurs',
-    copy: 'Photographes, vidéastes et ingénieurs du son font naître les images et les voix de vos histoires.',
+    kicker: t('Métier · Production', 'Craft · Production'),
+    title: t('Les producteurs', 'The producers'),
+    copy: t(
+      'Photographes, vidéastes et ingénieurs du son font naître les images et les voix de vos histoires.',
+      'Photographers, videographers and sound engineers bring the images and voices of your stories to life.',
+    ),
     photo: photos.cameraStreet,
     href: go('studio'),
-    cta: 'Entrer dans les studios',
+    cta: t('Entrer dans les studios', 'Enter the studios'),
   },
   {
-    kicker: 'Métier · Diffusion',
-    title: 'Les community managers',
-    copy: 'Ils animent vos réseaux, répondent à votre communauté et font vivre la marque au quotidien.',
+    kicker: t('Métier · Diffusion', 'Craft · Distribution'),
+    title: t('Les community managers', 'The community managers'),
+    copy: t(
+      'Ils animent vos réseaux, répondent à votre communauté et font vivre la marque au quotidien.',
+      'They run your social media, answer your community and keep the brand alive every day.',
+    ),
     photo: photos.phonePink,
     href: go('agency', 'services/social-media'),
-    cta: 'Confier mes réseaux',
+    cta: t('Confier mes réseaux', 'Hand over my socials'),
   },
   {
-    kicker: 'Métier · Transmission',
-    title: 'Les formateurs',
-    copy: 'Praticiens avant tout, ils transmettent des méthodes que vos équipes utilisent dès le lendemain.',
+    kicker: t('Métier · Transmission', 'Craft · Teaching'),
+    title: t('Les formateurs', 'The trainers'),
+    copy: t(
+      'Praticiens avant tout, ils transmettent des méthodes que vos équipes utilisent dès le lendemain.',
+      'Practitioners first, they teach methods your teams use the very next day.',
+    ),
     photo: photos.portraitPro,
     href: go('academy', 'instructors'),
-    cta: 'Découvrir les intervenants',
+    cta: t('Découvrir les intervenants', 'Meet the instructors'),
   },
 ];
 
 const method = [
   {
-    title: 'On écoute.',
-    copy: 'Votre marché, vos clients, vos objectifs. Un atelier, des questions franches, et une vision claire de ce qui doit changer.',
+    title: t('On écoute.', 'We listen.'),
+    copy: t(
+      'Votre marché, vos clients, vos objectifs. Un atelier, des questions franches, et une vision claire de ce qui doit changer.',
+      'Your market, your customers, your goals. A workshop, honest questions and a clear view of what needs to change.',
+    ),
     photo: photos.partners,
   },
   {
-    title: 'On imagine.',
-    copy: 'Concept créatif, messages clés, plan de diffusion : une idée forte, pensée pour se décliner partout où votre public se trouve.',
+    title: t('On imagine.', 'We imagine.'),
+    copy: t(
+      'Concept créatif, messages clés, plan de diffusion : une idée forte, pensée pour se décliner partout où votre public se trouve.',
+      'Creative concept, key messages, media plan: one strong idea, designed to work wherever your audience is.',
+    ),
     photo: photos.creator,
   },
   {
-    title: 'On produit.',
-    copy: 'Visuels, vidéos, textes, sites : nos créatifs et nos studios passent à l’action, avec le souci du détail.',
+    title: t('On produit.', 'We produce.'),
+    copy: t(
+      'Visuels, vidéos, textes, sites : nos créatifs et nos studios passent à l’action, avec le souci du détail.',
+      'Visuals, videos, copy, websites: our creatives and studios get to work, with an eye for detail.',
+    ),
     photo: photos.videoGimbal,
   },
   {
-    title: 'On diffuse.',
-    copy: 'Réseaux sociaux, publicité, influence : le bon message, au bon endroit, au bon moment.',
+    title: t('On diffuse.', 'We distribute.'),
+    copy: t(
+      'Réseaux sociaux, publicité, influence : le bon message, au bon endroit, au bon moment.',
+      'Social media, advertising, influence: the right message, in the right place, at the right time.',
+    ),
     photo: photos.phoneShop,
   },
   {
-    title: 'On mesure.',
-    copy: 'Tableaux de bord et rapports clairs. Ce qui marche est amplifié, le reste est ajusté.',
+    title: t('On mesure.', 'We measure.'),
+    copy: t(
+      'Tableaux de bord et rapports clairs. Ce qui marche est amplifié, le reste est ajusté.',
+      'Dashboards and clear reports. What works gets amplified, the rest gets adjusted.',
+    ),
     photo: photos.portraitPro,
   },
 ];
 
 const needs = [
-  'Stratégie de marque',
-  'Identité visuelle',
-  'Réseaux sociaux',
-  'Publicité digitale',
-  'Site web',
-  'Vidéo / photo',
+  t('Stratégie de marque', 'Brand strategy'),
+  t('Identité visuelle', 'Visual identity'),
+  t('Réseaux sociaux', 'Social media'),
+  t('Publicité digitale', 'Digital advertising'),
+  t('Site web', 'Website'),
+  t('Vidéo / photo', 'Video / photo'),
   'Podcast',
-  'Formation d’équipe',
-  'Outil de gestion',
+  t('Formation d’équipe', 'Team training'),
+  t('Outil de gestion', 'Management tool'),
 ];
 
 export default function Home() {
@@ -458,25 +659,31 @@ export default function Home() {
         <PixelMosaic tone="main" />
         <div className="im-hero-copy">
           <p className="sg-mono">
-            <Icon name="stars" /> Agence de communication & marketing digital ·
-            Conakry
+            <Icon name="stars" />{' '}
+            {t(
+              'Agence de communication & marketing digital · Conakry',
+              'Communication & digital marketing agency · Conakry',
+            )}
           </p>
           <h1 id="hero-title">
-            <span>Votre marque</span>
-            <span>mérite qu’on</span>
+            <span>{t('Votre marque', 'Your brand')}</span>
+            <span>{t('mérite qu’on', 'deserves to be')}</span>
             <span>
-              <Highlight>parle d’elle.</Highlight>
+              <Highlight>{t('parle d’elle.', 'talked about.')}</Highlight>
             </span>
           </h1>
           <p className="im-hero-lead">
-            Stratégie, réseaux sociaux, publicité, production, web et formation
-            : Smartsell imagine des campagnes qui se voient, se partagent et
-            font grandir votre activité.
+            {t(
+              'Stratégie, réseaux sociaux, publicité, production, web et formation : Smartsell imagine des campagnes qui se voient, se partagent et font grandir votre activité.',
+              'Strategy, social media, advertising, production, web and training: Smartsell creates campaigns that get seen, get shared and grow your business.',
+            )}
           </p>
           <div className="im-actions">
-            <CtaLink href={contact}>Lancer mon projet</CtaLink>
+            <CtaLink href={contact}>
+              {t('Lancer mon projet', 'Start my project')}
+            </CtaLink>
             <CtaLink href="#parcours" tone="ghost">
-              Trouver mon parcours
+              {t('Trouver mon parcours', 'Find my path')}
             </CtaLink>
           </div>
           <div className="im-hero-proof">
@@ -490,7 +697,10 @@ export default function Home() {
                 <img key={p.id} src={photoUrl(p, 96)} alt="" />
               ))}
             </span>
-            Stratèges, créatifs, producteurs et formateurs réunis.
+            {t(
+              'Stratèges, créatifs, producteurs et formateurs réunis.',
+              'Strategists, creatives, producers and trainers, together.',
+            )}
           </div>
         </div>
         <PhotoColumns
@@ -519,7 +729,13 @@ export default function Home() {
 
       {/* Accès directs aux cinq univers */}
       <div className="hm-quick">
-        <nav className="hm-wrap" aria-label="Accès directs aux univers">
+        <nav
+          className="hm-wrap"
+          aria-label={t(
+            'Accès directs aux univers',
+            'Quick access to the universes',
+          )}
+        >
           {quick.map(([id, title, sub]) => {
             const v = verticals.find((x) => x.id === id)!;
             return (
@@ -540,15 +756,15 @@ export default function Home() {
       <Marquee
         tone="yellow"
         items={[
-          'Stratégie de marque',
-          'Réseaux sociaux',
-          'Publicité digitale',
-          'Production vidéo',
-          'Identité visuelle',
-          'Sites web',
+          t('Stratégie de marque', 'Brand strategy'),
+          t('Réseaux sociaux', 'Social media'),
+          t('Publicité digitale', 'Digital advertising'),
+          t('Production vidéo', 'Video production'),
+          t('Identité visuelle', 'Visual identity'),
+          t('Sites web', 'Websites'),
           'Podcasts',
-          'Formation',
-          'Outils digitaux',
+          t('Formation', 'Training'),
+          t('Outils digitaux', 'Digital tools'),
         ]}
       />
 
@@ -560,15 +776,21 @@ export default function Home() {
       >
         <div className="im-head">
           <div>
-            <span className="sg-mono">01 · Votre parcours</span>
+            <span className="sg-mono">
+              {t('01 · Votre parcours', '01 · Your path')}
+            </span>
             <h2 id="journey-title">
-              Dites-nous qui vous êtes.{' '}
-              <Highlight>On trace la route.</Highlight>
+              {t('Dites-nous qui vous êtes.', 'Tell us who you are.')}{' '}
+              <Highlight>
+                {t('On trace la route.', 'We’ll map the way.')}
+              </Highlight>
             </h2>
           </div>
           <p>
-            Choisissez votre profil : nous vous proposons les trois étapes les
-            plus utiles, à travers nos cinq univers.
+            {t(
+              'Choisissez votre profil : nous vous proposons les trois étapes les plus utiles, à travers nos cinq univers.',
+              'Choose your profile: we suggest the three most useful steps across our five universes.',
+            )}
           </p>
         </div>
         <div className="hm-wrap">
@@ -580,22 +802,35 @@ export default function Home() {
       <ZoomReveal
         photo={photos.teamLaptop}
         video={videos.team}
-        eyebrow="02 · Une seule équipe"
+        eyebrow={t('02 · Une seule équipe', '02 · One team')}
         title={
           <>
-            Penser, créer, diffuser, mesurer.{' '}
-            <Highlight>Sous le même toit.</Highlight>
+            {t(
+              'Penser, créer, diffuser, mesurer.',
+              'Think, create, distribute, measure.',
+            )}{' '}
+            <Highlight>{t('Sous le même toit.', 'Under one roof.')}</Highlight>
           </>
         }
-        copy="Fini les prestataires qui ne se parlent pas. Chez Smartsell, la stratégie, la création, la production et la formation avancent ensemble, au service de vos résultats."
-        cta={<CtaLink href="#services">Voir nos expertises</CtaLink>}
+        copy={t(
+          'Fini les prestataires qui ne se parlent pas. Chez Smartsell, la stratégie, la création, la production et la formation avancent ensemble, au service de vos résultats.',
+          'No more suppliers who don’t talk to each other. At Smartsell, strategy, creative, production and training move forward together, in service of your results.',
+        )}
+        cta={
+          <CtaLink href="#services">
+            {t('Voir nos expertises', 'See our services')}
+          </CtaLink>
+        }
       />
 
       {/* 04 · Services en défilement horizontal */}
       <div id="services">
         <HorizontalScroll
-          eyebrow="03 · Ce que nous faisons"
-          title="Tout ce qu’il faut pour que votre marque soit vue, choisie et recommandée."
+          eyebrow={t('03 · Ce que nous faisons', '03 · What we do')}
+          title={t(
+            'Tout ce qu’il faut pour que votre marque soit vue, choisie et recommandée.',
+            'Everything your brand needs to be seen, chosen and recommended.',
+          )}
           items={services}
         />
       </div>
@@ -608,18 +843,28 @@ export default function Home() {
       >
         <div className="im-head">
           <div>
-            <span className="sg-mono">04 · L’écosystème Smartsell</span>
+            <span className="sg-mono">
+              {t('04 · L’écosystème Smartsell', '04 · The Smartsell ecosystem')}
+            </span>
             <h2 id="eco-title">
-              Une maison mère. <Highlight>Cinq expertises</Highlight> à part
-              entière.
+              {t('Une maison mère.', 'One parent house.')}{' '}
+              <Highlight>
+                {t('Cinq expertises', 'Five areas of expertise')}
+              </Highlight>{' '}
+              {t('à part entière.', 'in their own right.')}
             </h2>
           </div>
           <p>
-            Chaque univers a son site, son équipe et son savoir-faire. Ensemble,
-            ils couvrent toute la vie de votre marque, de l’idée aux résultats.
+            {t(
+              'Chaque univers a son site, son équipe et son savoir-faire. Ensemble, ils couvrent toute la vie de votre marque, de l’idée aux résultats.',
+              'Each universe has its own site, team and know-how. Together they cover your brand’s whole life, from idea to results.',
+            )}
           </p>
         </div>
-        <Carousel slides={slides} label="Les cinq sites Smartsell" />
+        <Carousel
+          slides={slides}
+          label={t('Les cinq sites Smartsell', 'The five Smartsell sites')}
+        />
       </section>
 
       {/* 06 · Produit phare */}
@@ -629,36 +874,68 @@ export default function Home() {
             <PixelMosaic tone="labs" />
             <div className="hm-spotlight-copy">
               <span className="hm-badge">
-                <i aria-hidden="true" /> Produit disponible · Smartsell Labs
+                <i aria-hidden="true" />{' '}
+                {t(
+                  'Produit disponible · Smartsell Labs',
+                  'Available product · Smartsell Labs',
+                )}
               </span>
               <h2 id="spot-title">
-                Smartsell <em>Management</em>, votre activité sur un seul écran.
+                Smartsell <em>Management</em>
+                {t(
+                  ', votre activité sur un seul écran.',
+                  ', your business on a single screen.',
+                )}
               </h2>
               <p>
-                Un produit conçu par Smartsell Labs pour réunir le travail de
-                votre entreprise : clients, projets, planning et finances.
+                {t(
+                  'Un produit conçu par Smartsell Labs pour réunir le travail de votre entreprise : clients, projets, planning et finances.',
+                  'A product designed by Smartsell Labs to bring your company’s work together: clients, projects, planning and finances.',
+                )}
               </p>
               <div className="im-actions">
-                <CtaLink href={managementUrl}>Découvrir Management</CtaLink>
+                <CtaLink href={managementUrl}>
+                  {t('Découvrir Management', 'Discover Management')}
+                </CtaLink>
                 <CtaLink href={go('labs', 'products')} tone="ghost">
-                  Tous nos produits
+                  {t('Tous nos produits', 'All our products')}
                 </CtaLink>
               </div>
             </div>
             <div className="hm-features">
               {[
-                ['01', 'Clients', 'Un historique clair de chaque relation.'],
+                [
+                  '01',
+                  'Clients',
+                  t(
+                    'Un historique clair de chaque relation.',
+                    'A clear history of each relationship.',
+                  ),
+                ],
                 [
                   '02',
-                  'Projets',
-                  'Les étapes et les responsables au même endroit.',
+                  t('Projets', 'Projects'),
+                  t(
+                    'Les étapes et les responsables au même endroit.',
+                    'Steps and owners in one place.',
+                  ),
                 ],
                 [
                   '03',
                   'Planning',
-                  'Les échéances de l’équipe, visibles d’un coup d’œil.',
+                  t(
+                    'Les échéances de l’équipe, visibles d’un coup d’œil.',
+                    'The team’s deadlines, visible at a glance.',
+                  ),
                 ],
-                ['04', 'Finances', 'Devis, factures et suivi réunis.'],
+                [
+                  '04',
+                  'Finances',
+                  t(
+                    'Devis, factures et suivi réunis.',
+                    'Quotes, invoices and tracking together.',
+                  ),
+                ],
               ].map(([n, t, c]) => (
                 <div key={t}>
                   <span className="sg-mono">{n}</span>
@@ -677,18 +954,29 @@ export default function Home() {
           <div>
             <span className="sg-mono">05 · Smartsell Agency</span>
             <h2 id="work-title">
-              Des idées qui prennent <Highlight>forme.</Highlight>
+              {t('Des idées qui prennent', 'Ideas that take')}{' '}
+              <Highlight>{t('forme.', 'shape.')}</Highlight>
             </h2>
           </div>
           <div className="im-head-side">
             <p>
-              Six explorations créatives pour montrer notre manière de faire :
-              du contexte à la direction, jusqu’aux livrables.
+              {t(
+                'Six explorations créatives pour montrer notre manière de faire : du contexte à la direction, jusqu’aux livrables.',
+                'Six creative explorations to show how we work: from context to direction, all the way to deliverables.',
+              )}
             </p>
-            <CtaLink href={go('agency', 'work')}>Tout le portfolio</CtaLink>
+            <CtaLink href={go('agency', 'work')}>
+              {t('Tout le portfolio', 'The whole portfolio')}
+            </CtaLink>
           </div>
         </div>
-        <Rail label="Explorations créatives Agency" tone="dark">
+        <Rail
+          label={t(
+            'Explorations créatives Agency',
+            'Agency creative explorations',
+          )}
+          tone="dark"
+        >
           {cases.map((c, i) => (
             <a
               key={c.slug}
@@ -701,7 +989,8 @@ export default function Home() {
               </span>
               <div className="hm-case-body">
                 <span className="sg-mono">
-                  {c.category} · Exploration créative
+                  {c.category} ·{' '}
+                  {t('Exploration créative', 'Creative exploration')}
                 </span>
                 <h3>{c.title}</h3>
                 <p>{c.tagline}</p>
@@ -722,20 +1011,23 @@ export default function Home() {
           <div>
             <span className="sg-mono">06 · Smartsell Academy</span>
             <h2 id="academy-title">
-              Apprendre en faisant. <Highlight>Pour de vrai.</Highlight>
+              {t('Apprendre en faisant.', 'Learn by doing.')}{' '}
+              <Highlight>{t('Pour de vrai.', 'For real.')}</Highlight>
             </h2>
           </div>
           <div className="im-head-side">
             <p>
-              Huit modules pratiques, un projet concret par module et trois
-              leçons à essayer dès maintenant.
+              {t(
+                'Huit modules pratiques, un projet concret par module et trois leçons à essayer dès maintenant.',
+                'Eight hands-on courses, one real project per course and three lessons to try right now.',
+              )}
             </p>
             <CtaLink href={go('academy', 'courses')} tone="dark">
-              Tous les modules
+              {t('Tous les modules', 'All courses')}
             </CtaLink>
           </div>
         </div>
-        <Rail label="Modules Academy">
+        <Rail label={t('Modules Academy', 'Academy courses')}>
           {courses.map((c) => (
             <a
               key={c.slug}
@@ -754,9 +1046,11 @@ export default function Home() {
                 <h3>{c.title}</h3>
                 <p>{c.goal}</p>
                 <div className="hm-course-meta">
-                  <span>Format envisagé : {c.hours} h</span>
+                  <span>
+                    {t('Format envisagé :', 'Planned format:')} {c.hours} h
+                  </span>
                   <b>
-                    Essayer <Icon name="arrowUpRight" />
+                    {t('Essayer', 'Try')} <Icon name="arrowUpRight" />
                   </b>
                 </div>
               </div>
@@ -771,22 +1065,30 @@ export default function Home() {
           <div>
             <span className="sg-mono">07 · Smartsell Studios</span>
             <h2 id="studio-title">
-              Trois plateaux. <Highlight>Mille histoires.</Highlight>
+              {t('Trois plateaux.', 'Three sets.')}{' '}
+              <Highlight>
+                {t('Mille histoires.', 'A thousand stories.')}
+              </Highlight>
             </h2>
           </div>
           <div className="im-head-side">
             <p>
-              Choisissez un espace, un pack et un créneau : simulez votre
-              session en quelques clics.
+              {t(
+                'Choisissez un espace, un pack et un créneau : simulez votre session en quelques clics.',
+                'Choose a space, a pack and a slot: simulate your session in a few clicks.',
+              )}
             </p>
             <CtaLink href={go('studio', 'booking')}>
-              Simuler une réservation
+              {t('Simuler une réservation', 'Try a booking')}
             </CtaLink>
           </div>
         </div>
         <div className="hm-wrap">
           <ExpandPanels panels={spacesPanels} />
-          <nav className="hm-packs" aria-label="Packs Studios">
+          <nav
+            className="hm-packs"
+            aria-label={t('Packs Studios', 'Studios packs')}
+          >
             {packs.map((p) => (
               <a key={p.slug} href={go('studio', `packs/${p.slug}`)}>
                 <small>{p.duration} h · pack</small>
@@ -803,16 +1105,20 @@ export default function Home() {
           <div>
             <span className="sg-mono">08 · Smartsell Media</span>
             <h2 id="media-title">
-              Les idées qui font <Highlight>bouger</Highlight> l’Afrique.
+              {t('Les idées qui font', 'The ideas that')}{' '}
+              <Highlight>{t('bouger', 'move')}</Highlight>{' '}
+              {t('l’Afrique.', 'Africa.')}
             </h2>
           </div>
           <div className="im-head-side">
             <p>
-              Guides, analyses et opinions sur la tech, le business et la
-              culture créative.
+              {t(
+                'Guides, analyses et opinions sur la tech, le business et la culture créative.',
+                'Guides, analyses and opinions on tech, business and creative culture.',
+              )}
             </p>
             <CtaLink href={go('media', 'newsletter')} tone="dark">
-              Recevoir la newsletter
+              {t('Recevoir la newsletter', 'Get the newsletter')}
             </CtaLink>
           </div>
         </div>
@@ -820,7 +1126,9 @@ export default function Home() {
           <a className="hm-mag-lead" href={go('media', `article/${lead.slug}`)}>
             <Img photo={articlePhotos[0]} width={1100} />
             <div>
-              <span className="hm-tag">{lead.category} · À la une</span>
+              <span className="hm-tag">
+                {lead.category} · {t('À la une', 'Top story')}
+              </span>
               <h3>{lead.title}</h3>
               <p>{lead.summary}</p>
             </div>
@@ -852,18 +1160,23 @@ export default function Home() {
       <section className="im-section im-dark" aria-labelledby="people-title">
         <div className="im-head">
           <div>
-            <span className="sg-mono">09 · Les femmes et les hommes</span>
+            <span className="sg-mono">
+              {t('09 · Les femmes et les hommes', '09 · The people')}
+            </span>
             <h2 id="people-title">
-              Derrière chaque campagne, <Highlight>des talents.</Highlight>
+              {t('Derrière chaque campagne,', 'Behind every campaign,')}{' '}
+              <Highlight>{t('des talents.', 'talented people.')}</Highlight>
             </h2>
           </div>
           <div className="im-head-side">
             <p>
-              Cinq métiers qui travaillent ensemble sur votre projet. Survolez
-              pour les rencontrer.
+              {t(
+                'Cinq métiers qui travaillent ensemble sur votre projet. Survolez pour les rencontrer.',
+                'Five crafts working together on your project. Hover to meet them.',
+              )}
             </p>
             <CtaLink href={go('agency', 'team')}>
-              Découvrir le collectif
+              {t('Découvrir le collectif', 'Meet the collective')}
             </CtaLink>
           </div>
         </div>
@@ -881,18 +1194,28 @@ export default function Home() {
           [photos.portraitPrint, photos.cameraClose, photos.portraitStand],
         ]}
       >
-        <span className="sg-mono">10 · Pour celles et ceux qui avancent</span>
+        <span className="sg-mono">
+          {t(
+            '10 · Pour celles et ceux qui avancent',
+            '10 · For those moving forward',
+          )}
+        </span>
         <h2>
-          Des visages. Des voix. <Highlight>Des histoires.</Highlight>
+          {t('Des visages. Des voix.', 'Faces. Voices.')}{' '}
+          <Highlight>{t('Des histoires.', 'Stories.')}</Highlight>
         </h2>
         <p>
-          Entrepreneurs, créateurs, marques et institutions : nous aidons celles
-          et ceux qui font bouger la Guinée et l’Afrique à se faire entendre.
+          {t(
+            'Entrepreneurs, créateurs, marques et institutions : nous aidons celles et ceux qui font bouger la Guinée et l’Afrique à se faire entendre.',
+            'Entrepreneurs, creators, brands and institutions: we help the people moving Guinea and Africa forward be heard.',
+          )}
         </p>
         <div className="im-actions">
-          <CtaLink href={contact}>Raconter mon histoire</CtaLink>
+          <CtaLink href={contact}>
+            {t('Raconter mon histoire', 'Tell my story')}
+          </CtaLink>
           <CtaLink href={go('studio')} tone="ghost">
-            Découvrir nos studios
+            {t('Découvrir nos studios', 'Discover our studios')}
           </CtaLink>
         </div>
       </ParallaxGallery>
@@ -905,16 +1228,25 @@ export default function Home() {
       >
         <div className="im-head">
           <div>
-            <span className="sg-mono">11 · Notre méthode</span>
-            <h2 id="method-title">Du brief aux résultats, en cinq temps.</h2>
+            <span className="sg-mono">
+              {t('11 · Notre méthode', '11 · Our method')}
+            </span>
+            <h2 id="method-title">
+              {t(
+                'Du brief aux résultats, en cinq temps.',
+                'From brief to results, in five steps.',
+              )}
+            </h2>
           </div>
           <div className="im-head-side">
             <p>
-              Une méthode simple, transparente et rythmée, pour que vous sachiez
-              toujours où en est votre projet.
+              {t(
+                'Une méthode simple, transparente et rythmée, pour que vous sachiez toujours où en est votre projet.',
+                'A simple, transparent and well-paced method, so you always know where your project stands.',
+              )}
             </p>
             <CtaLink href={contact} tone="dark">
-              Démarrer un projet
+              {t('Démarrer un projet', 'Start a project')}
             </CtaLink>
           </div>
         </div>
@@ -926,16 +1258,26 @@ export default function Home() {
       {/* 14 · Conviction + chiffres réels du contenu */}
       <section className="sg-manifesto" id="manifeste">
         <div className="container">
-          <span className="sg-mono">12 · Notre conviction</span>
-          <ScrollLitText text="On ne fait pas de la communication pour faire joli. On construit des marques qui se reconnaissent au premier regard, des messages qui touchent juste et des campagnes dont on mesure l’effet. Votre ambition mérite mieux qu’un post de temps en temps." />
+          <span className="sg-mono">
+            {t('12 · Notre conviction', '12 · Our conviction')}
+          </span>
+          <ScrollLitText
+            text={t(
+              'On ne fait pas de la communication pour faire joli. On construit des marques qui se reconnaissent au premier regard, des messages qui touchent juste et des campagnes dont on mesure l’effet. Votre ambition mérite mieux qu’un post de temps en temps.',
+              'We don’t do communication just to look good. We build brands recognised at first glance, messages that hit home and campaigns whose impact we measure. Your ambition deserves more than the occasional post.',
+            )}
+          />
           <div className="sg-figures" data-reveal style={{ marginTop: 64 }}>
             {(
               [
-                [5, 'Univers Smartsell'],
-                [agencyServices.length, 'Expertises Agency'],
-                [courses.length, 'Modules Academy'],
-                [articles.length, 'Articles Media'],
-                [packs.length, 'Packs Studios'],
+                [5, t('Univers Smartsell', 'Smartsell universes')],
+                [
+                  agencyServices.length,
+                  t('Expertises Agency', 'Agency services'),
+                ],
+                [courses.length, t('Modules Academy', 'Academy courses')],
+                [articles.length, t('Articles Media', 'Media articles')],
+                [packs.length, t('Packs Studios', 'Studios packs')],
               ] as [number, string][]
             ).map(([n, l]) => (
               <div key={l}>
@@ -957,15 +1299,24 @@ export default function Home() {
       >
         <div className="im-head">
           <div>
-            <span className="sg-mono">13 · Votre brief en 30 secondes</span>
+            <span className="sg-mono">
+              {t(
+                '13 · Votre brief en 30 secondes',
+                '13 · Your brief in 30 seconds',
+              )}
+            </span>
             <h2 id="brief-title">
-              Composez votre projet.{' '}
-              <Highlight>On s’occupe du reste.</Highlight>
+              {t('Composez votre projet.', 'Compose your project.')}{' '}
+              <Highlight>
+                {t('On s’occupe du reste.', 'We’ll handle the rest.')}
+              </Highlight>
             </h2>
           </div>
           <p>
-            Sélectionnez vos besoins, votre objectif et votre calendrier : votre
-            brief vous suit jusqu’au formulaire de contact.
+            {t(
+              'Sélectionnez vos besoins, votre objectif et votre calendrier : votre brief vous suit jusqu’au formulaire de contact.',
+              'Select your needs, your objective and your timeline: your brief follows you to the contact form.',
+            )}
           </p>
         </div>
         <div className="hm-wrap">
@@ -977,9 +1328,9 @@ export default function Home() {
         tone="dark"
         reverse
         items={[
-          'Faites-vous remarquer',
-          'Faites-vous choisir',
-          'Faites-vous recommander',
+          t('Faites-vous remarquer', 'Get noticed'),
+          t('Faites-vous choisir', 'Get chosen'),
+          t('Faites-vous recommander', 'Get recommended'),
         ]}
       />
 
@@ -987,12 +1338,27 @@ export default function Home() {
       <section className="im-section im-dark" aria-labelledby="map-title">
         <div className="im-head">
           <div>
-            <span className="sg-mono">14 · Plan express</span>
-            <h2 id="map-title">Tout Smartsell, en un coup d’œil.</h2>
+            <span className="sg-mono">
+              {t('14 · Plan express', '14 · Express map')}
+            </span>
+            <h2 id="map-title">
+              {t(
+                'Tout Smartsell, en un coup d’œil.',
+                'All of Smartsell, at a glance.',
+              )}
+            </h2>
           </div>
-          <p>Chaque page de chaque univers, à un clic.</p>
+          <p>
+            {t(
+              'Chaque page de chaque univers, à un clic.',
+              'Every page of every universe, one click away.',
+            )}
+          </p>
         </div>
-        <nav className="hm-wrap hm-map" aria-label="Plan des sites Smartsell">
+        <nav
+          className="hm-wrap hm-map"
+          aria-label={t('Plan des sites Smartsell', 'Smartsell site map')}
+        >
           {verticals.map((v) => (
             <div className="hm-map-col" key={v.id}>
               <a href={go(v.id)}>
@@ -1019,28 +1385,44 @@ export default function Home() {
         <div className="container">
           <div className="sg-closing-card">
             <PixelMosaic tone="agency" />
-            <p className="sg-mono">Smartsell · Votre prochaine campagne</p>
+            <p className="sg-mono">
+              {t(
+                'Smartsell · Votre prochaine campagne',
+                'Smartsell · Your next campaign',
+              )}
+            </p>
             <h2>
-              Prêt à faire
+              {t('Prêt à faire', 'Ready to make')}
               <br />
-              <em>du bruit ?</em>
+              <em>{t('du bruit ?', 'some noise?')}</em>
             </h2>
             <div className="im-actions">
-              <CtaLink href={contact}>Lancer mon projet</CtaLink>
+              <CtaLink href={contact}>
+                {t('Lancer mon projet', 'Start my project')}
+              </CtaLink>
               <CtaLink href="#brief" tone="ghost">
-                Composer mon brief
+                {t('Composer mon brief', 'Compose my brief')}
               </CtaLink>
             </div>
           </div>
           <p className="im-credits">
-            Photographies et vidéos d’illustration : Envato Elements et Unsplash
-            ({photoCredits.join(', ')}). Les explorations Agency sont des
-            concepts avec des marques fictives.
+            {t(
+              'Photographies et vidéos d’illustration : Envato Elements et Unsplash',
+              'Illustrative photos and videos: Envato Elements and Unsplash',
+            )}
+            ({photoCredits.join(', ')}).{' '}
+            {t(
+              'Les explorations Agency sont des concepts avec des marques fictives.',
+              'Agency explorations are concepts with fictional brands.',
+            )}
           </p>
         </div>
       </section>
 
-      <FloatingCta href={contact} label="Parlons de votre projet" />
+      <FloatingCta
+        href={contact}
+        label={t('Parlons de votre projet', 'Let’s talk about your project')}
+      />
 
       <script
         type="application/ld+json"
@@ -1051,8 +1433,10 @@ export default function Home() {
             name: 'Smartsell',
             url: absoluteUrl(withBasePath(`/${locale}/`)),
             logo: absoluteUrl(withBasePath('/brand/wordmark-purple.png')),
-            description:
+            description: t(
               'Agence de communication et de marketing digital à Conakry : stratégie, réseaux sociaux, publicité, production, web, formation et outils.',
+              'Communication and digital marketing agency in Conakry: strategy, social media, advertising, production, web, training and tools.',
+            ),
           }).replace(/</g, '\\u003c'),
         }}
       />

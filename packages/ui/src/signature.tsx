@@ -16,6 +16,7 @@ import {
   locale,
   otherLocale,
   withBasePath,
+  t,
 } from '@smartsell/routing';
 import { PreviewFrame } from './experience';
 
@@ -106,7 +107,9 @@ export function ThemeToggle() {
       type="button"
       className={`sg-theme sg-theme-${mode}`}
       aria-label={
-        next === 'light' ? 'Passer en mode clair' : 'Passer en mode sombre'
+        next === 'light'
+          ? t('Passer en mode clair', 'Switch to light mode')
+          : t('Passer en mode sombre', 'Switch to dark mode')
       }
       onClick={() => {
         document.documentElement.dataset.theme = next;
@@ -118,7 +121,7 @@ export function ThemeToggle() {
     >
       <span className="sg-theme-dot" aria-hidden="true" />
       <span className="sg-theme-label">
-        {next === 'light' ? 'Clair' : 'Sombre'}
+        {next === 'light' ? t('Clair', 'Light') : t('Sombre', 'Dark')}
       </span>
     </button>
   );
@@ -436,7 +439,7 @@ export function UniverseOrbit() {
         <i />
       </div>
       <div className="sg-orbit-core">
-        <span className="sg-mono">MAISON MÈRE</span>
+        <span className="sg-mono">{t('MAISON MÈRE', 'PARENT HOUSE')}</span>
         <strong>Smartsell</strong>
         <span>Conakry · GN</span>
       </div>
@@ -505,7 +508,7 @@ export function UniverseTabs() {
         className="sg-tablist"
         role="tablist"
         aria-orientation="vertical"
-        aria-label="Les cinq sites Smartsell"
+        aria-label={t('Les cinq sites Smartsell', 'The five Smartsell sites')}
       >
         {verticals.map((x, i) => (
           <button

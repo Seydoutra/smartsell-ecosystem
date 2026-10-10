@@ -1,4 +1,5 @@
 'use client';
+import { t } from '@smartsell/routing';
 import { Icon } from './icons';
 import {
   useEffect,
@@ -317,7 +318,7 @@ export function HorizontalScroll({
           <p className="sg-mono">{eyebrow}</p>
           <h2>{title}</h2>
           <span className="im-hscroll-hint" aria-hidden="true">
-            Faites défiler <Icon name="arrowRight" />
+            {t('Faites défiler', 'Keep scrolling')} <Icon name="arrowRight" />
           </span>
         </div>
         <div className="im-hscroll-track" ref={track}>
@@ -417,7 +418,7 @@ export function Carousel({
     <div
       className="im-carousel"
       role="region"
-      aria-roledescription="carrousel"
+      aria-roledescription={t('carrousel', 'carousel')}
       aria-label={label}
       onPointerEnter={() => setHold(true)}
       onPointerLeave={() => setHold(false)}
@@ -429,8 +430,8 @@ export function Carousel({
           <article
             key={s.id}
             className={`im-slide im-slide-${s.id}`}
-            aria-roledescription="diapositive"
-            aria-label={`${i + 1} sur ${slides.length} : ${s.name}`}
+            aria-roledescription={t('diapositive', 'slide')}
+            aria-label={`${i + 1} ${t('sur', 'of')} ${slides.length} : ${s.name}`}
           >
             <Img photo={s.photo} width={1500} />
             <div className="im-slide-copy">
@@ -466,7 +467,7 @@ export function Carousel({
         <button
           type="button"
           onClick={() => go(active - 1)}
-          aria-label="Diapositive précédente"
+          aria-label={t('Diapositive précédente', 'Previous slide')}
         >
           <Icon name="arrowLeft" />
         </button>
@@ -475,7 +476,7 @@ export function Carousel({
             <button
               key={s.id}
               type="button"
-              aria-label={`Aller à ${s.name}`}
+              aria-label={`${t('Aller à', 'Go to')} ${s.name}`}
               aria-current={i === active ? 'true' : undefined}
               onClick={() => go(i)}
             >
@@ -486,7 +487,7 @@ export function Carousel({
         <button
           type="button"
           onClick={() => go(active + 1)}
-          aria-label="Diapositive suivante"
+          aria-label={t('Diapositive suivante', 'Next slide')}
         >
           <Icon name="arrowRight" />
         </button>

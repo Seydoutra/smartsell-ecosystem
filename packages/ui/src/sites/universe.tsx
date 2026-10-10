@@ -16,6 +16,7 @@ import {
   routingConfig,
   urlFor,
   locale,
+  t,
 } from '@smartsell/routing';
 import { Highlight } from '../signature';
 import {
@@ -96,28 +97,36 @@ function AgencyHome() {
       <section className="uv-ag-hero" aria-labelledby="ag-title">
         <Video clip={videos.team} />
         <div className="uv-ag-hero-top">
-          <span className="sg-mono">Smartsell Agency · Bande démo 2026</span>
           <span className="sg-mono">
-            Conakry <Icon name="arrowRight" /> partout
+            {t(
+              'Smartsell Agency · Bande démo 2026',
+              'Smartsell Agency · Showreel 2026',
+            )}
+          </span>
+          <span className="sg-mono">
+            Conakry <Icon name="arrowRight" /> {t('partout', 'everywhere')}
           </span>
         </div>
         <h1 id="ag-title">
-          <span>On donne</span>
+          <span>{t('On donne', 'We give')}</span>
           <span>
-            du <Highlight>relief</Highlight>
+            {t('du', 'brands')} <Highlight>{t('relief', 'depth')}</Highlight>
           </span>
-          <span>aux marques.</span>
+          <span>{t('aux marques.', 'and edge.')}</span>
         </h1>
         <div className="uv-ag-hero-foot">
           <p>
-            Stratégie, identité, digital et campagnes : une équipe créative qui
-            transforme une ambition en marque qu’on reconnaît, qu’on retient et
-            qu’on choisit.
+            {t(
+              'Stratégie, identité, digital et campagnes : une équipe créative qui transforme une ambition en marque qu’on reconnaît, qu’on retient et qu’on choisit.',
+              'Strategy, identity, digital and campaigns: a creative team that turns an ambition into a brand people recognise, remember and choose.',
+            )}
           </p>
           <div className="im-actions">
-            <CtaLink href={go('agency', 'contact')}>Démarrer un projet</CtaLink>
+            <CtaLink href={go('agency', 'contact')}>
+              {t('Démarrer un projet', 'Start a project')}
+            </CtaLink>
             <CtaLink href={go('agency', 'work')} tone="ghost">
-              Voir le portfolio
+              {t('Voir le portfolio', 'See the portfolio')}
             </CtaLink>
           </div>
         </div>
@@ -126,34 +135,46 @@ function AgencyHome() {
       <Marquee
         tone="yellow"
         items={[
-          'Stratégie',
-          'Identité',
+          t('Stratégie', 'Strategy'),
+          t('Identité', 'Identity'),
           'Social media',
-          'Publicité',
-          'Sites web',
-          'Contenus',
-          'Campagnes',
+          t('Publicité', 'Advertising'),
+          t('Sites web', 'Websites'),
+          t('Contenus', 'Content'),
+          t('Campagnes', 'Campaigns'),
         ]}
       />
 
       <HorizontalScroll
-        eyebrow="01 · Explorations sélectionnées"
-        title="Six concepts pour montrer comment on pense une marque."
+        eyebrow={t(
+          '01 · Explorations sélectionnées',
+          '01 · Selected explorations',
+        )}
+        title={t(
+          'Six concepts pour montrer comment on pense une marque.',
+          'Six concepts to show how we think about a brand.',
+        )}
         items={cases.map((c, i) => ({
           label: `${c.category} · Concept`,
           title: c.title,
           copy: c.tagline,
           photo: caseShots[i % caseShots.length],
           href: go('agency', `work/${c.slug}`),
-          cta: 'Voir l’exploration',
+          cta: t('Voir l’exploration', 'See the exploration'),
         }))}
       />
 
       <section className="uv-ag-services" aria-labelledby="ag-services">
         <div className="uv-wrap uv-ag-services-head">
-          <span className="sg-mono">02 · Expertises</span>
+          <span className="sg-mono">
+            {t('02 · Expertises', '02 · Expertise')}
+          </span>
           <h2 id="ag-services">
-            Tout ce dont votre marque a besoin. <em>Rien de superflu.</em>
+            {t(
+              'Tout ce dont votre marque a besoin.',
+              'Everything your brand needs.',
+            )}{' '}
+            <em>{t('Rien de superflu.', 'Nothing it doesn’t.')}</em>
           </h2>
           <CtaLink href={go('agency', 'services')}>
             Les {agencyServices.length} expertises
@@ -184,15 +205,23 @@ function AgencyHome() {
             <Img photo={photos.agencyDesigner} width={900} />
           </figure>
           <div className="uv-ag-atelier-copy">
-            <span className="sg-mono">03 · L’atelier</span>
-            <h2 id="ag-atelier">Écouter. Explorer. Construire. Transmettre.</h2>
+            <span className="sg-mono">
+              {t('03 · L’atelier', '03 · The studio')}
+            </span>
+            <h2 id="ag-atelier">
+              {t(
+                'Écouter. Explorer. Construire. Transmettre.',
+                'Listen. Explore. Build. Hand over.',
+              )}
+            </h2>
             <p>
-              Chaque projet commence par une conversation franche et se termine
-              par des outils que vous savez utiliser. Entre les deux : des
-              pistes créatives, des choix argumentés et des livrables soignés.
+              {t(
+                'Chaque projet commence par une conversation franche et se termine par des outils que vous savez utiliser. Entre les deux : des pistes créatives, des choix argumentés et des livrables soignés.',
+                'Every project starts with an honest conversation and ends with tools you know how to use. In between: creative directions, reasoned choices and carefully crafted deliverables.',
+              )}
             </p>
             <CtaLink href={go('agency', 'history')} tone="dark">
-              Notre manière de faire
+              {t('Notre manière de faire', 'How we work')}
             </CtaLink>
           </div>
         </div>
@@ -200,15 +229,19 @@ function AgencyHome() {
 
       <section className="uv-ag-cta">
         <div className="uv-wrap">
-          <p className="sg-mono">Votre marque, en plus grand</p>
+          <p className="sg-mono">
+            {t('Votre marque, en plus grand', 'Your brand, bigger')}
+          </p>
           <h2>
-            Parlons de <br />
-            <Highlight>votre projet.</Highlight>
+            {t('Parlons de', 'Let’s talk about')} <br />
+            <Highlight>{t('votre projet.', 'your project.')}</Highlight>
           </h2>
           <div className="im-actions">
-            <CtaLink href={go('agency', 'contact')}>Écrire à l’agence</CtaLink>
+            <CtaLink href={go('agency', 'contact')}>
+              {t('Écrire à l’agence', 'Write to the agency')}
+            </CtaLink>
             <CtaLink href={go('agency', 'careers')} tone="ghost">
-              Rejoindre le collectif
+              {t('Rejoindre le collectif', 'Join the collective')}
             </CtaLink>
           </div>
         </div>
@@ -227,21 +260,28 @@ function AcademyHome() {
         <div className="uv-wrap uv-ac-hero-grid">
           <div className="uv-ac-hero-copy">
             <span className="uv-pill">
-              <Icon name="stars" /> Smartsell Academy · Apprendre en faisant
+              <Icon name="stars" />{' '}
+              {t(
+                'Smartsell Academy · Apprendre en faisant',
+                'Smartsell Academy · Learn by doing',
+              )}
             </span>
             <h1 id="ac-title">
-              Apprenez le digital <em>en le pratiquant.</em>
+              {t('Apprenez le digital', 'Learn digital skills')}{' '}
+              <em>{t('en le pratiquant.', 'by practising them.')}</em>
             </h1>
             <p>
-              Marketing, design, web, IA, data et vidéo : des modules courts, un
-              projet concret et trois leçons à essayer dès aujourd’hui.
+              {t(
+                'Marketing, design, web, IA, data et vidéo : des modules courts, un projet concret et trois leçons à essayer dès aujourd’hui.',
+                'Marketing, design, web, AI, data and video: short courses, a real project and three lessons to try today.',
+              )}
             </p>
             <div className="im-actions">
               <CtaLink href={go('academy', 'courses')} tone="dark">
-                Choisir un module
+                {t('Choisir un module', 'Choose a course')}
               </CtaLink>
               <CtaLink href={go('academy', 'corporate')} tone="ghost">
-                Former mon équipe
+                {t('Former mon équipe', 'Train my team')}
               </CtaLink>
             </div>
           </div>
@@ -256,13 +296,15 @@ function AcademyHome() {
               <Img photo={photos.learnerFocus} width={600} eager />
             </figure>
             <span className="uv-ac-badge one">
-              <Icon name="check" /> 3 leçons d’aperçu
+              <Icon name="check" />{' '}
+              {t('3 leçons d’aperçu', '3 preview lessons')}
             </span>
             <span className="uv-ac-badge two">
-              <Icon name="task" /> Un projet concret
+              <Icon name="task" /> {t('Un projet concret', 'A real project')}
             </span>
             <span className="uv-ac-badge three">
-              <Icon name="star" /> Quiz & progression
+              <Icon name="star" />{' '}
+              {t('Quiz & progression', 'Quizzes & progress')}
             </span>
           </div>
         </div>
@@ -271,7 +313,7 @@ function AcademyHome() {
       <section className="uv-ac-finder" aria-labelledby="ac-finder">
         <div className="uv-wrap">
           <h2 id="ac-finder" className="sr-only">
-            Trouver un module
+            {t('Trouver un module', 'Find a course')}
           </h2>
           <CourseFinder
             items={courses.map((c) => ({
@@ -289,14 +331,42 @@ function AcademyHome() {
 
       <section className="uv-ac-steps" aria-labelledby="ac-steps">
         <div className="uv-wrap">
-          <span className="uv-pill">Comment ça marche</span>
-          <h2 id="ac-steps">Quatre étapes, zéro jargon.</h2>
+          <span className="uv-pill">
+            {t('Comment ça marche', 'How it works')}
+          </span>
+          <h2 id="ac-steps">
+            {t('Quatre étapes, zéro jargon.', 'Four steps, zero jargon.')}
+          </h2>
           <ol>
             {[
-              ['Choisir', 'Un thème, un niveau, un objectif clair.'],
-              ['Essayer', 'Trois leçons d’aperçu avec exercice et quiz.'],
-              ['Pratiquer', 'Un projet concret qui donne du sens au module.'],
-              ['Progresser', 'Votre espace garde la trace de vos leçons.'],
+              [
+                t('Choisir', 'Choose'),
+                t(
+                  'Un thème, un niveau, un objectif clair.',
+                  'A topic, a level, a clear objective.',
+                ),
+              ],
+              [
+                t('Essayer', 'Try'),
+                t(
+                  'Trois leçons d’aperçu avec exercice et quiz.',
+                  'Three preview lessons with exercises and quizzes.',
+                ),
+              ],
+              [
+                t('Pratiquer', 'Practise'),
+                t(
+                  'Un projet concret qui donne du sens au module.',
+                  'A real project that gives the course meaning.',
+                ),
+              ],
+              [
+                t('Progresser', 'Progress'),
+                t(
+                  'Votre espace garde la trace de vos leçons.',
+                  'Your space keeps track of your lessons.',
+                ),
+              ],
             ].map(([t, c], i) => (
               <li key={t} style={{ animationDelay: `${i * 120}ms` }}>
                 <b>{i + 1}</b>
@@ -313,26 +383,48 @@ function AcademyHome() {
           <a href={go('academy', 'courses')} className="uv-ac-format">
             <Img photo={photos.academyHome} width={900} />
             <div>
-              <span className="uv-pill">Pour les talents</span>
-              <h3 id="ac-formats">Un métier du digital, pas à pas.</h3>
+              <span className="uv-pill">
+                {t('Pour les talents', 'For talents')}
+              </span>
+              <h3 id="ac-formats">
+                {t(
+                  'Un métier du digital, pas à pas.',
+                  'A digital career, step by step.',
+                )}
+              </h3>
               <p>
-                Des modules pour démarrer ou se perfectionner, à votre rythme.
+                {t(
+                  'Des modules pour démarrer ou se perfectionner, à votre rythme.',
+                  'Courses to get started or improve, at your own pace.',
+                )}
               </p>
               <b>
-                Explorer les modules <Icon name="arrowRight" />
+                {t('Explorer les modules', 'Explore the courses')}{' '}
+                <Icon name="arrowRight" />
               </b>
             </div>
           </a>
           <a href={go('academy', 'corporate')} className="uv-ac-format dark">
             <Img photo={photos.learnerFocus} width={900} />
             <div>
-              <span className="uv-pill">Pour les équipes</span>
-              <h3>Des formations construites pour vos enjeux.</h3>
+              <span className="uv-pill">
+                {t('Pour les équipes', 'For teams')}
+              </span>
+              <h3>
+                {t(
+                  'Des formations construites pour vos enjeux.',
+                  'Training built around your challenges.',
+                )}
+              </h3>
               <p>
-                Un programme adapté à vos outils, vos objectifs et vos équipes.
+                {t(
+                  'Un programme adapté à vos outils, vos objectifs et vos équipes.',
+                  'A programme adapted to your tools, goals and teams.',
+                )}
               </p>
               <b>
-                Former mon équipe <Icon name="arrowRight" />
+                {t('Former mon équipe', 'Train my team')}{' '}
+                <Icon name="arrowRight" />
               </b>
             </div>
           </a>
@@ -342,29 +434,47 @@ function AcademyHome() {
       <section className="uv-ac-faq" aria-labelledby="ac-faq">
         <div className="uv-wrap uv-ac-faq-grid">
           <div>
-            <span className="uv-pill">Questions fréquentes</span>
-            <h2 id="ac-faq">Avant de commencer.</h2>
+            <span className="uv-pill">{t('Questions fréquentes', 'FAQ')}</span>
+            <h2 id="ac-faq">{t('Avant de commencer.', 'Before you start.')}</h2>
             <CtaLink href={go('academy', 'support')} tone="dark">
-              Contacter le support
+              {t('Contacter le support', 'Contact support')}
             </CtaLink>
           </div>
           <div className="uv-ac-faq-list">
             {[
               [
-                'Faut-il un niveau particulier ?',
-                'Chaque module indique son niveau. Les modules débutants ne demandent aucun prérequis.',
+                t(
+                  'Faut-il un niveau particulier ?',
+                  'Do I need a particular level?',
+                ),
+                t(
+                  'Chaque module indique son niveau. Les modules débutants ne demandent aucun prérequis.',
+                  'Each course shows its level. Beginner courses require no prerequisites.',
+                ),
               ],
               [
-                'Les leçons sont-elles gratuites ?',
-                'Les trois leçons d’aperçu de chaque module sont accessibles librement sur ce site de démonstration.',
+                t('Les leçons sont-elles gratuites ?', 'Are the lessons free?'),
+                t(
+                  'Les trois leçons d’aperçu de chaque module sont accessibles librement sur ce site de démonstration.',
+                  'The three preview lessons of each course are freely available on this demonstration site.',
+                ),
               ],
               [
-                'Recevrai-je un certificat ?',
-                'Le récapitulatif imprimable indique les leçons suivies ; il n’a pas valeur de certification officielle.',
+                t('Recevrai-je un certificat ?', 'Will I get a certificate?'),
+                t(
+                  'Le récapitulatif imprimable indique les leçons suivies ; il n’a pas valeur de certification officielle.',
+                  'The printable summary lists the lessons you followed; it is not an official certification.',
+                ),
               ],
               [
-                'Peut-on former toute une équipe ?',
-                'Oui : la page Entreprises décrit l’accompagnement sur mesure pour les équipes.',
+                t(
+                  'Peut-on former toute une équipe ?',
+                  'Can we train a whole team?',
+                ),
+                t(
+                  'Oui : la page Entreprises décrit l’accompagnement sur mesure pour les équipes.',
+                  'Yes: the Companies page describes tailored support for teams.',
+                ),
               ],
             ].map(([q, a]) => (
               <details key={q}>
@@ -382,14 +492,15 @@ function AcademyHome() {
       <section className="uv-ac-cta">
         <div className="uv-wrap">
           <h2>
-            Votre prochaine compétence <em>commence aujourd’hui.</em>
+            {t('Votre prochaine compétence', 'Your next skill')}{' '}
+            <em>{t('commence aujourd’hui.', 'starts today.')}</em>
           </h2>
           <div className="im-actions">
             <CtaLink href={go('academy', 'courses')}>
-              Commencer une leçon
+              {t('Commencer une leçon', 'Start a lesson')}
             </CtaLink>
             <CtaLink href={go('academy', 'dashboard')} tone="ghost">
-              Mon espace
+              {t('Mon espace', 'My space')}
             </CtaLink>
           </div>
         </div>
@@ -409,13 +520,16 @@ function MediaHome() {
       <section className="uv-md-mast" aria-labelledby="md-title">
         <div className="uv-wrap">
           <div className="uv-md-mast-line">
-            <span>Conakry · Guinée</span>
-            <TodayLine fallback="Édition numérique" />
-            <span>Édition N°01 · Gratuit</span>
+            <span>{t('Conakry · Guinée', 'Conakry · Guinea')}</span>
+            <TodayLine fallback={t('Édition numérique', 'Digital edition')} />
+            <span>{t('Édition N°01 · Gratuit', 'Issue No. 01 · Free')}</span>
           </div>
           <h1 id="md-title">Smartsell Media</h1>
           <p className="uv-md-motto">
-            Tech, business et culture créative : comprendre ce qui vient.
+            {t(
+              'Tech, business et culture créative : comprendre ce qui vient.',
+              'Tech, business and creative culture: understanding what’s next.',
+            )}
           </p>
           <nav aria-label="Rubriques" className="uv-md-rubrics">
             {siteMenus.media.map((m) => (
@@ -424,20 +538,20 @@ function MediaHome() {
               </a>
             ))}
             <a href={go('media', 'opinions')}>Opinions</a>
-            <a href={go('media', 'africa')}>Afrique</a>
+            <a href={go('media', 'africa')}>{t('Afrique', 'Africa')}</a>
           </nav>
         </div>
       </section>
 
       <div className="uv-md-ticker">
-        <span className="uv-md-ticker-label">À la une</span>
+        <span className="uv-md-ticker-label">{t('À la une', 'Top story')}</span>
         <Marquee
           tone="light"
           items={articles.slice(0, 8).map((a) => a.title)}
         />
       </div>
 
-      <section className="uv-md-front" aria-label="La une">
+      <section className="uv-md-front" aria-label={t('La une', 'Front page')}>
         <div className="uv-wrap uv-md-front-grid">
           <a className="uv-md-lead" href={href(lead.slug)}>
             <figure>
@@ -461,8 +575,8 @@ function MediaHome() {
               </a>
             ))}
           </div>
-          <aside className="uv-md-briefs" aria-label="En bref">
-            <h3>En bref</h3>
+          <aside className="uv-md-briefs" aria-label={t('En bref', 'In brief')}>
+            <h3>{t('En bref', 'In brief')}</h3>
             {rest.slice(0, 6).map((a, i) => (
               <a key={a.slug} href={href(a.slug)}>
                 <b>{String(i + 1).padStart(2, '0')}</b>
@@ -472,23 +586,34 @@ function MediaHome() {
               </a>
             ))}
             <a className="uv-md-all" href={go('media', 'latest')}>
-              Tous les articles <Icon name="arrowRight" />
+              {t('Tous les articles', 'All articles')}{' '}
+              <Icon name="arrowRight" />
             </a>
           </aside>
         </div>
       </section>
 
-      <section className="uv-md-quote" aria-label="Le mot de la rédaction">
+      <section
+        className="uv-md-quote"
+        aria-label={t('Le mot de la rédaction', 'A word from the newsroom')}
+      >
         <div className="uv-wrap uv-md-quote-grid">
           <figure>
             <Img photo={photos.mediaPresenter} width={900} />
           </figure>
           <blockquote>
             <p>
-              « Les outils changent vite. Notre rôle : les rendre lisibles,
-              utiles et proches de celles et ceux qui entreprennent ici. »
+              {t(
+                '« Les outils changent vite. Notre rôle : les rendre lisibles, utiles et proches de celles et ceux qui entreprennent ici. »',
+                '“Tools change fast. Our role: make them readable, useful and close to the people building things here.”',
+              )}
             </p>
-            <footer>La rédaction de Smartsell Media</footer>
+            <footer>
+              {t(
+                'La rédaction de Smartsell Media',
+                'The Smartsell Media newsroom',
+              )}
+            </footer>
           </blockquote>
         </div>
       </section>
@@ -496,9 +621,10 @@ function MediaHome() {
       <section className="uv-md-sections" aria-labelledby="md-sections">
         <div className="uv-wrap">
           <div className="uv-md-section-head">
-            <h2 id="md-sections">Les rubriques</h2>
+            <h2 id="md-sections">{t('Les rubriques', 'Sections')}</h2>
             <a href={go('media', 'search')}>
-              Rechercher un article <Icon name="arrowRight" />
+              {t('Rechercher un article', 'Search for an article')}{' '}
+              <Icon name="arrowRight" />
             </a>
           </div>
           <ArticleTabs
@@ -516,9 +642,9 @@ function MediaHome() {
 
       <section className="uv-md-gallery" aria-labelledby="md-gallery">
         <div className="uv-wrap uv-md-section-head">
-          <h2 id="md-gallery">En images</h2>
+          <h2 id="md-gallery">{t('En images', 'In pictures')}</h2>
           <a href={go('media', 'interviews')}>
-            Les entretiens <Icon name="arrowRight" />
+            {t('Les entretiens', 'Interviews')} <Icon name="arrowRight" />
           </a>
         </div>
         <PhotoRail
@@ -535,14 +661,23 @@ function MediaHome() {
 
       <section className="uv-md-letter" aria-labelledby="md-letter">
         <div className="uv-wrap uv-md-letter-card">
-          <span className="uv-kicker">La lettre du vendredi</span>
-          <h2 id="md-letter">L’essentiel de la semaine, en cinq minutes.</h2>
+          <span className="uv-kicker">
+            {t('La lettre du vendredi', 'The Friday letter')}
+          </span>
+          <h2 id="md-letter">
+            {t(
+              'L’essentiel de la semaine, en cinq minutes.',
+              'The week’s essentials, in five minutes.',
+            )}
+          </h2>
           <p>
-            Une sélection d’analyses, de guides et d’idées à appliquer, chaque
-            vendredi dans votre boîte mail.
+            {t(
+              'Une sélection d’analyses, de guides et d’idées à appliquer, chaque vendredi dans votre boîte mail.',
+              'A selection of analyses, guides and ideas to apply, every Friday in your inbox.',
+            )}
           </p>
           <CtaLink href={go('media', 'newsletter')} tone="dark">
-            Je m’abonne
+            {t('Je m’abonne', 'Subscribe')}
           </CtaLink>
         </div>
       </section>
@@ -581,22 +716,24 @@ function StudioHome() {
         <div className="uv-st-hero-copy">
           <span className="sg-mono">Smartsell Studios · Conakry</span>
           <h1 id="st-title">
-            <span>Lumière.</span>
-            <span>Caméra.</span>
+            <span>{t('Lumière.', 'Lights.')}</span>
+            <span>{t('Caméra.', 'Camera.')}</span>
             <span>
-              <em>Votre histoire.</em>
+              <em>{t('Votre histoire.', 'Your story.')}</em>
             </span>
           </h1>
           <p>
-            Plateaux photo, vidéo et podcast, équipe technique et accompagnement
-            : de la préparation au rendu final.
+            {t(
+              'Plateaux photo, vidéo et podcast, équipe technique et accompagnement : de la préparation au rendu final.',
+              'Photo, video and podcast sets, a technical crew and support: from preparation to final delivery.',
+            )}
           </p>
           <div className="im-actions">
             <CtaLink href={go('studio', 'booking')}>
-              Préparer ma session
+              {t('Préparer ma session', 'Prepare my session')}
             </CtaLink>
             <CtaLink href={go('studio', 'spaces')} tone="ghost">
-              Visiter les plateaux
+              {t('Visiter les plateaux', 'Visit the sets')}
             </CtaLink>
           </div>
         </div>
@@ -614,8 +751,15 @@ function StudioHome() {
 
       <section className="uv-st-spaces" aria-labelledby="st-spaces">
         <div className="uv-wrap uv-st-head">
-          <span className="sg-mono">Scène 01 · Les plateaux</span>
-          <h2 id="st-spaces">Trois espaces, une même exigence d’image.</h2>
+          <span className="sg-mono">
+            {t('Scène 01 · Les plateaux', 'Scene 01 · The sets')}
+          </span>
+          <h2 id="st-spaces">
+            {t(
+              'Trois espaces, une même exigence d’image.',
+              'Three spaces, one standard of image.',
+            )}
+          </h2>
         </div>
         <div className="uv-wrap">
           <ExpandPanels
@@ -628,7 +772,7 @@ function StudioHome() {
               ],
               video: [undefined, videos.camera, videos.podcast][i],
               href: go('studio', `spaces/${s.slug}`),
-              cta: 'Découvrir le plateau',
+              cta: t('Découvrir le plateau', 'Discover the set'),
             }))}
           />
         </div>
@@ -636,9 +780,14 @@ function StudioHome() {
 
       <section className="uv-st-packs" aria-labelledby="st-packs">
         <div className="uv-wrap uv-st-head">
-          <span className="sg-mono">Scène 02 · Les packs</span>
+          <span className="sg-mono">
+            {t('Scène 02 · Les packs', 'Scene 02 · The packs')}
+          </span>
           <h2 id="st-packs">
-            Choisissez votre format, on s’occupe du plateau.
+            {t(
+              'Choisissez votre format, on s’occupe du plateau.',
+              'Choose your format, we take care of the set.',
+            )}
           </h2>
         </div>
         <div className="uv-wrap uv-st-clap-grid">
@@ -652,15 +801,15 @@ function StudioHome() {
               <div className="uv-clap-body">
                 <dl>
                   <div>
-                    <dt>Prise</dt>
+                    <dt>{t('Prise', 'Take')}</dt>
                     <dd>{String(i + 1).padStart(2, '0')}</dd>
                   </div>
                   <div>
-                    <dt>Durée</dt>
+                    <dt>{t('Durée', 'Duration')}</dt>
                     <dd>{p.duration} h</dd>
                   </div>
                   <div>
-                    <dt>Plateau</dt>
+                    <dt>{t('Plateau', 'Set')}</dt>
                     <dd>
                       {spaces
                         .find((s) => s.slug === p.space)
@@ -672,7 +821,7 @@ function StudioHome() {
                 <h3>{p.title}</h3>
                 <p>{p.copy}</p>
                 <span>
-                  Voir le pack <Icon name="arrowRight" />
+                  {t('Voir le pack', 'See the pack')} <Icon name="arrowRight" />
                 </span>
               </div>
             </a>
@@ -682,14 +831,46 @@ function StudioHome() {
 
       <section className="uv-st-steps" aria-labelledby="st-steps">
         <div className="uv-wrap">
-          <span className="sg-mono">Scène 03 · Le déroulé</span>
-          <h2 id="st-steps">De l’idée au fichier final.</h2>
+          <span className="sg-mono">
+            {t('Scène 03 · Le déroulé', 'Scene 03 · The flow')}
+          </span>
+          <h2 id="st-steps">
+            {t('De l’idée au fichier final.', 'From idea to final file.')}
+          </h2>
           <div className="uv-st-steps-row">
             {[
-              ['00:00', 'Choisir', 'Le pack, le plateau et la date.'],
-              ['00:15', 'Préparer', 'Brief, conducteur, références.'],
-              ['01:00', 'Tourner', 'Lumière, son, cadre : on y va.'],
-              ['02:00', 'Recevoir', 'Sélection, montage selon le pack.'],
+              [
+                '00:00',
+                t('Choisir', 'Choose'),
+                t(
+                  'Le pack, le plateau et la date.',
+                  'The pack, the set and the date.',
+                ),
+              ],
+              [
+                '00:15',
+                t('Préparer', 'Prepare'),
+                t(
+                  'Brief, conducteur, références.',
+                  'Brief, running order, references.',
+                ),
+              ],
+              [
+                '01:00',
+                t('Tourner', 'Shoot'),
+                t(
+                  'Lumière, son, cadre : on y va.',
+                  'Light, sound, frame: action.',
+                ),
+              ],
+              [
+                '02:00',
+                t('Recevoir', 'Receive'),
+                t(
+                  'Sélection, montage selon le pack.',
+                  'Selection and editing, depending on the pack.',
+                ),
+              ],
             ].map(([t, a, b]) => (
               <div key={a}>
                 <span className="sg-mono">{t}</span>
@@ -705,14 +886,14 @@ function StudioHome() {
         <Img photo={photos.studioWhite} width={1800} />
         <div className="uv-wrap">
           <h2>
-            Silence. <em>On tourne.</em>
+            {t('Silence.', 'Quiet.')} <em>{t('On tourne.', 'Rolling.')}</em>
           </h2>
           <div className="im-actions">
             <CtaLink href={go('studio', 'booking')}>
-              Simuler une réservation
+              {t('Simuler une réservation', 'Try a booking')}
             </CtaLink>
             <CtaLink href={go('studio', 'faq')} tone="ghost">
-              Questions fréquentes
+              {t('Questions fréquentes', 'FAQ')}
             </CtaLink>
           </div>
         </div>
@@ -733,21 +914,29 @@ function LabsHome() {
             <TypedPrompt
               lines={[
                 'labs:~$ smartsell build --next',
-                '› problèmes réels détectés',
-                '› produits utiles en cours',
+                t('› problèmes réels détectés', '› real problems detected'),
+                t(
+                  '› produits utiles en cours',
+                  '› useful products in progress',
+                ),
               ]}
             />
             <h1 id="lb-title">
-              Des outils qui <em>travaillent</em> pour vous.
+              {t('Des outils qui', 'Tools that')}{' '}
+              <em>{t('travaillent', 'work')}</em> {t('pour vous.', 'for you.')}
             </h1>
             <p>
-              Smartsell Labs conçoit des produits numériques pour les
-              entreprises et les créateurs, à partir de leurs vrais usages.
+              {t(
+                'Smartsell Labs conçoit des produits numériques pour les entreprises et les créateurs, à partir de leurs vrais usages.',
+                'Smartsell Labs designs digital products for businesses and creators, based on how they really work.',
+              )}
             </p>
             <div className="im-actions">
-              <CtaLink href={managementUrl}>Essayer Management</CtaLink>
+              <CtaLink href={managementUrl}>
+                {t('Essayer Management', 'Try Management')}
+              </CtaLink>
               <CtaLink href={go('labs', 'products')} tone="ghost">
-                Tous les produits
+                {t('Tous les produits', 'All products')}
               </CtaLink>
             </div>
           </div>
@@ -761,9 +950,9 @@ function LabsHome() {
             <div className="uv-lb-app-body">
               <aside>
                 {[
-                  'Tableau de bord',
+                  t('Tableau de bord', 'Dashboard'),
                   'Clients',
-                  'Projets',
+                  t('Projets', 'Projects'),
                   'Planning',
                   'Finances',
                 ].map((x, i) => (
@@ -774,14 +963,16 @@ function LabsHome() {
               </aside>
               <div>
                 <div className="uv-lb-kpis">
-                  {['Clients actifs', 'Projets en cours', 'Échéances'].map(
-                    (k) => (
-                      <div key={k}>
-                        <small>{k}</small>
-                        <b />
-                      </div>
-                    ),
-                  )}
+                  {[
+                    t('Clients actifs', 'Active clients'),
+                    t('Projets en cours', 'Ongoing projects'),
+                    t('Échéances', 'Deadlines'),
+                  ].map((k) => (
+                    <div key={k}>
+                      <small>{k}</small>
+                      <b />
+                    </div>
+                  ))}
                 </div>
                 <div className="uv-lb-chart">
                   {[40, 62, 48, 75, 58, 82, 70, 90].map((h, i) => (
@@ -795,39 +986,57 @@ function LabsHome() {
                 </div>
               </div>
             </div>
-            <span className="uv-lb-note">Illustration de l’interface</span>
+            <span className="uv-lb-note">
+              {t('Illustration de l’interface', 'Interface illustration')}
+            </span>
           </div>
         </div>
       </section>
 
       <section className="uv-lb-products" aria-labelledby="lb-products">
         <div className="uv-wrap">
-          <span className="sg-mono">// produits</span>
-          <h2 id="lb-products">Deux produits, une même obsession : l’usage.</h2>
+          <span className="sg-mono">{t('// produits', '// products')}</span>
+          <h2 id="lb-products">
+            {t(
+              'Deux produits, une même obsession : l’usage.',
+              'Two products, one obsession: real use.',
+            )}
+          </h2>
           <div className="uv-lb-product-grid">
             <a
               href={go('labs', 'products/management')}
               className="uv-lb-product"
             >
-              <span className="uv-lb-status live"> Disponible</span>
+              <span className="uv-lb-status live">
+                {' '}
+                {t('Disponible', 'Available')}
+              </span>
               <h3>Smartsell Management</h3>
               <p>
-                Clients, projets, planning et finances réunis pour piloter votre
-                activité sur un seul écran.
+                {t(
+                  'Clients, projets, planning et finances réunis pour piloter votre activité sur un seul écran.',
+                  'Clients, projects, planning and finances together, to run your business from a single screen.',
+                )}
               </p>
               <b>
-                Découvrir <Icon name="arrowRight" />
+                {t('Découvrir', 'Discover')} <Icon name="arrowRight" />
               </b>
             </a>
             <a href={go('labs', 'products/obtura')} className="uv-lb-product">
-              <span className="uv-lb-status"> Vision produit</span>
+              <span className="uv-lb-status">
+                {' '}
+                {t('Vision produit', 'Product vision')}
+              </span>
               <h3>Obtura</h3>
               <p>
-                Un système de travail envisagé pour les photographes, vidéastes
-                et créateurs visuels.
+                {t(
+                  'Un système de travail envisagé pour les photographes, vidéastes et créateurs visuels.',
+                  'A working system envisioned for photographers, videographers and visual creators.',
+                )}
               </p>
               <b>
-                Lire la vision <Icon name="arrowRight" />
+                {t('Lire la vision', 'Read the vision')}{' '}
+                <Icon name="arrowRight" />
               </b>
             </a>
           </div>
@@ -837,14 +1046,18 @@ function LabsHome() {
       <section className="uv-lb-bento" aria-labelledby="lb-bento">
         <div className="uv-wrap">
           <span className="sg-mono">// management</span>
-          <h2 id="lb-bento">Ce que Management réunit.</h2>
+          <h2 id="lb-bento">
+            {t('Ce que Management réunit.', 'What Management brings together.')}
+          </h2>
           <div className="uv-lb-bento-grid">
             <div className="big">
               <small>01</small>
               <h3>Clients</h3>
               <p>
-                Un historique clair de chaque relation, du premier contact au
-                suivi.
+                {t(
+                  'Un historique clair de chaque relation, du premier contact au suivi.',
+                  'A clear history of each relationship, from first contact to follow-up.',
+                )}
               </p>
               <div className="uv-lb-mini-list" aria-hidden="true">
                 <i />
@@ -855,19 +1068,32 @@ function LabsHome() {
             </div>
             <div>
               <small>02</small>
-              <h3>Projets</h3>
-              <p>Étapes, responsables et livrables au même endroit.</p>
+              <h3>{t('Projets', 'Projects')}</h3>
+              <p>
+                {t(
+                  'Étapes, responsables et livrables au même endroit.',
+                  'Steps, owners and deliverables in one place.',
+                )}
+              </p>
             </div>
             <div>
               <small>03</small>
               <h3>Planning</h3>
-              <p>Les échéances de l’équipe, visibles d’un coup d’œil.</p>
+              <p>
+                {t(
+                  'Les échéances de l’équipe, visibles d’un coup d’œil.',
+                  'The team’s deadlines, visible at a glance.',
+                )}
+              </p>
             </div>
             <div className="wide">
               <small>04</small>
               <h3>Finances</h3>
               <p>
-                Devis, factures et suivi des paiements, sans tableur dispersé.
+                {t(
+                  'Devis, factures et suivi des paiements, sans tableur dispersé.',
+                  'Quotes, invoices and payment tracking, without scattered spreadsheets.',
+                )}
               </p>
               <div className="uv-lb-chart small" aria-hidden="true">
                 {[30, 55, 42, 68, 50, 77].map((h, i) => (
@@ -884,21 +1110,32 @@ function LabsHome() {
 
       <section className="uv-lb-research" aria-labelledby="lb-research">
         <div className="uv-wrap">
-          <span className="sg-mono">// recherche</span>
-          <h2 id="lb-research">Les pistes que nous explorons.</h2>
+          <span className="sg-mono">{t('// recherche', '// research')}</span>
+          <h2 id="lb-research">
+            {t('Les pistes que nous explorons.', 'The leads we are exploring.')}
+          </h2>
           <div className="uv-lb-term-grid">
             {[
               [
                 'ops.petites-equipes',
-                'Observer ce qui se perd entre contacts, projets et suivi.',
+                t(
+                  'Observer ce qui se perd entre contacts, projets et suivi.',
+                  'Observe what gets lost between contacts, projects and follow-up.',
+                ),
               ],
               [
                 'metiers.creation',
-                'Soutenir la continuité d’une production créative.',
+                t(
+                  'Soutenir la continuité d’une production créative.',
+                  'Support the continuity of a creative production.',
+                ),
               ],
               [
                 'interfaces.assistees',
-                'Tester des parcours avec validation humaine.',
+                t(
+                  'Tester des parcours avec validation humaine.',
+                  'Test journeys with human validation.',
+                ),
               ],
             ].map(([k, v]) => (
               <a key={k} href={go('labs', 'research')} className="uv-lb-term">
@@ -910,7 +1147,9 @@ function LabsHome() {
                 <code>
                   <span>$ explore {k}</span>
                   <span>› {v}</span>
-                  <span className="mint">› statut : piste de travail</span>
+                  <span className="mint">
+                    {t('› statut : piste de travail', '› status: working lead')}
+                  </span>
                 </code>
               </a>
             ))}
@@ -923,12 +1162,18 @@ function LabsHome() {
         eyebrow="// construit à Conakry"
         title={
           <>
-            Votre outil sur mesure, <Highlight>pensé avec vous.</Highlight>
+            {t('Votre outil sur mesure,', 'Your custom tool,')}{' '}
+            <Highlight>{t('pensé avec vous.', 'designed with you.')}</Highlight>
           </>
         }
-        copy="Automatisation, tableau de bord, application métier : partagez votre besoin, nous explorons la solution la plus simple qui fonctionne."
+        copy={t(
+          'Automatisation, tableau de bord, application métier : partagez votre besoin, nous explorons la solution la plus simple qui fonctionne.',
+          'Automation, dashboard, business app: share your need and we’ll explore the simplest solution that works.',
+        )}
         cta={
-          <CtaLink href={go('labs', 'contact')}>Parler de mon outil</CtaLink>
+          <CtaLink href={go('labs', 'contact')}>
+            {t('Parler de mon outil', 'Talk about my tool')}
+          </CtaLink>
         }
       />
     </>
@@ -1005,7 +1250,7 @@ export function InnerHero({
           {crumbs}
           <div className="uv-in-media-rule">
             <span>{labels.media}</span>
-            <TodayLine fallback="Édition numérique" />
+            <TodayLine fallback={t('Édition numérique', 'Digital edition')} />
           </div>
           <h1>{title}</h1>
           <p className="uv-in-lead">{page.intro}</p>
@@ -1075,7 +1320,9 @@ export function InnerHero({
         <h1>{title}</h1>
         <div className="uv-in-agency-foot">
           <p className="uv-in-lead">{page.intro}</p>
-          <CtaLink href={go('agency', 'contact')}>Démarrer un projet</CtaLink>
+          <CtaLink href={go('agency', 'contact')}>
+            {t('Démarrer un projet', 'Start a project')}
+          </CtaLink>
         </div>
       </div>
       <figure className="uv-in-agency-strip">
@@ -1095,34 +1342,52 @@ const ctas: Record<
   }
 > = {
   agency: {
-    title: 'Un projet en tête ? Parlons-en.',
-    copy: 'Partagez votre ambition : nous revenons avec des pistes concrètes.',
-    primary: ['contact', 'Démarrer un projet'],
-    secondary: ['work', 'Voir le portfolio'],
+    title: t(
+      'Un projet en tête ? Parlons-en.',
+      'Got a project in mind? Let’s talk.',
+    ),
+    copy: t(
+      'Partagez votre ambition : nous revenons avec des pistes concrètes.',
+      'Share your ambition: we’ll come back with concrete ideas.',
+    ),
+    primary: ['contact', t('Démarrer un projet', 'Start a project')],
+    secondary: ['work', t('Voir le portfolio', 'See the portfolio')],
   },
   academy: {
-    title: 'Prêt à apprendre en pratiquant ?',
-    copy: 'Choisissez un module et essayez trois leçons dès maintenant.',
-    primary: ['courses', 'Choisir un module'],
-    secondary: ['corporate', 'Former mon équipe'],
+    title: t('Prêt à apprendre en pratiquant ?', 'Ready to learn by doing?'),
+    copy: t(
+      'Choisissez un module et essayez trois leçons dès maintenant.',
+      'Choose a course and try three lessons right now.',
+    ),
+    primary: ['courses', t('Choisir un module', 'Choose a course')],
+    secondary: ['corporate', t('Former mon équipe', 'Train my team')],
   },
   media: {
-    title: 'L’essentiel, chaque vendredi.',
-    copy: 'Analyses, guides et idées à appliquer, dans votre boîte mail.',
-    primary: ['newsletter', 'Je m’abonne'],
-    secondary: ['latest', 'Toute l’actualité'],
+    title: t('L’essentiel, chaque vendredi.', 'The essentials, every Friday.'),
+    copy: t(
+      'Analyses, guides et idées à appliquer, dans votre boîte mail.',
+      'Analyses, guides and ideas to apply, in your inbox.',
+    ),
+    primary: ['newsletter', t('Je m’abonne', 'Subscribe')],
+    secondary: ['latest', t('Toute l’actualité', 'All the latest')],
   },
   studio: {
-    title: 'Silence. On tourne ?',
-    copy: 'Choisissez un pack et préparez votre session en quelques étapes.',
-    primary: ['booking', 'Préparer ma session'],
-    secondary: ['spaces', 'Voir les plateaux'],
+    title: t('Silence. On tourne ?', 'Quiet on set?'),
+    copy: t(
+      'Choisissez un pack et préparez votre session en quelques étapes.',
+      'Choose a pack and prepare your session in a few steps.',
+    ),
+    primary: ['booking', t('Préparer ma session', 'Prepare my session')],
+    secondary: ['spaces', t('Voir les plateaux', 'See the sets')],
   },
   labs: {
-    title: 'Un outil à construire ?',
-    copy: 'Décrivez votre besoin : nous explorons la solution la plus simple.',
-    primary: ['contact', 'Parler de mon outil'],
-    secondary: ['products', 'Nos produits'],
+    title: t('Un outil à construire ?', 'A tool to build?'),
+    copy: t(
+      'Décrivez votre besoin : nous explorons la solution la plus simple.',
+      'Describe your need: we explore the simplest solution.',
+    ),
+    primary: ['contact', t('Parler de mon outil', 'Talk about my tool')],
+    secondary: ['products', t('Nos produits', 'Our products')],
   },
 };
 
@@ -1146,7 +1411,10 @@ export function InnerCta({ id, path }: { id: VerticalId; path: string }) {
           </div>
         </div>
       </div>
-      <nav className="uv-wrap uv-cta-more" aria-label="Continuer dans le site">
+      <nav
+        className="uv-wrap uv-cta-more"
+        aria-label={t('Continuer dans le site', 'Continue on the site')}
+      >
         {siteMenus[id].map((m) => (
           <a key={m.path} href={go(id, m.path)}>
             {m.label} <Icon name="arrowUpRight" />

@@ -1,4 +1,5 @@
 'use client';
+import { t } from '@smartsell/routing';
 import { Icon } from '../icons';
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import { photoUrl, type Photo } from '@smartsell/content/photos';
@@ -93,21 +94,21 @@ export interface FinderItem {
 
 /** Academy : trouver un module par thème. */
 export function CourseFinder({ items }: { items: FinderItem[] }) {
-  const cats = ['Tous', ...new Set(items.map((i) => i.category))];
-  const [cat, setCat] = useState('Tous');
+  const cats = [t('Tous', 'All'), ...new Set(items.map((i) => i.category))];
+  const [cat, setCat] = useState(t('Tous', 'All'));
   const shown =
-    cat === 'Tous' ? items : items.filter((i) => i.category === cat);
+    cat === t('Tous', 'All') ? items : items.filter((i) => i.category === cat);
   return (
     <div className="uv-finder">
       <div
         className="uv-finder-bar"
         role="group"
-        aria-label="Filtrer par thème"
+        aria-label={t('Filtrer par thème', 'Filter by topic')}
       >
         <span aria-hidden="true">
           <Icon name="search" />
         </span>
-        <p>Que voulez-vous apprendre&nbsp;?</p>
+        <p>{t('Que voulez-vous apprendre ?', 'What do you want to learn?')}</p>
         {cats.map((c) => (
           <button
             key={c}
@@ -120,8 +121,7 @@ export function CourseFinder({ items }: { items: FinderItem[] }) {
         ))}
       </div>
       <p className="sr-only" aria-live="polite">
-        {shown.length} module{shown.length > 1 ? 's' : ''} affiché
-        {shown.length > 1 ? 's' : ''}
+        {shown.length} {t('module(s) affiché(s)', 'course(s) shown')}
       </p>
       <div className="uv-finder-grid">
         {shown.map((c) => (
@@ -135,7 +135,9 @@ export function CourseFinder({ items }: { items: FinderItem[] }) {
               <p>{c.goal}</p>
               <div>
                 <span>{c.level}</span>
-                <span>{c.hours} h envisagées</span>
+                <span>
+                  {c.hours} {t('h envisagées', 'h planned')}
+                </span>
                 <b aria-hidden="true">
                   <Icon name="arrowRight" />
                 </b>
@@ -165,7 +167,11 @@ export function ArticleTabs({ articles }: { articles: TabArticle[] }) {
   const shown = articles.filter((a) => a.category === cat).slice(0, 3);
   return (
     <div className="uv-tabs">
-      <div className="uv-tabs-list" role="tablist" aria-label="Rubriques">
+      <div
+        className="uv-tabs-list"
+        role="tablist"
+        aria-label={t('Rubriques', 'Sections')}
+      >
         {cats.map((c, i) => (
           <button
             key={c}
@@ -193,7 +199,7 @@ export function ArticleTabs({ articles }: { articles: TabArticle[] }) {
               <Img photo={a.photo} width={i === 0 ? 1100 : 600} />
             </figure>
             <span className="uv-kicker">
-              {a.category} · {a.minutes} min de lecture
+              {a.category} · {a.minutes} {t('min de lecture', 'min read')}
             </span>
             <h3>{a.title}</h3>
             <p>{a.summary}</p>
@@ -209,7 +215,7 @@ export function TodayLine({ fallback }: { fallback: string }) {
   const [text, setText] = useState(fallback);
   useEffect(() => {
     setText(
-      new Intl.DateTimeFormat('fr-FR', {
+      new Intl.DateTimeFormat(t('fr-FR', 'en-GB'), {
         weekday: 'long',
         day: 'numeric',
         month: 'long',
