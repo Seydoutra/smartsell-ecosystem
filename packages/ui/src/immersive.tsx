@@ -279,6 +279,7 @@ export interface Slide {
   photo: Photo;
   primary: { href: string; label: string };
   secondary: { href: string; label: string };
+  links?: { href: string; label: string }[];
 }
 
 /** Grand carrousel plein cadre, glissable, avec lecture automatique. */
@@ -364,6 +365,18 @@ export function Carousel({
                   {s.secondary.label}
                 </CtaLink>
               </div>
+              {s.links && (
+                <nav
+                  className="im-slide-links"
+                  aria-label={`Raccourcis ${s.name}`}
+                >
+                  {s.links.map((l) => (
+                    <a key={l.href} href={l.href}>
+                      {l.label} <span aria-hidden="true">→</span>
+                    </a>
+                  ))}
+                </nav>
+              )}
             </div>
           </article>
         ))}

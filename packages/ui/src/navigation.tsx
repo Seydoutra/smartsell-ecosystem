@@ -54,6 +54,12 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
             ))}
           </nav>
           <div className="header-actions">
+            <a
+              className="header-quote"
+              href={urlFor('agency', 'fr', 'contact', routingConfig)}
+            >
+              Demander un devis <span aria-hidden="true">↗</span>
+            </a>
             <button
               className="search-trigger"
               type="button"

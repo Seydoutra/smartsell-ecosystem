@@ -14,7 +14,9 @@
     "./signature": "./src/signature.tsx",
     "./signature.css": "./signature.css",
     "./immersive": "./src/immersive.tsx",
-    "./immersive.css": "./immersive.css"
+    "./immersive.css": "./immersive.css",
+    "./home": "./src/home.tsx",
+    "./home.css": "./home.css"
   },
   "peerDependencies": {
     "react": "^19"

@@ -1,4 +1,5 @@
 'use client';
+import { readBrief } from '../home';
 import { useEffect, useRef, useState } from 'react';
 import type { VerticalId } from '@smartsell/types';
 import {
@@ -465,6 +466,8 @@ export function ShareArticle() {
 export function DraftForm({ site }: { site: string }) {
   const [draft, setDraft] = useState('');
   const [status, setStatus] = useState('');
+  const [brief, setBrief] = useState('');
+  useEffect(() => setBrief(readBrief()), []);
   return (
     <div className="workflow">
       <p className="form-note">
@@ -503,7 +506,13 @@ export function DraftForm({ site }: { site: string }) {
           </label>
           <label>
             Votre besoin
-            <input name="need" required maxLength={200} />
+            <input
+              key={brief}
+              name="need"
+              required
+              maxLength={200}
+              defaultValue={brief}
+            />
           </label>
           <label>
             Échéance souhaitée
