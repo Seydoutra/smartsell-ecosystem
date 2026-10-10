@@ -67,7 +67,7 @@ export function Footer() {
           <span>
             Conakry, Guinée.
             <br />
-            Un écosystème digital & créatif.
+            Agence de communication & marketing digital.
           </span>
         </div>
         <nav aria-label="Univers dans le pied de page">
@@ -81,10 +81,10 @@ export function Footer() {
         </nav>
         <nav aria-label="La maison">
           <p className="eyebrow">La maison</p>
-          <a href={withBasePath('/fr/#vision')}>Notre vision</a>
-          <a href={withBasePath('/fr/#produits')}>Nos produits</a>
-          <a href={withBasePath('/fr/#parcours')}>Continuer votre parcours</a>
-          <a href={withBasePath('/fr/#ecosystem')}>Trouver votre univers</a>
+          <a href={withBasePath('/fr/#services')}>Nos expertises</a>
+          <a href={withBasePath('/fr/#methode')}>Notre méthode</a>
+          <a href={withBasePath('/fr/#manifeste')}>Notre conviction</a>
+          <a href={withBasePath('/fr/#ecosystem')}>Nos cinq univers</a>
         </nav>
       </div>
       <div className="container footer-bottom">

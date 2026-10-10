@@ -21,6 +21,8 @@ import { ChangingHeadline, PreviewFrame } from '../experience';
 import { MotionLayer } from './motion';
 import { MotionText, AgencyRibbon, CampaignVisual } from './visuals';
 import { CountUp, PixelMosaic, ScrollLitText } from '../signature';
+import { CtaLink, PhotoRail } from '../immersive';
+import { photos, type Photo } from '@smartsell/content/photos';
 import {
   ArticleSearch,
   Booking,
@@ -376,8 +378,68 @@ const manifestos: Record<
     ],
   },
 };
+const rails: Record<VerticalId, { photos: Photo[]; cta: [string, string] }> = {
+  agency: {
+    photos: [
+      photos.teamSofa,
+      photos.phonePink,
+      photos.portraitWall,
+      photos.meeting,
+      photos.phoneYellow,
+      photos.creator,
+      photos.portraitPrint,
+    ],
+    cta: ['contact', 'Parlons de votre projet'],
+  },
+  academy: {
+    photos: [
+      photos.learnerFocus,
+      photos.learner,
+      photos.teamLaptop,
+      photos.learnerDesk,
+      photos.portraitPro,
+      photos.phoneDesk,
+    ],
+    cta: ['courses', 'Choisir mon module'],
+  },
+  media: {
+    photos: [
+      photos.phoneShop,
+      photos.portraitYellow,
+      photos.podcastWhite,
+      photos.founder,
+      photos.portraitTurban,
+      photos.partners,
+    ],
+    cta: ['newsletter', 'Recevoir la newsletter'],
+  },
+  studio: {
+    photos: [
+      photos.videoField,
+      photos.podcastNeon,
+      photos.cameraClose,
+      photos.portraitGold,
+      photos.videoGimbal,
+      photos.podcastLaptop,
+      photos.cameraStreet,
+    ],
+    cta: ['booking', 'Préparer ma session'],
+  },
+  labs: {
+    photos: [
+      photos.manager,
+      photos.phoneDesk,
+      photos.founder,
+      photos.meeting,
+      photos.learnerFocus,
+      photos.partners,
+    ],
+    cta: ['products', 'Découvrir nos produits'],
+  },
+};
 function SiteManifesto({ id }: { id: VerticalId }) {
   const m = manifestos[id];
+  const rail = rails[id];
   return (
     <section className="sg-site-manifesto">
       <div className="site-container">
@@ -393,7 +455,11 @@ function SiteManifesto({ id }: { id: VerticalId }) {
             </div>
           ))}
         </div>
+        <div className="im-actions sg-site-cta">
+          <CtaLink href={link(id, rail.cta[0])}>{rail.cta[1]}</CtaLink>
+        </div>
       </div>
+      <PhotoRail photos={rail.photos} />
     </section>
   );
 }

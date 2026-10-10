@@ -81,7 +81,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
           <span>
             {active
               ? `SMARTSELL ${verticals.find((v) => v.id === active)?.name.toUpperCase()}`
-              : 'UN ÉCOSYSTÈME DIGITAL & CRÉATIF'}
+              : 'AGENCE DE COMMUNICATION & MARKETING DIGITAL'}
           </span>
           <details
             ref={disclosure}

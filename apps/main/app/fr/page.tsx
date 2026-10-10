@@ -1,274 +1,417 @@
 import type { Metadata } from 'next';
-import { ChangingHeadline } from '@smartsell/ui/experience';
+import { Highlight, PixelMosaic, ScrollLitText } from '@smartsell/ui/signature';
 import {
-  CountUp,
-  CrossGrid,
-  Highlight,
-  PixelMosaic,
-  ScrollLitText,
-  UniverseOrbit,
-  UniverseTabs,
-} from '@smartsell/ui/signature';
-import { ButtonLink, SectionHeading } from '@smartsell/ui';
-import { products, nextJourney } from '@smartsell/content';
-import { withBasePath, routingConfig, urlFor } from '@smartsell/routing';
+  Carousel,
+  CtaLink,
+  FloatingCta,
+  HorizontalScroll,
+  Marquee,
+  ParallaxGallery,
+  PhotoColumns,
+  StackCards,
+  ZoomReveal,
+  type HorizontalItem,
+  type Slide,
+} from '@smartsell/ui/immersive';
+import { photos, photoUrl, photoCredits } from '@smartsell/content/photos';
+import {
+  withBasePath,
+  routingConfig,
+  urlFor,
+  managementUrl,
+} from '@smartsell/routing';
 import { absoluteUrl } from '@smartsell/seo';
 import type { VerticalId } from '@smartsell/types';
-const names: Record<VerticalId, string> = {
-  agency: 'Agency',
-  academy: 'Academy',
-  media: 'Media',
-  studio: 'Studios',
-  labs: 'Labs',
-};
-const closingLinks: [VerticalId, string, string][] = [
-  ['agency', 'work', 'Voir les explorations'],
-  ['agency', 'contact', 'Parler d’un projet'],
-  ['academy', 'courses', 'Explorer les modules'],
-  ['academy', 'corporate', 'Former une équipe'],
-  ['media', 'latest', 'Lire les idées'],
-  ['media', 'newsletter', 'La newsletter'],
-  ['studio', 'spaces', 'Découvrir les espaces'],
-  ['studio', 'booking', 'Simuler une session'],
-  ['labs', 'products', 'Les produits'],
-  ['labs', 'research', 'Les pistes de recherche'],
-];
 export const metadata: Metadata = {
+  title: {
+    absolute:
+      'Smartsell — Agence de communication & marketing digital à Conakry',
+  },
+  description:
+    'Stratégie de marque, réseaux sociaux, publicité digitale, production photo et vidéo, sites web et formation : Smartsell fait parler votre marque.',
   alternates: { canonical: withBasePath('/fr/') },
 };
+const go = (vertical: VerticalId, path = '') =>
+  urlFor(vertical, 'fr', path, routingConfig);
+const contact = go('agency', 'contact');
+
+const services: HorizontalItem[] = [
+  {
+    label: '01 · Stratégie',
+    title: 'Stratégie & identité de marque',
+    copy: 'Positionnement, plateforme de marque, logo et univers visuel : des fondations solides pour être reconnu au premier regard.',
+    photo: photos.meeting,
+    href: go('agency', 'services/strategie'),
+    cta: 'Construire ma marque',
+  },
+  {
+    label: '02 · Social media',
+    title: 'Réseaux sociaux & communauté',
+    copy: 'Ligne éditoriale, posts, Reels et animation de communauté, au rythme de votre audience et de vos temps forts.',
+    photo: photos.phonePink,
+    href: go('agency', 'services/social-media'),
+    cta: 'Booster mes réseaux',
+  },
+  {
+    label: '03 · Publicité',
+    title: 'Publicité digitale qui performe',
+    copy: 'Campagnes Meta, Google et TikTok ciblées, suivies et optimisées pour que chaque franc investi travaille pour vous.',
+    photo: photos.phoneYellow,
+    href: go('agency', 'services/performance'),
+    cta: 'Lancer une campagne',
+  },
+  {
+    label: '04 · Production',
+    title: 'Photo, vidéo & podcast',
+    copy: 'Spots, portraits, captations et podcasts : nos studios donnent une image et une voix à vos histoires.',
+    photo: photos.videoField,
+    href: go('studio', 'booking'),
+    cta: 'Préparer un tournage',
+  },
+  {
+    label: '05 · Web',
+    title: 'Sites web & e-commerce',
+    copy: 'Des sites rapides, élégants et pensés pour convertir, de la vitrine à la boutique en ligne.',
+    photo: photos.phoneDesk,
+    href: go('agency', 'services/web-development'),
+    cta: 'Créer mon site',
+  },
+  {
+    label: '06 · Formation',
+    title: 'Former vos équipes',
+    copy: 'Marketing digital, création de contenu, IA : vos équipes apprennent à faire grandir la marque en interne.',
+    photo: photos.learnerFocus,
+    href: go('academy', 'corporate'),
+    cta: 'Former mon équipe',
+  },
+  {
+    label: '07 · Outils',
+    title: 'Outils & automatisation',
+    copy: 'CRM, tableaux de bord et automatisations : Smartsell Labs construit les outils qui vous font gagner du temps.',
+    photo: photos.founder,
+    href: go('labs', 'products'),
+    cta: 'Découvrir nos outils',
+  },
+];
+
+const slides: Slide[] = [
+  {
+    id: 'agency',
+    kicker: '01 · Smartsell Agency',
+    name: 'Agency',
+    pitch:
+      'Stratégie, création et campagnes digitales pour les marques qui veulent compter sur leur marché.',
+    photo: photos.teamSofa,
+    primary: { href: go('agency'), label: 'Entrer dans Agency' },
+    secondary: { href: contact, label: 'Demander un devis' },
+  },
+  {
+    id: 'academy',
+    kicker: '02 · Smartsell Academy',
+    name: 'Academy',
+    pitch:
+      'Des formations pratiques en marketing digital, design, web et IA, pour les talents comme pour les équipes.',
+    photo: photos.learnerDesk,
+    primary: { href: go('academy'), label: 'Entrer dans Academy' },
+    secondary: { href: go('academy', 'courses'), label: 'Voir les modules' },
+  },
+  {
+    id: 'media',
+    kicker: '03 · Smartsell Media',
+    name: 'Media',
+    pitch:
+      'Le média qui décrypte la tech, le business et la culture créative, depuis la Guinée et l’Afrique.',
+    photo: photos.phoneShop,
+    primary: { href: go('media'), label: 'Entrer dans Media' },
+    secondary: { href: go('media', 'latest'), label: 'Lire les articles' },
+  },
+  {
+    id: 'studio',
+    kicker: '04 · Smartsell Studios',
+    name: 'Studios',
+    pitch:
+      'Plateaux photo, vidéo et podcast pour produire des contenus qui arrêtent le défilement.',
+    photo: photos.podcastNeon,
+    primary: { href: go('studio'), label: 'Entrer dans Studios' },
+    secondary: {
+      href: go('studio', 'booking'),
+      label: 'Simuler une réservation',
+    },
+  },
+  {
+    id: 'labs',
+    kicker: '05 · Smartsell Labs',
+    name: 'Labs',
+    pitch:
+      'Des produits numériques, comme Smartsell Management, pour piloter clients, projets et ventes.',
+    photo: photos.manager,
+    primary: { href: go('labs'), label: 'Entrer dans Labs' },
+    secondary: { href: managementUrl, label: 'Découvrir Management' },
+  },
+];
+
+const method = [
+  {
+    title: 'On écoute.',
+    copy: 'Votre marché, vos clients, vos objectifs. Un atelier, des questions franches, et une vision claire de ce qui doit changer.',
+    photo: photos.partners,
+  },
+  {
+    title: 'On imagine.',
+    copy: 'Concept créatif, messages clés, plan de diffusion : une idée forte, pensée pour se décliner partout où votre public se trouve.',
+    photo: photos.creator,
+  },
+  {
+    title: 'On produit.',
+    copy: 'Visuels, vidéos, textes, sites : nos créatifs et nos studios passent à l’action, avec le souci du détail.',
+    photo: photos.videoGimbal,
+  },
+  {
+    title: 'On diffuse.',
+    copy: 'Réseaux sociaux, publicité, influence : le bon message, au bon endroit, au bon moment.',
+    photo: photos.phoneShop,
+  },
+  {
+    title: 'On mesure.',
+    copy: 'Tableaux de bord et rapports clairs. Ce qui marche est amplifié, le reste est ajusté.',
+    photo: photos.portraitPro,
+  },
+];
+
+const quickLinks: [VerticalId, string, string][] = [
+  ['agency', 'contact', 'Demander un devis'],
+  ['agency', 'work', 'Voir nos réalisations'],
+  ['agency', 'services/social-media', 'Gérer mes réseaux'],
+  ['agency', 'services/performance', 'Lancer une pub'],
+  ['studio', 'booking', 'Préparer un tournage'],
+  ['academy', 'courses', 'Me former'],
+  ['academy', 'corporate', 'Former mon équipe'],
+  ['media', 'newsletter', 'Recevoir la newsletter'],
+  ['labs', 'products', 'Découvrir nos outils'],
+];
+
 export default function Home() {
   return (
     <main id="main">
-      <section className="sg-hero" aria-labelledby="sg-hero-title">
-        <div className="sg-hero-card">
-          <PixelMosaic tone="main" />
-          <div className="sg-hero-top">
-            <span className="sg-mono">✳ La maison Smartsell</span>
-            <span className="sg-mono">Conakry · Guinée</span>
+      <section className="im-hero" aria-labelledby="hero-title">
+        <PixelMosaic tone="main" />
+        <div className="im-hero-copy">
+          <p className="sg-mono">
+            ✳ Agence de communication & marketing digital · Conakry
+          </p>
+          <h1 id="hero-title">
+            <span>Votre marque</span>
+            <span>mérite qu’on</span>
+            <span>
+              <Highlight>parle d’elle.</Highlight>
+            </span>
+          </h1>
+          <p className="im-hero-lead">
+            Stratégie, réseaux sociaux, publicité, production et web : Smartsell
+            imagine des campagnes qui se voient, se partagent et font grandir
+            votre activité.
+          </p>
+          <div className="im-actions">
+            <CtaLink href={contact}>Lancer mon projet</CtaLink>
+            <CtaLink href={go('agency', 'work')} tone="ghost">
+              Voir nos réalisations
+            </CtaLink>
           </div>
-          <div className="sg-hero-bottom">
-            <h1 id="sg-hero-title">
-              <span>Un écosystème</span>
-              <span>
-                pour <ChangingHeadline />
-              </span>
-            </h1>
-            <div className="sg-hero-aside">
-              <p>
-                Une maison mère, cinq sites à part entière. Nous relions les
-                marques, les talents et les idées pour donner une forme à vos
-                ambitions.
-              </p>
-              <div className="sg-hero-actions">
-                <a className="sg-pill-link" href="#ecosystem">
-                  Explorer l’écosystème <span aria-hidden="true">↓</span>
-                </a>
-              </div>
-            </div>
+          <div className="im-hero-proof">
+            <span className="im-faces" aria-hidden="true">
+              {[
+                photos.portraitSmile,
+                photos.portraitWall,
+                photos.portraitPrint,
+                photos.creator,
+              ].map((p) => (
+                <img key={p.id} src={photoUrl(p, 96)} alt="" />
+              ))}
+            </span>
+            Une équipe de stratèges, créatifs et producteurs.
           </div>
         </div>
-        <div className="sg-hero-strip sg-mono">
-          <span>Stratégie · Création · Compétences · Produits</span>
-          <span>05 sites · 01 maison</span>
-          <a href="#manifeste">Faites le premier mouvement ↓</a>
-        </div>
+        <PhotoColumns
+          columns={[
+            [
+              photos.phonePink,
+              photos.photographer,
+              photos.portraitGold,
+              photos.teamLaptop,
+            ],
+            [
+              photos.podcastWhite,
+              photos.portraitTurban,
+              photos.videoGimbal,
+              photos.phoneYellow,
+            ],
+            [
+              photos.cameraStreet,
+              photos.portraitYellow,
+              photos.learner,
+              photos.podcastNeon,
+            ],
+          ]}
+        />
       </section>
+
+      <Marquee
+        tone="yellow"
+        items={[
+          'Stratégie de marque',
+          'Réseaux sociaux',
+          'Publicité digitale',
+          'Production vidéo',
+          'Identité visuelle',
+          'Sites web',
+          'Podcasts',
+          'Formation',
+        ]}
+      />
+
+      <ZoomReveal
+        photo={photos.teamLaptop}
+        eyebrow="01 · Une seule équipe"
+        title={
+          <>
+            Penser, créer, diffuser, mesurer.{' '}
+            <Highlight>Sous le même toit.</Highlight>
+          </>
+        }
+        copy="Fini les prestataires qui ne se parlent pas. Chez Smartsell, la stratégie, la création, la production et la formation avancent ensemble, au service de vos résultats."
+        cta={<CtaLink href="#services">Voir nos expertises</CtaLink>}
+      />
+
+      <div id="services">
+        <HorizontalScroll
+          eyebrow="02 · Ce que nous faisons"
+          title="Tout ce qu’il faut pour que votre marque soit vue, choisie et recommandée."
+          items={services}
+        />
+      </div>
+
       <section className="sg-manifesto" id="manifeste">
         <div className="container">
-          <span className="sg-mono">01 / Le manifeste</span>
-          <ScrollLitText text="Une marque a besoin d’une direction. Un talent, de compétences. Une histoire, d’un espace pour prendre forme. Une entreprise, d’outils pour avancer. Smartsell réunit ces cinq façons de faire dans une même maison." />
+          <span className="sg-mono">03 · Notre conviction</span>
+          <ScrollLitText text="On ne fait pas de la communication pour faire joli. On construit des marques qui se reconnaissent au premier regard, des messages qui touchent juste et des campagnes dont on mesure l’effet. Votre ambition mérite mieux qu’un post de temps en temps." />
+          <div className="im-actions" style={{ marginTop: 48 }}>
+            <CtaLink href={contact}>Parlons de votre marque</CtaLink>
+          </div>
         </div>
       </section>
+
       <section
-        className="sg-architecture"
+        className="im-section im-dark"
         id="ecosystem"
-        aria-labelledby="sg-architecture-title"
+        aria-labelledby="eco-title"
       >
-        <div className="container">
-          <div className="sg-architecture-head" data-reveal>
-            <div>
-              <p className="sg-mono">02 / L’architecture</p>
-              <h2 id="sg-architecture-title">
-                Une maison mère.
-                <br />
-                <em>Cinq sites à part entière.</em>
-              </h2>
-            </div>
-            <p>
-              Chaque univers a son adresse, sa navigation et son rythme. Tous
-              partagent la même ambition et vous ramènent à la maison Smartsell.
-              Choisissez votre porte d’entrée.
-            </p>
-          </div>
-          <UniverseOrbit />
-          <div className="sg-figures" data-reveal>
-            <div>
-              <strong>
-                <CountUp value={5} />
-              </strong>
-              <span className="sg-mono">Sites autonomes</span>
-            </div>
-            <div>
-              <strong>
-                <CountUp value={1} />
-              </strong>
-              <span className="sg-mono">Maison mère</span>
-            </div>
-            <div>
-              <strong>GN</strong>
-              <span className="sg-mono">Pensé depuis Conakry</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section
-        className="sg-universes"
-        id="apercus"
-        aria-labelledby="sg-universes-title"
-      >
-        <div className="container">
-          <div className="sg-universes-head" data-reveal>
-            <div>
-              <p className="sg-mono">03 / Cinq sites. Une même énergie.</p>
-              <h2 id="sg-universes-title">
-                Entrez dans <Highlight>le mouvement.</Highlight>
-              </h2>
-            </div>
-            <p>
-              Une marque à construire, une compétence à développer, une idée à
-              partager. Parcourez chaque site avant d’y entrer.
-            </p>
-          </div>
-          <UniverseTabs />
-        </div>
-      </section>
-      <section className="vision-section section" id="vision">
-        <div className="container vision-grid">
+        <div className="im-head">
           <div>
-            <p className="eyebrow">04 / LA MAISON SMARTSELL</p>
-            <span className="vision-note">
-              DIGITAL.
-              <br />
-              CRÉATIF.
-              <br />
-              CONNECTÉ.
-            </span>
-          </div>
-          <div>
-            <h2>
-              Les bonnes idées
-              <br />
-              méritent{' '}
-              <em>
-                plus
-                <br />
-                qu’un point de départ.
-              </em>
-            </h2>
-            <div className="vision-copy">
-              <p>
-                Une marque a besoin d’une direction. Un talent, de compétences.
-                Une histoire, d’un espace pour prendre forme. Une entreprise,
-                d’outils pour avancer.
-              </p>
-              <p>
-                Smartsell réunit ces cinq façons de faire dans une même maison.
-                Notre ambition : créer de la continuité entre ce que l’on
-                imagine, ce que l’on apprend et ce que l’on construit.
-              </p>
-            </div>
-            <p className="vision-location">
-              <span aria-hidden="true">↗</span> Depuis Conakry, en Guinée.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section className="products-section section" id="produits">
-        <div className="container">
-          <SectionHeading
-            number="05"
-            label="Smartsell Labs"
-            title="Nous construisons aussi les outils."
-            description="Des produits pensés pour les réalités des entreprises et des créateurs."
-          />
-          <div className="products-grid">
-            {products.map((product, i) => (
-              <article
-                className={`product-card product-card--${i}`}
-                key={product.name}
-              >
-                <div className="product-label">
-                  <span className="eyebrow">{product.category}</span>
-                  <span className="product-status">
-                    {i === 0 ? 'PRODUIT EXISTANT' : 'VISION PRODUIT'}
-                  </span>
-                </div>
-                <div className="product-mark" aria-hidden="true">
-                  {i === 0 ? 'M' : 'O'}
-                  <span>↗</span>
-                </div>
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <ButtonLink
-                  href={product.url}
-                  tone={i === 0 ? 'primary' : 'text'}
-                >
-                  {product.state}
-                  {product.external ? (
-                    <span className="sr-only">, site du produit existant</span>
-                  ) : null}
-                </ButtonLink>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section
-        className="sg-path"
-        id="parcours"
-        aria-labelledby="sg-path-title"
-      >
-        <div className="container">
-          <div className="sg-path-head" data-reveal>
-            <p className="sg-mono">06 / Continuez votre parcours</p>
-            <h2 id="sg-path-title">
-              Tout commence quelque part. La suite se construit ensemble.
+            <span className="sg-mono">04 · L’écosystème Smartsell</span>
+            <h2 id="eco-title">
+              Une maison mère. <Highlight>Cinq expertises</Highlight> à part
+              entière.
             </h2>
           </div>
-          <CrossGrid
-            items={nextJourney.map((j, i) => ({
-              label: `0${i + 1} / ${j.step}`,
-              title: j.title,
-              copy: j.copy,
-              href: urlFor(j.vertical, 'fr', '', routingConfig),
-            }))}
-          />
+          <p>
+            Chaque univers a son site, son équipe et son savoir-faire. Ensemble,
+            ils couvrent toute la vie de votre marque, de l’idée aux résultats.
+          </p>
+        </div>
+        <Carousel slides={slides} label="Les cinq sites Smartsell" />
+      </section>
+
+      <section
+        className="im-section im-light"
+        id="methode"
+        aria-labelledby="method-title"
+      >
+        <div className="im-head">
+          <div>
+            <span className="sg-mono">05 · Notre méthode</span>
+            <h2 id="method-title">Du brief aux résultats, en cinq temps.</h2>
+          </div>
+          <div className="im-head-side">
+            <p>
+              Une méthode simple, transparente et rythmée, pour que vous sachiez
+              toujours où en est votre projet.
+            </p>
+            <CtaLink href={contact} tone="dark">
+              Démarrer un projet
+            </CtaLink>
+          </div>
+        </div>
+        <div className="container">
+          <StackCards steps={method} />
         </div>
       </section>
+
+      <ParallaxGallery
+        columns={[
+          [photos.portraitSmile, photos.photographer, photos.portraitPro],
+          [photos.portraitGold, photos.podcastLaptop, photos.creator],
+          [photos.portraitTurban, photos.learner, photos.portraitWall],
+          [photos.portraitPrint, photos.cameraClose, photos.portraitStand],
+        ]}
+      >
+        <span className="sg-mono">06 · Pour celles et ceux qui avancent</span>
+        <h2>
+          Des visages. Des voix. <Highlight>Des histoires.</Highlight>
+        </h2>
+        <p>
+          Entrepreneurs, créateurs, marques et institutions : nous aidons celles
+          et ceux qui font bouger la Guinée et l’Afrique à se faire entendre.
+        </p>
+        <div className="im-actions">
+          <CtaLink href={contact}>Raconter mon histoire</CtaLink>
+          <CtaLink href={go('studio')} tone="ghost">
+            Découvrir nos studios
+          </CtaLink>
+        </div>
+      </ParallaxGallery>
+
+      <Marquee
+        tone="dark"
+        reverse
+        items={[
+          'Faites-vous remarquer',
+          'Faites-vous choisir',
+          'Faites-vous recommander',
+        ]}
+      />
+
       <section className="sg-closing">
         <div className="container">
           <div className="sg-closing-card">
             <PixelMosaic tone="agency" />
-            <p className="sg-mono">Smartsell / Avec vous, de bout en bout.</p>
+            <p className="sg-mono">Smartsell · Votre prochaine campagne</p>
             <h2>
-              Quel sera votre
+              Prêt à faire
               <br />
-              prochain <em>mouvement ?</em>
+              <em>du bruit ?</em>
             </h2>
-            <nav className="sg-chips" aria-label="Accès directs aux sites">
-              {closingLinks.map(([vertical, path, label]) => (
-                <a
-                  key={vertical + path}
-                  href={urlFor(vertical, 'fr', path, routingConfig)}
-                >
-                  <span>{names[vertical]}</span>
+            <div className="im-actions">
+              <CtaLink href={contact}>Lancer mon projet</CtaLink>
+              <CtaLink href={go('agency', 'work')} tone="ghost">
+                Voir nos réalisations
+              </CtaLink>
+            </div>
+            <nav className="sg-chips" aria-label="Accès directs">
+              {quickLinks.map(([vertical, path, label]) => (
+                <a key={vertical + path} href={go(vertical, path)}>
                   {label}
                 </a>
               ))}
             </nav>
           </div>
+          <p className="im-credits">
+            Photographies d’illustration : Unsplash ({photoCredits.join(', ')}).
+          </p>
         </div>
       </section>
+
+      <FloatingCta href={contact} label="Parlons de votre projet" />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -279,7 +422,7 @@ export default function Home() {
             url: absoluteUrl(withBasePath('/fr/')),
             logo: absoluteUrl(withBasePath('/brand/wordmark-purple.png')),
             description:
-              'Un écosystème digital et créatif : Agency, Academy, Media, Studios et Labs.',
+              'Agence de communication et de marketing digital à Conakry : stratégie, réseaux sociaux, publicité, production, web et formation.',
           }).replace(/</g, '\\u003c'),
         }}
       />

@@ -128,8 +128,8 @@ export const searchEntries: readonly SearchEntry[] = [
   {
     title: 'La maison Smartsell',
     summary:
-      'Notre vision : relier création, apprentissage, information, production et innovation.',
-    url: withBasePath('/fr/#vision'),
+      'Agence de communication et de marketing digital : stratégie, réseaux sociaux, publicité, production, web et formation.',
+    url: withBasePath('/fr/#manifeste'),
     type: 'La maison',
   },
 ];
