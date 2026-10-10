@@ -512,7 +512,7 @@ export const cases = [
       'Design system',
       'Prototype interactif',
     ],
-    mark: '↗',
+    mark: '',
   },
   {
     slug: 'sillage',
@@ -556,7 +556,7 @@ export const cases = [
       'Prototype',
       'Documentation de reprise',
     ],
-    mark: 'R↗',
+    mark: 'R',
   },
 ];
 export const articles = [
@@ -741,7 +741,7 @@ export const spaces = [
       'Table de prise de vue',
     ],
     use: 'Portrait · Produit · Éditorial',
-    symbol: '◐',
+    symbol: '',
   },
   {
     slug: 'video',
@@ -749,7 +749,7 @@ export const spaces = [
     copy: 'Un cadre modulable pour les prises de parole, les interviews et les formats de marque.',
     equipment: ['Cadre de tournage', 'Zone éclairage', 'Retour image'],
     use: 'Interview · Corporate · Création',
-    symbol: '▣',
+    symbol: '',
   },
   {
     slug: 'podcast',
@@ -757,7 +757,7 @@ export const spaces = [
     copy: 'Une proposition de plateau pour les conversations enregistrées et les formats audio.',
     equipment: ['Table de conversation', 'Zone micros', 'Retour casque'],
     use: 'Conversation · Audio · Vidéo',
-    symbol: '∿',
+    symbol: '',
   },
 ];
 export const packs = [

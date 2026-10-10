@@ -1,3 +1,4 @@
+import { Icon } from '@smartsell/ui/icons';
 import { withBasePath } from '@smartsell/routing';
 export default function RootPage() {
   return (
@@ -5,7 +6,9 @@ export default function RootPage() {
       <meta httpEquiv="refresh" content={`0;url=${withBasePath('/fr/')}`} />
       <h1>Smartsell</h1>
       <p>Un écosystème. Cinq façons d’avancer.</p>
-      <a href={withBasePath('/fr/')}>Découvrir Smartsell →</a>
+      <a href={withBasePath('/fr/')}>
+        Découvrir Smartsell <Icon name="arrowRight" />
+      </a>
     </main>
   );
 }

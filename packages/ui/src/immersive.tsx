@@ -1,4 +1,5 @@
 'use client';
+import { Icon } from './icons';
 import {
   useEffect,
   useRef,
@@ -24,7 +25,7 @@ const still = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
   document.documentElement.dataset.motionPaused === 'true';
 
-/** Avancement d'un élément dans la fenêtre, exposé en CSS via --p (0 → 1). */
+/** Avancement d'un élément dans la fenêtre, exposé en CSS via --p (0 <Icon name="arrowRight" /> 1). */
 function useScrollProgress<T extends HTMLElement>(
   mode: 'sticky' | 'through' = 'sticky',
   onProgress?: (p: number, el: T) => void,
@@ -173,7 +174,9 @@ export function CtaLink({
   return (
     <a className={`im-cta im-cta-${tone}`} href={href}>
       <span>{children}</span>
-      <i aria-hidden="true">↗</i>
+      <i aria-hidden="true">
+        <Icon name="arrowUpRight" />
+      </i>
     </a>
   );
 }
@@ -219,7 +222,10 @@ export function Marquee({
           <span key={k}>
             {items.map((item) => (
               <span key={item}>
-                {item} <b>✳</b>
+                {item}{' '}
+                <b>
+                  <Icon name="stars" />
+                </b>
               </span>
             ))}
           </span>
@@ -311,7 +317,7 @@ export function HorizontalScroll({
           <p className="sg-mono">{eyebrow}</p>
           <h2>{title}</h2>
           <span className="im-hscroll-hint" aria-hidden="true">
-            Faites défiler →
+            Faites défiler <Icon name="arrowRight" />
           </span>
         </div>
         <div className="im-hscroll-track" ref={track}>
@@ -444,7 +450,10 @@ export function Carousel({
                 >
                   {s.links.map((l) => (
                     <a key={l.href} href={l.href}>
-                      {l.label} <span aria-hidden="true">→</span>
+                      {l.label}{' '}
+                      <span aria-hidden="true">
+                        <Icon name="arrowRight" />
+                      </span>
                     </a>
                   ))}
                 </nav>
@@ -459,7 +468,7 @@ export function Carousel({
           onClick={() => go(active - 1)}
           aria-label="Diapositive précédente"
         >
-          ←
+          <Icon name="arrowLeft" />
         </button>
         <div className="im-dots">
           {slides.map((s, i) => (
@@ -479,7 +488,7 @@ export function Carousel({
           onClick={() => go(active + 1)}
           aria-label="Diapositive suivante"
         >
-          →
+          <Icon name="arrowRight" />
         </button>
       </div>
     </div>
@@ -617,7 +626,9 @@ export function FloatingCta({ href, label }: { href: string; label: string }) {
     >
       <span className="im-floating-dot" aria-hidden="true" />
       {label}
-      <i aria-hidden="true">↗</i>
+      <i aria-hidden="true">
+        <Icon name="arrowUpRight" />
+      </i>
     </a>
   );
 }

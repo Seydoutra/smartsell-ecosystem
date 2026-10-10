@@ -1,3 +1,4 @@
+import { Icon } from '../icons';
 import { Fragment, type CSSProperties } from 'react';
 export function MotionText({ text }: { text: string }) {
   return (
@@ -30,7 +31,9 @@ export function AgencyRibbon() {
             {line.map((t) => (
               <span key={t}>
                 {t}
-                <i>✳</i>
+                <i>
+                  <Icon name="stars" />
+                </i>
               </span>
             ))}
           </div>
@@ -105,9 +108,7 @@ export function CampaignVisual({ index }: { index: number }) {
           </g>
           <g className="visual-float">
             <circle cx="457" cy="85" r="36" fill="#9760b1" />
-            <text x="437" y="99" fill="#f3e433" fontSize="46">
-              ✳
-            </text>
+            <text x="437" y="99" fill="#f3e433" fontSize="46"></text>
           </g>
         </>
       ) : index === 1 ? (
@@ -136,7 +137,7 @@ export function CampaignVisual({ index }: { index: number }) {
             </text>
             <rect x="98" y="248" width="91" height="22" rx="4" fill="#403229" />
             <text x="109" y="262" fill="#f8f2e9" fontSize="7">
-              EXPLORER ↗
+              EXPLORER
             </text>
             <path
               d="M336 151c-22 19-16 30-37 54-10 17-12 65 34 71 43 6 63-33 46-64-21-21-13-37-21-61z"
@@ -186,7 +187,7 @@ export function CampaignVisual({ index }: { index: number }) {
               fill="#281333"
             />
             <text x="115" y="126" fill="#f3e433" fontSize="24" fontWeight="650">
-              AXIS ↗
+              AXIS
             </text>
             <path d="M118 159h211" stroke="#9760b1" />
             <text x="117" y="191" fill="#e7d8ed" fontSize="11">
@@ -207,9 +208,7 @@ export function CampaignVisual({ index }: { index: number }) {
                   y="240"
                   fill={i === 1 ? '#281333' : '#e7d8ed'}
                   fontSize="21"
-                >
-                  {['↗', '◈', '∿'][i]}
-                </text>
+                ></text>
                 <path
                   d={`M${127 + i * 73} 266h43M${127 + i * 73} 276h29`}
                   stroke={i === 1 ? '#281333' : '#9760b1'}
@@ -229,9 +228,7 @@ export function CampaignVisual({ index }: { index: number }) {
             <text x="382" y="186" fill="#281333" fontSize="17" fontWeight="600">
               AXIS.
             </text>
-            <text x="385" y="237" fill="#692b84" fontSize="52">
-              ↗
-            </text>
+            <text x="385" y="237" fill="#692b84" fontSize="52"></text>
             <text x="382" y="268" fill="#281333" fontSize="10">
               LE COLLECTIF.
             </text>
@@ -247,14 +244,12 @@ export function CampaignVisual({ index }: { index: number }) {
               fill="#692b84"
             />
             <text x="395" y="323" fill="#fff" fontSize="8">
-              EXPLORER ↗
+              EXPLORER
             </text>
           </g>
           <g className="visual-float">
             <circle cx="393" cy="97" r="29" fill="#692b84" />
-            <text x="378" y="108" fill="#f3e433" fontSize="31">
-              ↗
-            </text>
+            <text x="378" y="108" fill="#f3e433" fontSize="31"></text>
           </g>
         </>
       ) : index === 3 ? (
@@ -312,7 +307,7 @@ export function CampaignVisual({ index }: { index: number }) {
               fill="#f3e433"
             />
             <text x="352" y="101" fill="#291333" fontSize="25">
-              S/ ↗
+              S/
             </text>
           </g>
         </>
@@ -362,7 +357,7 @@ export function CampaignVisual({ index }: { index: number }) {
               fill="#293329"
             />
             <text x="103" y="138" fill="#dae2d2" fontSize="25">
-              RELAY ↗
+              RELAY
             </text>
             <path d="M146 221h310" stroke="#95ac8b" strokeDasharray="5 7" />
             {['DEMANDE', 'CLASSEMENT', 'VALIDATION'].map((t, i) => (
@@ -378,9 +373,12 @@ export function CampaignVisual({ index }: { index: number }) {
                 <text x={113 + i * 130} y="213" fill="#293329" fontSize="10">
                   {t}
                 </text>
-                <text x={113 + i * 130} y="242" fill="#293329" fontSize="23">
-                  {['◈', '↗', '✓'][i]}
-                </text>
+                <text
+                  x={113 + i * 130}
+                  y="242"
+                  fill="#293329"
+                  fontSize="23"
+                ></text>
               </g>
             ))}
             <text x="103" y="286" fill="#dae2d2" fontSize="10">
@@ -397,7 +395,7 @@ export function CampaignVisual({ index }: { index: number }) {
               fill="#f3e433"
             />
             <text x="367" y="91" fill="#293329" fontSize="12">
-              CONTRÔLE HUMAIN ✓
+              CONTRÔLE HUMAIN
             </text>
           </g>
         </>

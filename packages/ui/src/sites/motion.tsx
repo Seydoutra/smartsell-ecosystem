@@ -132,7 +132,7 @@ export function MotionLayer() {
         paused ? 'Activer les animations' : 'Mettre les animations en pause'
       }
     >
-      <span aria-hidden="true">{paused ? '▶' : 'Ⅱ'}</span> Mouvement :{' '}
+      <span aria-hidden="true">{paused ? '' : ''}</span> Mouvement :{' '}
       {paused ? 'en pause' : 'actif'}
     </button>
   );

@@ -1,3 +1,4 @@
+import { Icon } from '@smartsell/ui/icons';
 import { withBasePath } from '@smartsell/routing';
 export default function NotFound() {
   return (
@@ -16,7 +17,7 @@ export default function NotFound() {
         style={{ marginTop: 32 }}
         href={withBasePath('/fr/')}
       >
-        Revenir à l’accueil ↗
+        Revenir à l’accueil <Icon name="arrowUpRight" />
       </a>
     </main>
   );

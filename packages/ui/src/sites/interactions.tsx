@@ -1,4 +1,5 @@
 'use client';
+import { Icon } from '../icons';
 import { readBrief } from '../home';
 import { useEffect, useRef, useState } from 'react';
 import type { VerticalId } from '@smartsell/types';
@@ -98,7 +99,7 @@ export function Enrollment({ course }: { course: Course }) {
             className="site-button"
             href={href('academy', `learn/${course.slug}`)}
           >
-            Commencer le module ↗
+            Commencer le module <Icon name="arrowUpRight" />
           </a>
         </div>
       ) : (
@@ -125,7 +126,7 @@ export function Enrollment({ course }: { course: Course }) {
             parcours de démonstration.
           </label>
           <button disabled={!loaded} className="site-button" type="submit">
-            Ajouter à mon espace démo ↗
+            Ajouter à mon espace démo <Icon name="arrowUpRight" />
           </button>
         </form>
       )}
@@ -170,11 +171,13 @@ export function Learner({ course }: { course: Course }) {
               aria-current={i === current ? 'step' : undefined}
               onClick={() => select(i)}
             >
-              <span>{completed.includes(i) ? '✓' : `0${i + 1}`}</span>
+              <span>{completed.includes(i) ? '' : `0${i + 1}`}</span>
               {l.title}
             </button>
           ))}
-          <a href={href('academy', 'dashboard')}>Mon espace ↗</a>
+          <a href={href('academy', 'dashboard')}>
+            Mon espace <Icon name="arrowUpRight" />
+          </a>
         </aside>
         <article className="lesson-body" aria-labelledby="lesson-title">
           <p className="micro">LEÇON 0{current + 1} / 03</p>
@@ -246,16 +249,16 @@ export function Learner({ course }: { course: Course }) {
               );
             }}
           >
-            Valider la leçon ✓
+            Valider la leçon <Icon name="check" />
           </button>
           {current < 2 && (
             <button className="text-button" onClick={() => select(current + 1)}>
-              Leçon suivante →
+              Leçon suivante <Icon name="arrowRight" />
             </button>
           )}
           {completed.length === 3 && (
             <a className="text-button" href={href('academy', 'certificates')}>
-              Voir mon récapitulatif →
+              Voir mon récapitulatif <Icon name="arrowRight" />
             </a>
           )}
           {warning && <p role="status">{warning}</p>}
@@ -335,7 +338,7 @@ export function Dashboard({
             <div className="empty-state">
               <p>Votre espace attend sa première exploration.</p>
               <a href={href('academy', 'courses')} className="site-button">
-                Choisir un module ↗
+                Choisir un module <Icon name="arrowUpRight" />
               </a>
             </div>
           ) : (
@@ -354,7 +357,7 @@ export function Dashboard({
                     className="text-link"
                     href={href('academy', `learn/${c.slug}`)}
                   >
-                    Reprendre →
+                    Reprendre <Icon name="arrowRight" />
                   </a>
                 </article>
               ))}
@@ -427,7 +430,9 @@ export function ArticleSearch({ category }: { category?: string }) {
               <h2>{a.title}</h2>
               <p>{a.summary}</p>
             </div>
-            <span aria-hidden="true">↗</span>
+            <span aria-hidden="true">
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
         ))}
       </div>
@@ -457,7 +462,7 @@ export function ShareArticle() {
           }
         }}
       >
-        Copier le lien ↗
+        Copier le lien <Icon name="arrowUpRight" />
       </button>
       <span role="status">{status}</span>
     </div>
@@ -528,7 +533,7 @@ export function DraftForm({ site }: { site: string }) {
           <textarea name="message" required rows={5} maxLength={4000} />
         </label>
         <button className="site-button" type="submit">
-          Préparer mon message ↗
+          Préparer mon message <Icon name="arrowUpRight" />
         </button>
       </form>
       <p role="status">{status}</p>
@@ -580,7 +585,7 @@ export function Newsletter() {
           <input type="email" required placeholder="vous@exemple.com" />
         </label>
         <button type="submit" className="site-button">
-          Tester l’abonnement ↗
+          Tester l’abonnement <Icon name="arrowUpRight" />
         </button>
       </form>
       {done && (
@@ -714,7 +719,7 @@ export function Booking() {
             </div>
           </fieldset>
           <button className="site-button" type="submit">
-            Composer la session →
+            Composer la session <Icon name="arrowRight" />
           </button>
         </form>
       ) : step === 2 ? (
@@ -811,10 +816,10 @@ export function Booking() {
             Vos coordonnées ne sont ni transmises ni enregistrées.
           </p>
           <button className="text-button" type="button" onClick={() => go(1)}>
-            ← Revenir au pack
+            <Icon name="arrowLeft" /> Revenir au pack
           </button>
           <button className="site-button" type="submit">
-            Voir le récapitulatif →
+            Voir le récapitulatif <Icon name="arrowRight" />
           </button>
         </form>
       ) : (
@@ -877,10 +882,10 @@ export function Booking() {
             réel ne sera réservé.
           </label>
           <button className="text-button" type="button" onClick={() => go(2)}>
-            ← Modifier la session
+            <Icon name="arrowLeft" /> Modifier la session
           </button>
           <button className="site-button" type="submit">
-            Terminer la simulation ✓
+            Terminer la simulation <Icon name="check" />
           </button>
         </form>
       )}
@@ -918,7 +923,22 @@ export function Gallery() {
           >
             <span className={`gallery-art art-${i}`} aria-hidden="true">
               <i />
-              <b>{['◐', '∿', '□', '↗', '◒', '▣'][i]}</b>
+              <b>
+                <Icon
+                  name={
+                    (
+                      [
+                        'eye',
+                        'microphone',
+                        'file',
+                        'dashboard',
+                        'star',
+                        'puzzle',
+                      ] as const
+                    )[i]
+                  }
+                />
+              </b>
             </span>
             <span>
               {n} <small>Étude graphique</small>
@@ -933,7 +953,22 @@ export function Gallery() {
         <h2>{names[selected]}</h2>
         <div className={`gallery-art art-${selected}`} aria-hidden="true">
           <i />
-          <b>{['◐', '∿', '□', '↗', '◒', '▣'][selected]}</b>
+          <b>
+            <Icon
+              name={
+                (
+                  [
+                    'eye',
+                    'microphone',
+                    'file',
+                    'dashboard',
+                    'star',
+                    'puzzle',
+                  ] as const
+                )[selected]
+              }
+            />
+          </b>
         </div>
         <p>
           Composition illustrative. Aucune photographie des locaux ou d’un

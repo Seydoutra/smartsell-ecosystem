@@ -1,3 +1,4 @@
+import { Icon } from '../icons';
 import type { VerticalId } from '@smartsell/types';
 import { verticals } from '@smartsell/content';
 import {
@@ -22,6 +23,7 @@ import { MotionLayer } from './motion';
 import { MotionText, AgencyRibbon, CampaignVisual } from './visuals';
 import { CountUp, PixelMosaic, ScrollLitText } from '../signature';
 import { CtaLink, PhotoRail } from '../immersive';
+import { InnerCta, InnerHero, VerticalHome } from './universe';
 import { photos, type Photo } from '@smartsell/content/photos';
 import {
   ArticleSearch,
@@ -61,7 +63,9 @@ function Action({
       href={link(id, path)}
     >
       {children}
-      <span aria-hidden="true">↗</span>
+      <span aria-hidden="true">
+        <Icon name="arrowUpRight" />
+      </span>
     </a>
   );
 }
@@ -75,7 +79,10 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
       <div className="ecosystem-bar">
         <div className="site-container">
           <a href={link('main')}>
-            LA MAISON SMARTSELL <span aria-hidden="true">↗</span>
+            LA MAISON SMARTSELL{' '}
+            <span aria-hidden="true">
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
           <nav aria-label="Les sites Smartsell">
             {verticals.map((v) => (
@@ -187,13 +194,13 @@ function Footer({ id }: { id: VerticalId }) {
                     : 'contact',
             )}
           >
-            Faire le prochain mouvement ↗
+            Faire le prochain mouvement <Icon name="arrowUpRight" />
           </a>
         </div>
         <nav aria-label="Pages du site">
           {[...siteMenus[id], ...extras[id]].map((m) => (
             <a key={m.path} href={link(id, m.path)}>
-              {m.label} ↗
+              {m.label} <Icon name="arrowUpRight" />
             </a>
           ))}
         </nav>
@@ -203,7 +210,7 @@ function Footer({ id }: { id: VerticalId }) {
             .filter((v) => v.id !== id)
             .map((v) => (
               <a key={v.id} href={link(v.id)}>
-                {v.name} ↗
+                {v.name} <Icon name="arrowUpRight" />
               </a>
             ))}
         </nav>
@@ -214,7 +221,9 @@ function Footer({ id }: { id: VerticalId }) {
         </a>
         <span>© {new Date().getUTCFullYear()} Smartsell · Conakry</span>
         <a href={link(id, 'privacy')}>Vos données</a>
-        <a href="#top">Retour en haut ↑</a>
+        <a href="#top">
+          Retour en haut <Icon name="arrowUp" />
+        </a>
       </div>
     </footer>
   );
@@ -311,7 +320,9 @@ function HomeHero({ id, page }: { id: VerticalId; page: SitePageData }) {
       </div>
       <div className="site-container hero-foot">
         <span>UNE MAISON. UNE AMBITION.</span>
-        <a href="#explore">La suite se découvre ↓</a>
+        <a href="#explore">
+          La suite se découvre <Icon name="arrowDown" />
+        </a>
         <span>
           {id === 'agency'
             ? '01'
@@ -483,7 +494,9 @@ function CaseCards({ limit = 6 }: { limit?: number }) {
           </div>
           <div className="work-caption">
             <h3>{c.title}</h3>
-            <span>{c.category} ↗</span>
+            <span>
+              {c.category} <Icon name="arrowUpRight" />
+            </span>
           </div>
         </a>
       ))}
@@ -501,7 +514,15 @@ function CourseCards({ limit = 8 }: { limit?: number }) {
           key={c.slug}
         >
           <div className={`course-art course-art-${i % 4}`} aria-hidden="true">
-            <span>{['↗', '∿', '✳', '◈'][i % 4]}</span>
+            <span>
+              <Icon
+                name={
+                  (['arrowUpRight', 'microphone', 'stars', 'puzzle'] as const)[
+                    i % 4
+                  ]
+                }
+              />
+            </span>
             <b>0{i + 1}</b>
           </div>
           <div className="course-caption">
@@ -512,7 +533,9 @@ function CourseCards({ limit = 8 }: { limit?: number }) {
             <p>{c.goal}</p>
             <div>
               <span>{c.hours} h · format envisagé</span>
-              <span aria-hidden="true">↗</span>
+              <span aria-hidden="true">
+                <Icon name="arrowUpRight" />
+              </span>
             </div>
             <small>Module de démonstration</small>
           </div>
@@ -545,7 +568,10 @@ function ProductCards() {
           <span>CLIENTS · PROJETS · PLANNING · FINANCES</span>
         </div>
         <h3>
-          Smartsell Management <span>↗</span>
+          Smartsell Management{' '}
+          <span>
+            <Icon name="arrowUpRight" />
+          </span>
         </h3>
         <p>Un produit pour relier les opérations du quotidien.</p>
       </a>
@@ -561,7 +587,10 @@ function ProductCards() {
           <span>LE TRAVAIL CRÉATIF, RELIÉ.</span>
         </div>
         <h3>
-          Obtura <span>↗</span>
+          Obtura{' '}
+          <span>
+            <Icon name="arrowUpRight" />
+          </span>
         </h3>
         <p>Un Business OS envisagé pour les créateurs visuels.</p>
       </a>
@@ -580,11 +609,18 @@ function SpaceCards() {
         >
           <div className={`space-diagram diagram-${i}`} aria-hidden="true">
             <div />
-            <b>{s.symbol}</b>
+            <b>
+              <Icon
+                name={(['eye', 'dashboard', 'microphone'] as const)[i % 3]}
+              />
+            </b>
             <span>ÉTUDE DE PLATEAU / 0{i + 1}</span>
           </div>
           <h3>
-            {s.title} <span>↗</span>
+            {s.title}{' '}
+            <span>
+              <Icon name="arrowUpRight" />
+            </span>
           </h3>
           <p>{s.copy}</p>
           <small>{s.use}</small>
@@ -624,10 +660,14 @@ function HomeBody({ id }: { id: VerticalId }) {
                   <h3>
                     <MotionText text={s.title} />
                   </h3>
-                  <span>↗</span>
+                  <span>
+                    <Icon name="arrowUpRight" />
+                  </span>
                 </a>
               ))}
-              <a href={link(id, 'services')}>Toutes les expertises →</a>
+              <a href={link(id, 'services')}>
+                Toutes les expertises <Icon name="arrowRight" />
+              </a>
             </div>
           </div>
         </section>
@@ -682,7 +722,7 @@ function HomeBody({ id }: { id: VerticalId }) {
         <section className="academy-manifesto site-section">
           <div className="site-container split-layout">
             <div className="big-asterisk" aria-hidden="true">
-              ✳
+              <Icon name="stars" />
             </div>
             <div>
               <p className="micro">02 / LE SAVOIR EN ACTION</p>
@@ -720,7 +760,9 @@ function HomeBody({ id }: { id: VerticalId }) {
                       {c.hours} h · {c.level}
                     </p>
                   </div>
-                  <span>↗</span>
+                  <span>
+                    <Icon name="arrowUpRight" />
+                  </span>
                 </a>
               ))}
               <Action secondary id={id} path="corporate">
@@ -739,7 +781,9 @@ function HomeBody({ id }: { id: VerticalId }) {
           <div className="site-container">
             <div className="edition-line">
               <span>SMARTSELL MEDIA / ÉDITION DE DÉMONSTRATION</span>
-              <span>CONAKRY → LE MONDE</span>
+              <span>
+                CONAKRY <Icon name="arrowRight" /> LE MONDE
+              </span>
             </div>
             <a
               className="editorial-feature"
@@ -759,7 +803,9 @@ function HomeBody({ id }: { id: VerticalId }) {
                 <p className="micro">À LA UNE / {lead.category}</p>
                 <h2>{lead.title}</h2>
                 <p>{lead.summary}</p>
-                <span className="text-link">Lire l’article ↗</span>
+                <span className="text-link">
+                  Lire l’article <Icon name="arrowUpRight" />
+                </span>
               </div>
             </a>
             <SectionTitle
@@ -777,7 +823,13 @@ function HomeBody({ id }: { id: VerticalId }) {
                     className={`article-cover cover-${i % 3}`}
                     aria-hidden="true"
                   >
-                    <b>{['↗', '✳', '∿'][i % 3]}</b>
+                    <b>
+                      <Icon
+                        name={
+                          (['eye', 'dashboard', 'microphone'] as const)[i % 3]
+                        }
+                      />
+                    </b>
                     <span>{a.number}</span>
                   </div>
                   <p className="micro">
@@ -849,7 +901,9 @@ function HomeBody({ id }: { id: VerticalId }) {
                   <p className="micro">{p.duration} H / FORMAT INDICATIF</p>
                   <h3>{p.title}</h3>
                   <p>{p.copy}</p>
-                  <span>Explorer le pack ↗</span>
+                  <span>
+                    Explorer le pack <Icon name="arrowUpRight" />
+                  </span>
                 </a>
               ))}
             </div>
@@ -974,7 +1028,9 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
               <h2>{s.title}</h2>
               <p>{s.copy}</p>
             </div>
-            <span>↗</span>
+            <span>
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
         ))}
       </div>
@@ -1002,7 +1058,9 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
               ))}
             </ul>
             <p className="price-note">Sur demande</p>
-            <span className="text-link">Voir le périmètre ↗</span>
+            <span className="text-link">
+              Voir le périmètre <Icon name="arrowUpRight" />
+            </span>
           </a>
         ))}
       </div>
@@ -1053,7 +1111,7 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           </div>
           <aside className="course-enroll-panel">
             <span className="course-symbol" aria-hidden="true">
-              ✳
+              <Icon name="stars" />
             </span>
             <h3>Faites le premier pas.</h3>
             <p>
@@ -1077,7 +1135,9 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           <p className="micro">
             {article.category} / {article.minutes} MIN
           </p>
-          <a href={link(id, 'authors/redaction')}>Rédaction Smartsell ↗</a>
+          <a href={link(id, 'authors/redaction')}>
+            Rédaction Smartsell <Icon name="arrowUpRight" />
+          </a>
           <p>10 octobre 2026</p>
           <p className="form-note">
             Exemple éditorial original. Guide ou opinion de démonstration.
@@ -1107,11 +1167,12 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
               .slice(0, 2)
               .map((a) => (
                 <a href={link(id, `article/${a.slug}`)} key={a.slug}>
-                  {a.title} ↗
+                  {a.title} <Icon name="arrowUpRight" />
                 </a>
               ))}
             <a href={link('academy', 'courses')}>
-              Passer de la lecture à la pratique avec Academy ↗
+              Passer de la lecture à la pratique avec Academy{' '}
+              <Icon name="arrowUpRight" />
             </a>
           </div>
         </article>
@@ -1130,7 +1191,9 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
                 {c.hours} h · {c.level}
               </p>
             </div>
-            <span>↗</span>
+            <span>
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
         ))}
       </div>
@@ -1196,7 +1259,15 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           aria-hidden="true"
         >
           <div />
-          <b>{space.symbol}</b>
+          <b>
+            <Icon
+              name={
+                (['eye', 'dashboard', 'microphone'] as const)[
+                  spaces.indexOf(space) % 3
+                ]
+              }
+            />
+          </b>
           <span>CONFIGURATION ILLUSTRATIVE</span>
         </div>
       )}
@@ -1236,7 +1307,7 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
       )}
       {page.kind === 'management' && (
         <a className="site-button" href={managementUrl}>
-          Ouvrir Management, le produit existant ↗
+          Ouvrir Management, le produit existant <Icon name="arrowUpRight" />
         </a>
       )}
       {page.kind === 'obtura' && (
@@ -1251,7 +1322,7 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
             .slice(0, 2)
             .map((c) => (
               <a href={link(id, `work/${c.slug}`)} key={c.slug}>
-                Explorer {c.title} ↗
+                Explorer {c.title} <Icon name="arrowUpRight" />
               </a>
             ))}
         </nav>
@@ -1274,33 +1345,36 @@ export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
       <Header id={id} path={page.path} />
       <main id="main">
         {page.kind === 'home' ? (
-          <>
-            <HomeHero id={id} page={page} />
-            {id === 'agency' && <AgencyRibbon />}
-            <SiteManifesto id={id} />
-            <HomeBody id={id} />
-          </>
+          <VerticalHome id={id} />
         ) : (
           <>
-            <section className="inner-hero">
-              <div className="site-container">
+            <InnerHero
+              id={id}
+              page={page}
+              crumbs={
                 <nav className="breadcrumbs" aria-label="Fil d’Ariane">
                   <a href={link(id)}>{names[id]}</a>
                   <span>/</span>
                   <span>{page.title.replace(/\n/g, ' ')}</span>
                 </nav>
-                <p className="micro">SMARTSELL {names[id].toUpperCase()}</p>
-                <h1 data-reveal>
-                  <MotionText text={page.title} />
-                </h1>
-                <p>{page.intro}</p>
-              </div>
-            </section>
-            <section className="site-section inner-content">
+              }
+            />
+            <section
+              className={`site-section inner-content uv-body uv-body-${id}`}
+            >
               <div className="site-container">
                 <Content id={id} page={page} />
               </div>
             </section>
+            {![
+              'enroll',
+              'learn',
+              'dashboard',
+              'certificates',
+              'booking',
+            ].includes(page.kind || '') && (
+              <InnerCta id={id} path={page.path} />
+            )}
           </>
         )}
       </main>

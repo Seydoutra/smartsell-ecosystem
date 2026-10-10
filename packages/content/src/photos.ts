@@ -172,6 +172,68 @@ export const photos = {
     'Khalid Boutchich',
     'portrait',
   ),
+  agencyDesigner: local(
+    'agency-designer',
+    'Une graphiste dessine sur sa tablette graphique, à son bureau',
+  ),
+  agencyLogo: local(
+    'agency-logo',
+    'Une designer crée un logo sur son écran et sa tablette',
+  ),
+  agencyTablet: local(
+    'agency-tablet',
+    'Un graphiste travaille sur son ordinateur et sa tablette graphique',
+  ),
+  agencySticky: local(
+    'agency-sticky',
+    'Une créative organise ses idées avec des notes adhésives sur une vitre',
+  ),
+  agencyGlass: local(
+    'agency-glass',
+    'Une équipe planifie un projet sur un tableau en verre',
+  ),
+  mediaReporter: local(
+    'media-reporter',
+    'Un journaliste en costume, micro à la main, en reportage en ville',
+    'portrait',
+  ),
+  mediaInterview: local(
+    'media-interview',
+    'Une journaliste interviewe une personne dans la rue',
+  ),
+  mediaPresenter: local(
+    'media-presenter',
+    'Une présentatrice souriante parle au micro',
+  ),
+  mediaReader: local(
+    'media-reader',
+    'Un homme sourit en lisant sur sa tablette, un café à la main',
+  ),
+  studioPink: local(
+    'studio-pink',
+    'Une séance photo sur fond rose, entre boîtes à lumière et réflecteurs',
+  ),
+  studioWhite: local(
+    'studio-white',
+    'Une modèle pose dans un studio photo blanc, éclairé par des projecteurs',
+    'portrait',
+  ),
+  labsNight: local(
+    'labs-night',
+    'Un développeur écrit du code le soir, devant plusieurs écrans',
+  ),
+  labsCoder: local(
+    'labs-coder',
+    'Un développeur concentré travaille sur plusieurs écrans de code',
+  ),
+  academyRoom: local(
+    'academy-room',
+    'Des apprenantes suivent une présentation en salle de formation',
+  ),
+  academyHome: local(
+    'academy-home',
+    'Une apprenante révise chez elle, entre carnet et ordinateur',
+  ),
   socialNight: local(
     'social-night',
     'Une jeune femme sourit en consultant son téléphone, le soir sur un toit',

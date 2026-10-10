@@ -1,3 +1,4 @@
+import { Icon } from '@smartsell/ui/icons';
 import type { Metadata } from 'next';
 import {
   CountUp,
@@ -456,7 +457,8 @@ export default function Home() {
         <PixelMosaic tone="main" />
         <div className="im-hero-copy">
           <p className="sg-mono">
-            ✳ Agence de communication & marketing digital · Conakry
+            <Icon name="stars" /> Agence de communication & marketing digital ·
+            Conakry
           </p>
           <h1 id="hero-title">
             <span>Votre marque</span>
@@ -525,7 +527,9 @@ export default function Home() {
                   {v.number} · {v.name}
                 </small>
                 <strong>{title}</strong>
-                <span>{sub} ↗</span>
+                <span>
+                  {sub} <Icon name="arrowUpRight" />
+                </span>
               </a>
             );
           })}
@@ -750,7 +754,9 @@ export default function Home() {
                 <p>{c.goal}</p>
                 <div className="hm-course-meta">
                   <span>Format envisagé : {c.hours} h</span>
-                  <b>Essayer ↗</b>
+                  <b>
+                    Essayer <Icon name="arrowUpRight" />
+                  </b>
                 </div>
               </div>
             </a>
@@ -996,7 +1002,10 @@ export default function Home() {
               </a>
               {siteMenus[v.id].map((m) => (
                 <a key={m.path} href={go(v.id, m.path)}>
-                  {m.label} <span aria-hidden="true">↗</span>
+                  {m.label}{' '}
+                  <span aria-hidden="true">
+                    <Icon name="arrowUpRight" />
+                  </span>
                 </a>
               ))}
             </div>

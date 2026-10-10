@@ -1,4 +1,5 @@
 'use client';
+import { Icon } from './icons';
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 import type { VerticalId } from '@smartsell/types';
 import { verticals } from '@smartsell/content';
@@ -215,7 +216,9 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
             <div className="scene-row" key={item}>
               <span>0{i + 1}</span>
               <b>{item}</b>
-              <i>↗</i>
+              <i>
+                <Icon name="arrowUpRight" />
+              </i>
             </div>
           ))}
           <a
@@ -228,7 +231,7 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
                   : 'work/kalo',
             )}
           >
-            Voir l’exploration ↗
+            Voir l’exploration <Icon name="arrowUpRight" />
           </a>
         </div>
       </div>
@@ -238,7 +241,9 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
       <div className="scene-academy">
         <div className="scene-lesson">
           <small>MODULE DÉMO / MARKETING DIGITAL</small>
-          <span className="lesson-symbol">✳</span>
+          <span className="lesson-symbol">
+            <Icon name="stars" />
+          </span>
           <h3>
             {active === 1
               ? 'Choisir un objectif.'
@@ -255,7 +260,8 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
               active === 2 ? 'dashboard' : 'courses/marketing-digital',
             )}
           >
-            {active === 2 ? 'Ouvrir mon espace démo' : 'Découvrir ce module'} ↗
+            {active === 2 ? 'Ouvrir mon espace démo' : 'Découvrir ce module'}{' '}
+            <Icon name="arrowUpRight" />
           </a>
         </div>
         <div className="scene-side">
@@ -284,7 +290,9 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
             <div className="scene-row" key={t}>
               <span>0{i + 1}</span>
               <b>{t}</b>
-              <i>↗</i>
+              <i>
+                <Icon name="arrowUpRight" />
+              </i>
             </div>
           ))}
           <span className="scene-note">
@@ -326,7 +334,9 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
             >
               <small>{a.category}</small>
               <b>{a.title}</b>
-              <i>↗</i>
+              <i>
+                <Icon name="arrowUpRight" />
+              </i>
             </a>
           ))}
         </div>
@@ -338,7 +348,9 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
         <div className="scene-camera">
           <div className="camera-label">
             <span>PLATEAU / {active === 1 ? 'SON' : 'IMAGE'}</span>
-            <span>◎ APERÇU</span>
+            <span>
+              <Icon name="task" /> APERÇU
+            </span>
           </div>
           {active === 1 ? (
             <div className="scene-wave" aria-hidden="true">
@@ -382,7 +394,9 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
             <div className="scene-row" key={t}>
               <span>0{i + 1}</span>
               <b>{t}</b>
-              <i>↗</i>
+              <i>
+                <Icon name="arrowUpRight" />
+              </i>
             </div>
           ))}
           <a
@@ -396,7 +410,7 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
             )}
           >
             {active === 2 ? 'Simuler une réservation' : 'Explorer ce plateau'}{' '}
-            ↗
+            <Icon name="arrowUpRight" />
           </a>
         </div>
       </div>
@@ -427,15 +441,23 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
           ).map((t, i) => (
             <div key={t}>
               <span>{t}</span>
-              <b>{['◈', '↗', '∿'][i]}</b>
+              <b>
+                <Icon
+                  name={(['arrowUpRight', 'puzzle', 'microphone'] as const)[i]}
+                />
+              </b>
             </div>
           ))}
         </div>
         <div className="scene-flow">
           <span>Comprendre</span>
-          <i>→</i>
+          <i>
+            <Icon name="arrowRight" />
+          </i>
           <span>Relier</span>
-          <i>→</i>
+          <i>
+            <Icon name="arrowRight" />
+          </i>
           <span>Avancer</span>
         </div>
       </div>
@@ -465,7 +487,8 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
                 : 'products/management',
           )}
         >
-          {active === 2 ? 'Explorer nos pistes' : 'Découvrir le produit'} ↗
+          {active === 2 ? 'Explorer nos pistes' : 'Découvrir le produit'}{' '}
+          <Icon name="arrowUpRight" />
         </a>
         <span className="scene-note">
           {active === 1
@@ -523,7 +546,7 @@ export function PreviewFrame({ id }: { id: VerticalId }) {
             ))}
           </div>
           <a className="scene-home" href={href(id)}>
-            Explorer ce site ↗
+            Explorer ce site <Icon name="arrowUpRight" />
           </a>
         </aside>
         <div
@@ -598,7 +621,9 @@ export function EcosystemCinema() {
         </div>
         <div className="cinema-caption">
           <p>{verticals[active].description}</p>
-          <a href={href(id)}>Entrer dans {verticals[active].name} ↗</a>
+          <a href={href(id)}>
+            Entrer dans {verticals[active].name} <Icon name="arrowUpRight" />
+          </a>
         </div>
       </div>
     </section>

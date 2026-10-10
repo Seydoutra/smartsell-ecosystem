@@ -1,4 +1,5 @@
 'use client';
+import { Icon } from './icons';
 import {
   useEffect,
   useId,
@@ -92,7 +93,7 @@ export function JourneyPicker({ journeys }: { journeys: Journey[] }) {
                   <span>{s.copy}</span>
                 </span>
                 <span className="hm-step-arrow" aria-hidden="true">
-                  ↗
+                  <Icon name="arrowUpRight" />
                 </span>
               </a>
             </li>
@@ -157,10 +158,10 @@ export function Rail({
         </div>
         <div className="hm-rail-arrows">
           <button type="button" onClick={() => move(-1)} aria-label="Précédent">
-            ←
+            <Icon name="arrowLeft" />
           </button>
           <button type="button" onClick={() => move(1)} aria-label="Suivant">
-            →
+            <Icon name="arrowRight" />
           </button>
         </div>
       </div>
@@ -271,7 +272,7 @@ export function BriefBuilder({
                 aria-pressed={picked.includes(n)}
                 onClick={() => toggle(n)}
               >
-                {picked.includes(n) ? '✓ ' : '+ '}
+                {picked.includes(n) ? '' : '+ '}
                 {n}
               </button>
             ))}

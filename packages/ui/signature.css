@@ -1119,3 +1119,17 @@ html[data-sg] .sg-highlight {
     color: #160a1e;
   }
 }
+
+/* Icônes Envato au trait, alignées sur le texte */
+.icon {
+  display: inline-block;
+  flex: none;
+  vertical-align: -0.14em;
+}
+.im-cta i .icon,
+.im-floating i .icon,
+.sg-pill-link > span .icon {
+  width: 1.05em;
+  height: 1.05em;
+  vertical-align: middle;
+}

@@ -1,3 +1,4 @@
+import { Icon } from './icons';
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import { verticals } from '@smartsell/content';
 import { urlFor, withBasePath, routingConfig } from '@smartsell/routing';
@@ -17,7 +18,9 @@ export function ButtonLink({
   return (
     <a className={`button button--${tone} ${className}`} {...props}>
       {children}
-      <span aria-hidden="true">↗</span>
+      <span aria-hidden="true">
+        <Icon name="arrowUpRight" />
+      </span>
     </a>
   );
 }
@@ -75,7 +78,9 @@ export function Footer() {
           {verticals.map((v) => (
             <a key={v.id} href={urlFor(v.id, 'fr', '', routingConfig)}>
               {v.name}
-              <span aria-hidden="true">↗</span>
+              <span aria-hidden="true">
+                <Icon name="arrowUpRight" />
+              </span>
             </a>
           ))}
         </nav>
@@ -90,7 +95,9 @@ export function Footer() {
       <div className="container footer-bottom">
         <span>© {new Date().getUTCFullYear()} Smartsell</span>
         <span>Créer. Apprendre. Comprendre. Produire. Innover.</span>
-        <a href="#top">Retour en haut ↑</a>
+        <a href="#top">
+          Retour en haut <Icon name="arrowUp" />
+        </a>
       </div>
     </footer>
   );

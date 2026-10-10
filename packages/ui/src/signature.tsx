@@ -1,4 +1,5 @@
 'use client';
+import { Icon } from './icons';
 import {
   useEffect,
   useId,
@@ -67,7 +68,9 @@ export function IntroCurtain({
         ))}
       </div>
       <div className="sg-curtain-copy">
-        <span className="sg-mono">SMARTSELL ✳ {tagline}</span>
+        <span className="sg-mono">
+          SMARTSELL <Icon name="stars" /> {tagline}
+        </span>
         <strong>{name}</strong>
         <span className="sg-curtain-line" />
       </div>
@@ -491,7 +494,10 @@ export function UniverseTabs() {
             className="sg-pill-link"
             href={urlFor(v.id, 'fr', '', routingConfig)}
           >
-            Entrer dans {v.name} <span aria-hidden="true">↗</span>
+            Entrer dans {v.name}{' '}
+            <span aria-hidden="true">
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
         </div>
         <div className="sg-panel-visual">
@@ -517,7 +523,11 @@ export function CrossGrid({
             <span className="sg-mono">{item.label}</span>
             <h3>{item.title}</h3>
             <p>{item.copy}</p>
-            {item.href && <span aria-hidden="true">↗</span>}
+            {item.href && (
+              <span aria-hidden="true">
+                <Icon name="arrowUpRight" />
+              </span>
+            )}
           </>
         );
         return item.href ? (

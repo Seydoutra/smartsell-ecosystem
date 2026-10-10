@@ -1,4 +1,5 @@
 'use client';
+import { Icon } from './icons';
 import { useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { verticals, searchEntries } from '@smartsell/content';
@@ -58,7 +59,10 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
               className="header-quote"
               href={urlFor('agency', 'fr', 'contact', routingConfig)}
             >
-              Demander un devis <span aria-hidden="true">↗</span>
+              Demander un devis{' '}
+              <span aria-hidden="true">
+                <Icon name="arrowUpRight" />
+              </span>
             </a>
             <button
               className="search-trigger"
@@ -66,7 +70,10 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
               aria-haspopup="dialog"
               onClick={() => search.current?.showModal()}
             >
-              Rechercher <span aria-hidden="true">⌕</span>
+              Rechercher{' '}
+              <span aria-hidden="true">
+                <Icon name="search" />
+              </span>
             </button>
             <span className="language" aria-label="Langue : français">
               FR
@@ -77,7 +84,10 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
               aria-haspopup="dialog"
               onClick={() => menu.current?.showModal()}
             >
-              Menu <span aria-hidden="true">☰</span>
+              Menu{' '}
+              <span aria-hidden="true">
+                <Icon name="menu" />
+              </span>
             </button>
           </div>
         </div>
@@ -109,7 +119,9 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
                     {v.number} / {v.verb}
                   </small>
                   <strong>{v.name}</strong>
-                  <span>{v.journey} ↗</span>
+                  <span>
+                    {v.journey} <Icon name="arrowUpRight" />
+                  </span>
                 </a>
               ))}
             </nav>
@@ -133,7 +145,10 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
         </div>
         <nav aria-label="Navigation mobile">
           <a href={withBasePath('/fr/')} onClick={() => menu.current?.close()}>
-            La maison <span>↗</span>
+            La maison{' '}
+            <span>
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
           {verticals.map((v) => (
             <a
@@ -147,7 +162,9 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
                 </small>
                 {v.name}
               </span>
-              <span>↗</span>
+              <span>
+                <Icon name="arrowUpRight" />
+              </span>
             </a>
           ))}
         </nav>
@@ -159,7 +176,10 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
             search.current?.showModal();
           }}
         >
-          Rechercher dans l’écosystème <span aria-hidden="true">⌕</span>
+          Rechercher dans l’écosystème{' '}
+          <span aria-hidden="true">
+            <Icon name="search" />
+          </span>
         </button>
         <p>Une maison. Cinq façons d’avancer.</p>
       </dialog>
