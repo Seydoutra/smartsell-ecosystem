@@ -33,6 +33,12 @@ Les titres se révèlent mot par mot. Agency ajoute une bande typographique déf
 
 Le rideau disparaît en CSS même sans JavaScript. La pause, `prefers-reduced-motion`, l’onglet masqué et la sortie du viewport arrêtent les animations ; les onglets s’arrêtent aussi au survol et au focus.
 
+## Version immersive (agence)
+
+La homepage parle désormais comme une agence de communication et de marketing digital, avec des appels à l’action vers le contact Agency à chaque section. `packages/ui/src/immersive.tsx` ajoute des colonnes de photos défilantes, un bandeau typographique, un zoom/dézoom au scroll, un défilement horizontal des expertises, un carrousel plein cadre des cinq sites, des cartes de méthode empilées, une galerie en parallaxe et un bouton « Parlons de votre projet » flottant. Chaque site vertical reçoit un bandeau de photos et un appel à l’action.
+
+Les photographies viennent d’Unsplash (licence libre) et sont chargées depuis `images.unsplash.com` ; leur liste et leurs auteurs sont dans `packages/content/src/photos.ts`. Ce sont des images d’illustration : elles ne présentent ni l’équipe ni des clients. À remplacer par des photos Smartsell dès qu’elles existent.
+
 ## Academy
 
 Huit modules et trois leçons d’aperçu par module. Le quiz donne un retour et bloque la validation tant que la réponse est incorrecte. Les modules choisis et indices des leçons terminées sont stockés sous `smartsell-academy-demo-v1`. La lecture ignore les modules inconnus, les indices hors limites et les données malformées. Les notes d’exercice restent temporaires. Le tableau de bord peut effacer la progression. Les récapitulatifs imprimables portent explicitement la mention sans valeur de certification officielle.

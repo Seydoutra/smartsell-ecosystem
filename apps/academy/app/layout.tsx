@@ -6,6 +6,7 @@ import '@smartsell/ui/styles.css';
 import '@smartsell/ui/sites.css';
 import '@smartsell/ui/experience.css';
 import '@smartsell/ui/signature.css';
+import '@smartsell/ui/immersive.css';
 import {
   IntroCurtain,
   IntroScript,

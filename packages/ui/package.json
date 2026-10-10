@@ -12,7 +12,9 @@
     "./experience": "./src/experience.tsx",
     "./experience.css": "./experience.css",
     "./signature": "./src/signature.tsx",
-    "./signature.css": "./signature.css"
+    "./signature.css": "./signature.css",
+    "./immersive": "./src/immersive.tsx",
+    "./immersive.css": "./immersive.css"
   },
   "peerDependencies": {
     "react": "^19"

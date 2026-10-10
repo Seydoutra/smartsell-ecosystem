@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./sites": "./src/sites.ts"
+    "./sites": "./src/sites.ts",
+    "./photos": "./src/photos.ts"
   },
   "dependencies": {
     "@smartsell/types": "workspace:*",
