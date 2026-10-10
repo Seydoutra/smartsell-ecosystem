@@ -4,17 +4,21 @@ La correction validée transforme les pages d’introduction en cinq sites multi
 
 ## Direction visuelle
 
-Les références demandées sont Amaset, Navia, Stoa, TBD Studio et Corndel. Elles ont été examinées comme références de composition : ampleur typographique, grands cadrages, navigation légère, alternance de densité et de respiration. Les textes, images, témoignages et chiffres de ces sites ne sont pas repris.
+La référence principale de cette refonte est la vitrine Smartsell Management, à la demande de l’utilisateur : fond noir quadrillé, halo violet, navigation vitrée, titre centré avec une ligne jaune changeante, aperçus d’interfaces et alternance de sections claires et sombres. Management a été consulté en lecture seule. Son code, ses comptes, ses données et sa publication n’ont pas été modifiés.
 
-| Site    | Expression                                                                             |
-| ------- | -------------------------------------------------------------------------------------- |
-| Agency  | Violet profond, sculpture jaune en perspective, portfolio décalé, index des expertises |
-| Academy | Papier clair, notes en mouvement, cartes pédagogiques, bande manifeste violette        |
-| Media   | Rose violet, compositions typographiques, grande une et grille éditoriale              |
-| Studios | Plateau sombre, faisceaux de lumière, cadres de prise de vue et plans de production    |
-| Labs    | Grille, plans transparents, profondeur et interfaces produit illustratives             |
+Les précédentes références Amaset, Navia, Stoa, TBD Studio et Corndel restent des inspirations de composition. Aucun texte, image, témoignage ou chiffre de ces sites n’est repris.
 
-Le mouvement utilise CSS, IntersectionObserver et un traitement limité du pointeur. Les textes restent accessibles sans JavaScript. Le bouton de pause s’applique aux animations et transitions de la page et conserve ce choix pour la session de navigation. `prefers-reduced-motion` désactive les animations et masque ce bouton. Aucun son ni vidéo ne démarre automatiquement.
+| Site    | Aperçu interactif                                                     |
+| ------- | --------------------------------------------------------------------- |
+| Agency  | Identité Kalo, exploration digitale Noura, méthode créative           |
+| Academy | Module marketing digital, exercice concret, parcours de démonstration |
+| Media   | Une éditoriale, rubriques et liens de lecture                         |
+| Studios | Plateau image, onde audio, étapes d’une session simulée               |
+| Labs    | Management, vision Obtura et pistes de recherche                      |
+
+La homepage présente également les cinq univers dans un aperçu à onglets avec des liens vers chaque site autonome. Les onglets s’utilisent à la souris et au clavier (flèches, Début, Fin). Les scènes illustrent des contenus existants du site ; elles ne représentent pas une activité réelle ni des données clients.
+
+Le mouvement utilise CSS, IntersectionObserver et un traitement limité du pointeur. La ligne changeante du titre conserve un texte accessible stable ; elle s’arrête quand elle sort de l’écran, quand l’onglet est masqué ou lorsque les animations sont en pause. Les contenus et le premier aperçu restent lisibles sans JavaScript. Le bouton de pause conserve le choix pour la session. `prefers-reduced-motion` désactive les animations et masque ce bouton. Aucun son ni vidéo ne démarre automatiquement.
 
 ## Academy
 

@@ -17,6 +17,7 @@ import {
   managementUrl,
 } from '@smartsell/routing';
 import { Brand } from '../brand';
+import { ChangingHeadline, PreviewFrame } from '../experience';
 import { MotionLayer } from './motion';
 import {
   ArticleSearch,
@@ -231,116 +232,6 @@ function SectionTitle({
     </div>
   );
 }
-function HeroArt({ id }: { id: VerticalId }) {
-  if (id === 'agency')
-    return (
-      <div className="hero-art agency-art" aria-hidden="true">
-        <div className="orbital orbit-one" />
-        <div className="orbital orbit-two" />
-        <div className="agency-sculpture">
-          <i />
-          <i />
-          <i />
-          <i />
-          <i />
-          <i />
-        </div>
-        <div className="art-label">
-          <span>STRATÉGIE → FORME → EXPÉRIENCE</span>
-          <b>
-            MAKE
-            <br />
-            THE MOVE.
-          </b>
-        </div>
-        <span className="art-coordinates">09°38′ N / 13°35′ W</span>
-      </div>
-    );
-  if (id === 'academy')
-    return (
-      <div className="hero-art academy-art" aria-hidden="true">
-        <div className="learning-orbit" />
-        <div className="floating-note note-one">
-          <span>01 / LA CURIOSITÉ</span>
-          <b>
-            Et si
-            <br />
-            j’essayais ?
-          </b>
-          <i>↗</i>
-        </div>
-        <div className="floating-note note-two">
-          <span>02 / LA PRATIQUE</span>
-          <b>
-            Faire.
-            <br />
-            Comprendre.
-          </b>
-          <div className="fake-progress">
-            <i />
-          </div>
-        </div>
-        <div className="note-dot">✳</div>
-        <div className="art-label">
-          <span>LE PROCHAIN PAS VOUS APPARTIENT.</span>
-        </div>
-      </div>
-    );
-  if (id === 'media')
-    return (
-      <div className="hero-art media-art" aria-hidden="true">
-        <div className="editorial-circle">
-          <i />
-          <i />
-          <i />
-        </div>
-        <b className="editorial-word">
-          NEXT
-          <br />
-          IDEA.
-        </b>
-        <span className="art-coordinates">UNE QUESTION CHANGE LE REGARD.</span>
-      </div>
-    );
-  if (id === 'studio')
-    return (
-      <div className="hero-art studio-art" aria-hidden="true">
-        <div className="studio-light light-one" />
-        <div className="studio-light light-two" />
-        <div className="viewfinder">
-          <span>IMAGE / SON / MOUVEMENT</span>
-          <div className="studio-aperture">
-            <i />
-            <i />
-            <i />
-            <i />
-            <i />
-            <i />
-          </div>
-          <div className="viewfinder-bottom">
-            <span>CONCEPT DE PLATEAU</span>
-            <b>◎</b>
-          </div>
-        </div>
-      </div>
-    );
-  return (
-    <div className="hero-art labs-art" aria-hidden="true">
-      <div className="lab-grid" />
-      <div className="lab-core">
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-      </div>
-      <div className="lab-tag tag-one">01 / OBSERVER</div>
-      <div className="lab-tag tag-two">02 / CONSTRUIRE</div>
-      <div className="lab-tag tag-three">03 / TRANSMETTRE</div>
-      <span className="art-coordinates">HUMAN INTENT. DIGITAL SYSTEMS.</span>
-    </div>
-  );
-}
 function HomeHero({ id, page }: { id: VerticalId; page: SitePageData }) {
   const ctas: Record<VerticalId, [string, string, string, string]> = {
     agency: [
@@ -393,11 +284,8 @@ function HomeHero({ id, page }: { id: VerticalId; page: SitePageData }) {
                     : 'MAKE THE MOVE'}
           </p>
           <h1>
-            {page.title.split('\n').map((line, i) => (
-              <span key={line} className={i === 1 ? 'accent-line' : ''}>
-                {line}
-              </span>
-            ))}
+            <span>{page.title.split('\n')[0]}</span>
+            <ChangingHeadline id={id} />
           </h1>
           <p className="hero-lead">{page.intro}</p>
           <div className="site-actions">
@@ -409,7 +297,9 @@ function HomeHero({ id, page }: { id: VerticalId; page: SitePageData }) {
             </Action>
           </div>
         </div>
-        <HeroArt id={id} />
+        <div className="hero-preview" data-reveal>
+          <PreviewFrame id={id} />
+        </div>
       </div>
       <div className="site-container hero-foot">
         <span>UNE MAISON. UNE AMBITION.</span>

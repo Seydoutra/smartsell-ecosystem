@@ -5,6 +5,7 @@ import '@fontsource-variable/space-grotesk/wght.css';
 import '@smartsell/brand/tokens.css';
 import '@smartsell/ui/styles.css';
 import './globals.css';
+import '@smartsell/ui/experience.css';
 import { MotionLayer } from '@smartsell/ui/motion';
 import {
   siteUrl,

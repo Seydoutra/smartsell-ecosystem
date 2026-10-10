@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ChangingHeadline, EcosystemCinema } from '@smartsell/ui/experience';
 import { ButtonLink, SectionHeading } from '@smartsell/ui';
 import { verticals, products, nextJourney } from '@smartsell/content';
 import { withBasePath, routingConfig, urlFor } from '@smartsell/routing';
@@ -10,48 +11,34 @@ export default function Home() {
   return (
     <main id="main">
       <section className="hero">
-        <div className="hero-watermark" aria-hidden="true">
-          <img
-            src={withBasePath('/brand/icon-yellow.png')}
-            width="3240"
-            height="3240"
-            alt=""
-          />
-        </div>
         <div className="container hero-grid">
           <div className="hero-content">
-            <p className="eyebrow">Depuis Conakry. Ouvert sur le monde.</p>
+            <p className="eyebrow">
+              <span className="hero-spark" aria-hidden="true">
+                ✳
+              </span>{' '}
+              Une maison. Cinq façons d’avancer.
+            </p>
             <h1>
-              Un écosystème.
-              <br />
-              Cinq façons
-              <br />
-              <em>d’avancer.</em>
+              <span>Un écosystème pour</span>
+              <ChangingHeadline />
             </h1>
             <p className="hero-description">
               Nous relions les marques, les talents et les idées.
-              <br className="desktop-break" /> Pour créer ce qui compte. Et
-              faire avancer la suite.
+              <br className="desktop-break" /> Depuis Conakry, nous donnons une
+              forme à vos ambitions.
             </p>
             <div className="hero-actions">
               <ButtonLink href="#ecosystem">Explorer l’écosystème</ButtonLink>
-              <ButtonLink href="#vision" tone="text">
-                Découvrir la maison
+              <ButtonLink href="#apercus" tone="text">
+                Voir Smartsell en mouvement
               </ButtonLink>
             </div>
-          </div>
-          <div className="hero-universes">
-            <p className="eyebrow">Une maison. Cinq univers.</p>
-            {verticals.map((v) => (
-              <a key={v.id} href={urlFor(v.id, 'fr', '', routingConfig)}>
-                <span className="universe-number">{v.number}</span>
-                <span className="universe-word">{v.verb}</span>
-                <span className="universe-name">
-                  {v.name}
-                  <span aria-hidden="true">↗</span>
-                </span>
-              </a>
-            ))}
+            <div className="hero-promises">
+              <span>✓ Stratégie & création</span>
+              <span>✓ Compétences & contenus</span>
+              <span>✓ Produits & innovation</span>
+            </div>
           </div>
         </div>
         <div className="container hero-baseline">
@@ -61,6 +48,7 @@ export default function Home() {
           </span>
         </div>
       </section>
+      <EcosystemCinema />
       <section className="ecosystem-section section" id="ecosystem">
         <div className="container">
           <SectionHeading

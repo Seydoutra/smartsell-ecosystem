@@ -8,7 +8,9 @@
     "./styles.css": "./styles.css",
     "./sites": "./src/sites/index.tsx",
     "./sites.css": "./sites.css",
-    "./motion": "./src/sites/motion.tsx"
+    "./motion": "./src/sites/motion.tsx",
+    "./experience": "./src/experience.tsx",
+    "./experience.css": "./experience.css"
   },
   "peerDependencies": {
     "react": "^19"
