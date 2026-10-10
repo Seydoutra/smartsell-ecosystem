@@ -11,7 +11,12 @@ import {
   type SitePageData,
 } from '@smartsell/content/sites';
 import { photos, videos, type Photo } from '@smartsell/content/photos';
-import { managementUrl, routingConfig, urlFor } from '@smartsell/routing';
+import {
+  managementUrl,
+  routingConfig,
+  urlFor,
+  locale,
+} from '@smartsell/routing';
 import { Highlight } from '../signature';
 import {
   CtaLink,
@@ -40,7 +45,7 @@ import {
  */
 
 const go = (id: VerticalId | 'main', path = '') =>
-  urlFor(id, 'fr', path, routingConfig);
+  urlFor(id, locale, path, routingConfig);
 
 const agencyShots: Photo[] = [
   photos.agencyDesigner,

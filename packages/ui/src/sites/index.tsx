@@ -16,12 +16,19 @@ import {
   urlFor,
   routingConfig,
   managementUrl,
+  locale,
 } from '@smartsell/routing';
 import { Brand } from '../brand';
 import { ChangingHeadline, PreviewFrame } from '../experience';
 import { MotionLayer } from './motion';
 import { MotionText, AgencyRibbon, CampaignVisual } from './visuals';
-import { CountUp, PixelMosaic, ScrollLitText, ThemeToggle } from '../signature';
+import {
+  CountUp,
+  LangSwitch,
+  PixelMosaic,
+  ScrollLitText,
+  ThemeToggle,
+} from '../signature';
 import { CtaLink, PhotoRail } from '../immersive';
 import { InnerCta, InnerHero, VerticalHome } from './universe';
 import { photos, type Photo } from '@smartsell/content/photos';
@@ -38,7 +45,7 @@ import {
   ShareArticle,
 } from './interactions';
 const link = (id: VerticalId | 'main', path = '') =>
-  urlFor(id, 'fr', path, routingConfig);
+  urlFor(id, locale, path, routingConfig);
 const names = {
   agency: 'Agency',
   academy: 'Academy',
@@ -126,7 +133,10 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
               </a>
             ))}
           </nav>
-          <ThemeToggle />
+          <div className="site-header-tools">
+            <LangSwitch />
+            <ThemeToggle />
+          </div>
           <details className="mobile-site-menu">
             <summary>
               Menu <span aria-hidden="true">+</span>

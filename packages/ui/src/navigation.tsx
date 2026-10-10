@@ -1,10 +1,15 @@
 'use client';
-import { ThemeToggle } from './signature';
+import { LangSwitch, ThemeToggle } from './signature';
 import { Icon } from './icons';
 import { useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { verticals, searchEntries } from '@smartsell/content';
-import { withBasePath, routingConfig, urlFor } from '@smartsell/routing';
+import {
+  withBasePath,
+  routingConfig,
+  urlFor,
+  locale,
+} from '@smartsell/routing';
 import type { VerticalId } from '@smartsell/types';
 import { Brand } from './brand';
 function closeOnEscape(event: KeyboardEvent<HTMLDialogElement>) {
@@ -39,7 +44,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
         <div className="container header-inner">
           <a
             className="home-link"
-            href={withBasePath('/fr/')}
+            href={withBasePath(`/${locale}/`)}
             aria-label="Smartsell, accueil"
           >
             <Brand variant="yellow" />
@@ -49,7 +54,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
               <a
                 aria-current={active === v.id ? 'page' : undefined}
                 key={v.id}
-                href={urlFor(v.id, 'fr', '', routingConfig)}
+                href={urlFor(v.id, locale, '', routingConfig)}
               >
                 {v.name}
               </a>
@@ -59,7 +64,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
             <ThemeToggle />
             <a
               className="header-quote"
-              href={urlFor('agency', 'fr', 'contact', routingConfig)}
+              href={urlFor('agency', locale, 'contact', routingConfig)}
             >
               Demander un devis{' '}
               <span aria-hidden="true">
@@ -77,9 +82,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
                 <Icon name="search" />
               </span>
             </button>
-            <span className="language" aria-label="Langue : français">
-              FR
-            </span>
+            <LangSwitch />
             <button
               className="menu-trigger"
               type="button"
@@ -116,7 +119,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
             </summary>
             <nav aria-label="Explorer les univers" className="mega-menu">
               {verticals.map((v) => (
-                <a key={v.id} href={urlFor(v.id, 'fr', '', routingConfig)}>
+                <a key={v.id} href={urlFor(v.id, locale, '', routingConfig)}>
                   <small>
                     {v.number} / {v.verb}
                   </small>
@@ -146,7 +149,10 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
           </button>
         </div>
         <nav aria-label="Navigation mobile">
-          <a href={withBasePath('/fr/')} onClick={() => menu.current?.close()}>
+          <a
+            href={withBasePath(`/${locale}/`)}
+            onClick={() => menu.current?.close()}
+          >
             La maison{' '}
             <span>
               <Icon name="arrowUpRight" />
@@ -155,7 +161,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
           {verticals.map((v) => (
             <a
               key={v.id}
-              href={urlFor(v.id, 'fr', '', routingConfig)}
+              href={urlFor(v.id, locale, '', routingConfig)}
               onClick={() => menu.current?.close()}
             >
               <span>

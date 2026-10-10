@@ -5,6 +5,7 @@ import {
   withBasePath,
   routingConfig,
   managementUrl,
+  locale,
 } from '@smartsell/routing';
 export const verticals: readonly Vertical[] = [
   {
@@ -92,7 +93,7 @@ export const products = [
     description:
       'Un univers produit pensé pour les photographes, vidéastes et créateurs visuels.',
     state: 'Découvrir la vision Obtura',
-    url: urlFor('labs', 'fr', 'products/obtura', routingConfig),
+    url: urlFor('labs', locale, 'products/obtura', routingConfig),
     external: false,
   },
 ] as const;
@@ -100,7 +101,7 @@ export const searchEntries: readonly SearchEntry[] = [
   ...verticals.map((v) => ({
     title: `Smartsell ${v.name}`,
     summary: `${v.verb}. ${v.description}`,
-    url: urlFor(v.id, 'fr', '', routingConfig),
+    url: urlFor(v.id, locale, '', routingConfig),
     type: 'Univers',
   })),
   ...verticals.flatMap((v) =>
@@ -115,7 +116,7 @@ export const searchEntries: readonly SearchEntry[] = [
       .map((p) => ({
         title: `${v.name} · ${p.title}`,
         summary: p.intro,
-        url: urlFor(v.id, 'fr', p.path, routingConfig),
+        url: urlFor(v.id, locale, p.path, routingConfig),
         type: v.name,
       })),
   ),
@@ -129,7 +130,7 @@ export const searchEntries: readonly SearchEntry[] = [
     title: 'La maison Smartsell',
     summary:
       'Agence de communication et de marketing digital : stratégie, réseaux sociaux, publicité, production, web et formation.',
-    url: withBasePath('/fr/#manifeste'),
+    url: withBasePath(`/${locale}/#manifeste`),
     type: 'La maison',
   },
 ];

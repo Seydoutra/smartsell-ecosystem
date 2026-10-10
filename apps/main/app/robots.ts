@@ -1,4 +1,4 @@
-import { withBasePath } from '@smartsell/routing';
+import { withBasePath, locale } from '@smartsell/routing';
 import type { MetadataRoute } from 'next';
 import { absoluteUrl, indexable } from '@smartsell/seo';
 export const dynamic = 'force-static';
@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       ...(indexable
-        ? { allow: '/', disallow: withBasePath('/fr/design-system/') }
+        ? { allow: '/', disallow: withBasePath(`/${locale}/design-system/`) }
         : { disallow: '/' }),
     },
     ...(indexable

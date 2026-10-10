@@ -1,7 +1,12 @@
 import { Icon } from './icons';
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import { verticals } from '@smartsell/content';
-import { urlFor, withBasePath, routingConfig } from '@smartsell/routing';
+import {
+  urlFor,
+  withBasePath,
+  routingConfig,
+  locale,
+} from '@smartsell/routing';
 export { GlobalNavigation } from './navigation';
 export { Brand } from './brand';
 import { Brand } from './brand';
@@ -59,7 +64,7 @@ export function Footer() {
     <footer className="footer">
       <div className="container footer-grid">
         <div className="footer-brand">
-          <a href={withBasePath('/fr/')} aria-label="Smartsell, accueil">
+          <a href={withBasePath(`/${locale}/`)} aria-label="Smartsell, accueil">
             <Brand variant="white" />
           </a>
           <p>
@@ -76,7 +81,7 @@ export function Footer() {
         <nav aria-label="Univers dans le pied de page">
           <p className="eyebrow">L’écosystème</p>
           {verticals.map((v) => (
-            <a key={v.id} href={urlFor(v.id, 'fr', '', routingConfig)}>
+            <a key={v.id} href={urlFor(v.id, locale, '', routingConfig)}>
               {v.name}
               <span aria-hidden="true">
                 <Icon name="arrowUpRight" />
@@ -86,10 +91,10 @@ export function Footer() {
         </nav>
         <nav aria-label="La maison">
           <p className="eyebrow">La maison</p>
-          <a href={withBasePath('/fr/#services')}>Nos expertises</a>
-          <a href={withBasePath('/fr/#methode')}>Notre méthode</a>
-          <a href={withBasePath('/fr/#manifeste')}>Notre conviction</a>
-          <a href={withBasePath('/fr/#ecosystem')}>Nos cinq univers</a>
+          <a href={withBasePath(`/${locale}/#services`)}>Nos expertises</a>
+          <a href={withBasePath(`/${locale}/#methode`)}>Notre méthode</a>
+          <a href={withBasePath(`/${locale}/#manifeste`)}>Notre conviction</a>
+          <a href={withBasePath(`/${locale}/#ecosystem`)}>Nos cinq univers</a>
         </nav>
       </div>
       <div className="container footer-bottom">

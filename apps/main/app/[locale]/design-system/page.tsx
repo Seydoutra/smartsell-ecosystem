@@ -1,4 +1,4 @@
-import { withBasePath } from '@smartsell/routing';
+import { withBasePath, locale } from '@smartsell/routing';
 import { Brand, ButtonLink, SectionHeading } from '@smartsell/ui';
 import type { Metadata } from 'next';
 export const metadata: Metadata = {
@@ -64,11 +64,13 @@ export default function DesignSystem() {
       <section>
         <h2>Actions</h2>
         <div className="button-samples">
-          <ButtonLink href={withBasePath('/fr/')}>Action principale</ButtonLink>
-          <ButtonLink href={withBasePath('/fr/')} tone="secondary">
+          <ButtonLink href={withBasePath(`/${locale}/`)}>
+            Action principale
+          </ButtonLink>
+          <ButtonLink href={withBasePath(`/${locale}/`)} tone="secondary">
             Action secondaire
           </ButtonLink>
-          <ButtonLink href={withBasePath('/fr/')} tone="text">
+          <ButtonLink href={withBasePath(`/${locale}/`)} tone="text">
             Lien éditorial
           </ButtonLink>
         </div>

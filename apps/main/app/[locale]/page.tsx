@@ -49,6 +49,7 @@ import {
   routingConfig,
   urlFor,
   managementUrl,
+  locale,
 } from '@smartsell/routing';
 import { absoluteUrl } from '@smartsell/seo';
 import type { VerticalId } from '@smartsell/types';
@@ -59,10 +60,10 @@ export const metadata: Metadata = {
   },
   description:
     'Stratégie de marque, réseaux sociaux, publicité digitale, production photo et vidéo, sites web, formation et outils : Smartsell fait parler votre marque.',
-  alternates: { canonical: withBasePath('/fr/') },
+  alternates: { canonical: withBasePath(`/${locale}/`) },
 };
 const go = (vertical: VerticalId, path = '') =>
-  urlFor(vertical, 'fr', path, routingConfig);
+  urlFor(vertical, locale, path, routingConfig);
 const contact = go('agency', 'contact');
 
 const quick: [VerticalId, string, string][] = [
@@ -1048,7 +1049,7 @@ export default function Home() {
             '@context': 'https://schema.org',
             '@type': 'Organization',
             name: 'Smartsell',
-            url: absoluteUrl(withBasePath('/fr/')),
+            url: absoluteUrl(withBasePath(`/${locale}/`)),
             logo: absoluteUrl(withBasePath('/brand/wordmark-purple.png')),
             description:
               'Agence de communication et de marketing digital à Conakry : stratégie, réseaux sociaux, publicité, production, web, formation et outils.',

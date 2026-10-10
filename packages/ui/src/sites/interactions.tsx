@@ -10,9 +10,9 @@ import {
   spaces,
   type Course,
 } from '@smartsell/content/sites';
-import { urlFor, routingConfig } from '@smartsell/routing';
+import { urlFor, routingConfig, locale } from '@smartsell/routing';
 const href = (id: VerticalId, path = '') =>
-  urlFor(id, 'fr', path, routingConfig);
+  urlFor(id, locale, path, routingConfig);
 import {
   parseProgress,
   parseBooking,

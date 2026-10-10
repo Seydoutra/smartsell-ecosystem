@@ -1,5 +1,5 @@
 import { Icon } from '@smartsell/ui/icons';
-import { withBasePath } from '@smartsell/routing';
+import { withBasePath, locale } from '@smartsell/routing';
 export default function NotFound() {
   return (
     <main id="main" className="container section">
@@ -15,7 +15,7 @@ export default function NotFound() {
       <a
         className="button button--primary"
         style={{ marginTop: 32 }}
-        href={withBasePath('/fr/')}
+        href={withBasePath(`/${locale}/`)}
       >
         Revenir à l’accueil <Icon name="arrowUpRight" />
       </a>

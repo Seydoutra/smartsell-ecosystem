@@ -10,7 +10,13 @@ import {
 } from 'react';
 import type { VerticalId } from '@smartsell/types';
 import { verticals } from '@smartsell/content';
-import { routingConfig, urlFor } from '@smartsell/routing';
+import {
+  routingConfig,
+  urlFor,
+  locale,
+  otherLocale,
+  withBasePath,
+} from '@smartsell/routing';
 import { PreviewFrame } from './experience';
 
 /*
@@ -118,6 +124,31 @@ export function ThemeToggle() {
   );
 }
 
+/** Passe à la même page dans l'autre langue. */
+export function LangSwitch() {
+  const [href, setHref] = useState(withBasePath(`/${otherLocale}/`));
+  useEffect(() => {
+    setHref(
+      location.pathname.replace(`/${locale}/`, `/${otherLocale}/`) +
+        location.hash,
+    );
+  }, []);
+  return (
+    <a
+      className="sg-lang"
+      href={href}
+      hrefLang={otherLocale}
+      lang={otherLocale}
+      aria-label={
+        otherLocale === 'en' ? 'English version' : 'Version française'
+      }
+    >
+      <span aria-hidden="true">{locale.toUpperCase()}</span>
+      <b>{otherLocale.toUpperCase()}</b>
+    </a>
+  );
+}
+
 /** Transition sortante : couvre l'écran en pixels avant de changer de site. */
 export function SiteTransitions() {
   useEffect(() => {
@@ -143,7 +174,8 @@ export function SiteTransitions() {
       if (url.pathname === location.pathname && url.hash) return;
       // Seuls les changements de site déclenchent le rideau.
       const site = (path: string) =>
-        path.match(/\/fr\/(agency|academy|media|studio|labs)\//)?.[1] ?? 'main';
+        path.match(/\/(?:fr|en)\/(agency|academy|media|studio|labs)\//)?.[1] ??
+        'main';
       if (site(url.pathname) === site(location.pathname)) return;
       event.preventDefault();
       try {
@@ -414,7 +446,7 @@ export function UniverseOrbit() {
           <a
             key={id}
             className={`sg-satellite sg-sat-${i}`}
-            href={urlFor(id, 'fr', '', routingConfig)}
+            href={urlFor(id, locale, '', routingConfig)}
           >
             <span className="sg-mono">{v.number}</span>
             <strong>{v.name}</strong>
@@ -526,7 +558,7 @@ export function UniverseTabs() {
           </ul>
           <a
             className="sg-pill-link"
-            href={urlFor(v.id, 'fr', '', routingConfig)}
+            href={urlFor(v.id, locale, '', routingConfig)}
           >
             Entrer dans {v.name}{' '}
             <span aria-hidden="true">

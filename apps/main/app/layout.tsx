@@ -1,4 +1,4 @@
-import { withBasePath } from '@smartsell/routing';
+import { withBasePath, locale } from '@smartsell/routing';
 import type { Metadata } from 'next';
 import '@fontsource-variable/inter/wght.css';
 import '@fontsource-variable/space-grotesk/wght.css';
@@ -54,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body id="top">
         <IntroScript site="main" />
         <IntroCurtain name="Smartsell" tagline="Une maison. Cinq sites." />

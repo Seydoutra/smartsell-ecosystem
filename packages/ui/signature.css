@@ -1300,3 +1300,31 @@ html[data-theme='dark'] .sg-closing {
 html[data-theme='dark'] .uv-ac-cta {
   background: #3a3200;
 }
+
+/* ---------- Sélecteur de langue ---------- */
+.sg-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  color: inherit;
+  font: 700 12px var(--font-body);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+.sg-lang span {
+  opacity: 0.45;
+}
+.sg-lang b {
+  font-weight: 700;
+}
+.sg-lang:hover {
+  border-color: currentColor;
+}
+.site-header-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

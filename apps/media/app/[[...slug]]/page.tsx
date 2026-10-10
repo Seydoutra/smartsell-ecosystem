@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { SitePage } from '@smartsell/ui/sites';
 import { getSitePages } from '@smartsell/content/sites';
-import { routingConfig, urlFor } from '@smartsell/routing';
+import { routingConfig, urlFor, locale } from '@smartsell/routing';
 const id = 'media' as const;
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -19,7 +19,9 @@ export async function generateMetadata({
   return {
     title: p?.title,
     description: p?.intro,
-    alternates: { canonical: urlFor(id, 'fr', slug.join('/'), routingConfig) },
+    alternates: {
+      canonical: urlFor(id, locale, slug.join('/'), routingConfig),
+    },
   };
 }
 export default async function Page({

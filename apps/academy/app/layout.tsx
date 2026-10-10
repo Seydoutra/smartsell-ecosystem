@@ -15,7 +15,7 @@ import {
   SiteTransitions,
 } from '@smartsell/ui/signature';
 import { indexable, siteUrl } from '@smartsell/seo';
-import { assetUrl } from '@smartsell/routing';
+import { assetUrl, locale } from '@smartsell/routing';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: 'Smartsell Academy', template: '%s | Smartsell Academy' },
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body id="top">
         <IntroScript site="academy" />
         <IntroCurtain

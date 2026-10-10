@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 const mount =
   process.env.NEXT_PUBLIC_APP_BASE_PATH ??
-  `${(process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/+$/, '')}/fr/media`;
+  `${(process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/+$/, '')}/${process.env.NEXT_PUBLIC_LOCALE === 'en' ? 'en' : 'fr'}/media`;
 const config: NextConfig = {
   output: 'export',
   basePath: mount,

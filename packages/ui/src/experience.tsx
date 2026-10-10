@@ -4,10 +4,10 @@ import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 import type { VerticalId } from '@smartsell/types';
 import { verticals } from '@smartsell/content';
 import { cases, courses, articles, spaces } from '@smartsell/content/sites';
-import { routingConfig, urlFor } from '@smartsell/routing';
+import { routingConfig, urlFor, locale } from '@smartsell/routing';
 import { Brand } from './brand';
 const href = (id: VerticalId, path = '') =>
-  urlFor(id, 'fr', path, routingConfig);
+  urlFor(id, locale, path, routingConfig);
 const words: Record<VerticalId, string[]> = {
   agency: ['font le mouvement.', 'trouvent leur voix.', 'ouvrent la voie.'],
   academy: ['le champ.', 'les possibles.', 'la prochaine étape.'],
