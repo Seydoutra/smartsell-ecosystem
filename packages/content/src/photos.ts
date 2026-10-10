@@ -1,15 +1,24 @@
 /*
- * Photographies d'ambiance sous licence Unsplash (usage libre, attribution
- * conservée ici par courtoisie). Elles illustrent les métiers et les publics de
- * Smartsell ; elles ne représentent ni l'équipe, ni des clients réels.
+ * Photographies d'ambiance : Envato Elements (licence « Site web Smartsell »,
+ * fichiers optimisés dans apps/main/public/media) et Unsplash (licence libre,
+ * attribution conservée par courtoisie). Elles illustrent les métiers et les
+ * publics de Smartsell ; elles ne représentent ni l'équipe, ni des clients.
  */
+import { withBasePath } from '@smartsell/routing';
 export interface Photo {
   id: string;
   alt: string;
   credit: string;
   ratio: 'landscape' | 'portrait';
+  /** Fichier local optimisé (Envato Elements), servi depuis /media. */
+  file?: string;
 }
 
+const local = (
+  file: string,
+  alt: string,
+  ratio: Photo['ratio'] = 'landscape',
+): Photo => ({ id: file, alt, credit: 'Envato Elements', ratio, file });
 const photo = (
   id: string,
   alt: string,
@@ -18,30 +27,25 @@ const photo = (
 ): Photo => ({ id, alt, credit, ratio });
 
 export const photos = {
-  teamSofa: photo(
-    'photo-1655720355810-fcdfd7a742b5',
-    'Deux personnes échangent autour d’un projet, assises sur un canapé coloré',
-    'Iwaria Inc.',
+  teamSofa: local(
+    'team-blueprint',
+    'Deux créatifs travaillent ensemble sur un projet, penchés sur une table',
   ),
-  teamLaptop: photo(
-    'photo-1655720357872-ce227e4164ba',
-    'Une équipe regarde ensemble un écran d’ordinateur portable',
-    'Iwaria Inc.',
+  teamLaptop: local(
+    'team-workspace',
+    'Une équipe collabore dans un espace de travail lumineux',
   ),
-  meeting: photo(
-    'photo-1573164574572-cb89e39749b4',
-    'Une réunion de travail autour d’une grande table avec des ordinateurs',
-    'Christina @ wocintechchat.com',
+  meeting: local(
+    'team-table',
+    'Une équipe sourit autour d’une table de travail',
   ),
-  phoneYellow: photo(
-    'photo-1739271933163-8dcc7c8e8a3e',
-    'Une femme sourit en consultant son téléphone',
-    'Ninthgrid',
+  phoneYellow: local(
+    'social-hearts',
+    'Une jeune femme sourit à son téléphone, entourée de réactions',
   ),
-  phonePink: photo(
-    'photo-1680879275304-bbe20f7e28fb',
-    'Une femme tient son téléphone devant un fond rose',
-    'Ahmed Nasiru',
+  phonePink: local(
+    'social-selfie',
+    'Une jeune femme en pull rouge prend un selfie',
   ),
   phoneShop: photo(
     'photo-1687422808424-4a8e78fa6ae8',
@@ -53,16 +57,13 @@ export const photos = {
     'Une jeune femme au téléphone à son bureau',
     'Vitaly Gariev',
   ),
-  photographer: photo(
-    'photo-1567531708788-4c44105d00ff',
-    'Un photographe cadre une prise de vue',
-    'Joshua Hanson',
+  photographer: local(
+    'prod-street',
+    'Un vidéaste installe sa caméra en pleine rue',
   ),
-  cameraClose: photo(
-    'photo-1596923322832-ada855ab1a61',
-    'Un photographe face à l’objectif, appareil en main',
-    'Cinescope Creative',
-    'portrait',
+  cameraClose: local(
+    'prod-lens',
+    'Une cadreuse règle l’objectif d’une caméra professionnelle',
   ),
   cameraStreet: photo(
     'photo-1618142134777-233c1c07d32c',
@@ -70,30 +71,27 @@ export const photos = {
     'Langa Hlatshwayo',
     'portrait',
   ),
-  videoField: photo(
-    'photo-1789577798548-4056c5451e1f',
-    'Un vidéaste filme avec une caméra professionnelle',
-    'Kabelo Collen Molokwe',
+  videoField: local(
+    'prod-shoot',
+    'Un tournage vidéo en extérieur, entre l’équipe et les artistes',
   ),
   videoGimbal: photo(
     'photo-1579741189687-371b587a63ea',
     'Un créateur règle sa caméra sur stabilisateur',
     'Miguel Davis',
   ),
-  podcastWhite: photo(
-    'photo-1581368135153-a506cf13b1e1',
-    'Un animateur enregistre un podcast au micro',
-    'Kit',
+  podcastWhite: local(
+    'podcast-duo',
+    'Deux animateurs enregistrent un podcast autour d’une table',
   ),
   podcastLaptop: photo(
     'photo-1593697821094-53ed19153f21',
     'Un créateur enregistre du son devant son ordinateur',
     'Soundtrap',
   ),
-  podcastNeon: photo(
-    'photo-1668536987155-67811990a4a4',
-    'Un studio d’enregistrement éclairé de lumières colorées',
-    'Luther Yonel',
+  podcastNeon: local(
+    'podcast-studio',
+    'Une émission enregistrée dans un studio de podcast',
   ),
   portraitYellow: photo(
     'photo-1606416132922-22ab37c1231e',
@@ -129,10 +127,10 @@ export const photos = {
     'Un homme pose devant un mur aux motifs colorés',
     'R.D. Smith',
   ),
-  portraitPro: photo(
-    'photo-1573496527892-904f897eb744',
-    'Une professionnelle sourit dans un bureau lumineux',
-    'Christina @ wocintechchat.com',
+  portraitPro: local(
+    'portrait-woman',
+    'Portrait d’une dirigeante souriante, bras croisés',
+    'portrait',
   ),
   portraitStand: photo(
     'photo-1573497160825-0d94a2724d40',
@@ -151,25 +149,21 @@ export const photos = {
     'Seth Ebenezer Tetteh',
     'portrait',
   ),
-  learnerFocus: photo(
-    'photo-1716654718430-c7f54c3125c8',
-    'Une femme concentrée travaille sur son ordinateur',
-    'Makmot Robin',
+  learnerFocus: local(
+    'academy-teacher',
+    'Un formateur accompagne ses apprenants sur ordinateur',
   ),
-  learnerDesk: photo(
-    'photo-1675250719891-37d4747c9e3d',
-    'Une femme travaille sur son ordinateur portable',
-    'Akinyemi Gbadamosi',
+  learnerDesk: local(
+    'academy-class',
+    'Un formateur aide des apprenants en classe',
   ),
-  founder: photo(
-    'photo-1614023342667-6f060e9d1e04',
-    'Un entrepreneur à lunettes, en chemise noire',
-    'Olawale Munna',
+  founder: local(
+    'founder-desk',
+    'Un entrepreneur travaille à son bureau, dans un atelier aux murs de briques',
   ),
-  manager: photo(
-    'photo-1764169689207-e23fb66e1fcf',
-    'Un dirigeant en polo bleu, bras croisés',
-    'Rewired Digital',
+  manager: local(
+    'portrait-man',
+    'Portrait d’un jeune dirigeant dans un bureau moderne',
     'portrait',
   ),
   partners: photo(
@@ -178,14 +172,39 @@ export const photos = {
     'Khalid Boutchich',
     'portrait',
   ),
+  socialNight: local(
+    'social-night',
+    'Une jeune femme sourit en consultant son téléphone, le soir sur un toit',
+  ),
 } satisfies Record<string, Photo>;
 
 export type PhotoKey = keyof typeof photos;
 
 export function photoUrl(p: Photo, width = 1200): string {
+  if (p.file)
+    return withBasePath(`/media/${p.file}${width <= 900 ? '-sm' : ''}.jpg`);
   return `https://images.unsplash.com/${p.id}?auto=format&fit=crop&w=${width}&q=75`;
 }
 
+/** Vidéos d'ambiance (Envato Elements), 540p, muettes et en boucle. */
+export const videos = {
+  team: { src: 'video-team', poster: 'team-workspace' },
+  camera: { src: 'video-camera', poster: 'prod-lens' },
+  podcast: { src: 'video-podcast', poster: 'podcast-studio' },
+  phone: { src: 'video-phone', poster: 'social-hearts' },
+} as const;
+export type VideoClip = (typeof videos)[keyof typeof videos];
+export function videoUrl(v: VideoClip) {
+  return {
+    src: withBasePath(`/media/${v.src}.mp4`),
+    poster: withBasePath(`/media/${v.poster}-sm.jpg`),
+  };
+}
+
 export const photoCredits = [
-  ...new Set(Object.values(photos).map((p) => p.credit)),
+  ...new Set(
+    Object.values(photos)
+      .filter((p) => !p.file)
+      .map((p) => p.credit),
+  ),
 ];

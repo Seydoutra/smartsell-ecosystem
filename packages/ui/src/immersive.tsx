@@ -6,7 +6,12 @@ import {
   type CSSProperties,
   type ReactNode,
 } from 'react';
-import { photoUrl, type Photo } from '@smartsell/content/photos';
+import {
+  photoUrl,
+  videoUrl,
+  type Photo,
+  type VideoClip,
+} from '@smartsell/content/photos';
 
 /*
  * Blocs immersifs : photos qui défilent, zoom au scroll, défilement
@@ -82,17 +87,77 @@ export function Img({
     <img
       className={`im-img ${className}`}
       src={photoUrl(photo, width)}
-      srcSet={[0.5, 1, 1.6]
-        .map(
-          (k) =>
-            `${photoUrl(photo, Math.round(width * k))} ${Math.round(width * k)}w`,
-        )
-        .join(', ')}
+      srcSet={
+        photo.file
+          ? `${photoUrl(photo, 900)} 900w, ${photoUrl(photo, 1800)} 1800w`
+          : [0.5, 1, 1.6]
+              .map(
+                (k) =>
+                  `${photoUrl(photo, Math.round(width * k))} ${Math.round(width * k)}w`,
+              )
+              .join(', ')
+      }
       sizes={`(max-width: 700px) 100vw, ${width}px`}
       alt={photo.alt}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
     />
+  );
+}
+
+/** Vidéo d'ambiance muette : ne se charge et ne joue qu'à l'écran. */
+export function Video({
+  clip,
+  className = '',
+}: {
+  clip: VideoClip;
+  className?: string;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const { src, poster } = videoUrl(clip);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    let visible = false;
+    const sync = () => {
+      if (visible && !still() && !document.hidden) {
+        if (v.preload !== 'auto') v.preload = 'auto';
+        v.play().catch(() => {});
+      } else v.pause();
+    };
+    const io = new IntersectionObserver(
+      ([e]) => {
+        visible = e.isIntersecting;
+        sync();
+      },
+      { rootMargin: '120px' },
+    );
+    io.observe(v);
+    const paused = new MutationObserver(sync);
+    paused.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-motion-paused'],
+    });
+    document.addEventListener('visibilitychange', sync);
+    return () => {
+      io.disconnect();
+      paused.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+    };
+  }, []);
+  return (
+    <video
+      ref={ref}
+      className={`im-img im-video ${className}`}
+      muted
+      loop
+      playsInline
+      preload="none"
+      poster={poster}
+      aria-hidden="true"
+    >
+      <source src={src} type="video/mp4" />
+    </video>
   );
 }
 
@@ -167,12 +232,14 @@ export function Marquee({
 /** Une image qui part d'une petite fenêtre et se dézoome jusqu'au plein écran. */
 export function ZoomReveal({
   photo,
+  video,
   eyebrow,
   title,
   copy,
   cta,
 }: {
   photo: Photo;
+  video?: VideoClip;
   eyebrow: string;
   title: ReactNode;
   copy: string;
@@ -183,7 +250,7 @@ export function ZoomReveal({
     <section ref={ref} className="im-zoom">
       <div className="im-zoom-stage">
         <div className="im-zoom-frame">
-          <Img photo={photo} width={1800} />
+          {video ? <Video clip={video} /> : <Img photo={photo} width={1800} />}
         </div>
         <div className="im-zoom-copy">
           <p className="sg-mono">{eyebrow}</p>
@@ -201,6 +268,7 @@ export interface HorizontalItem {
   title: string;
   copy: string;
   photo: Photo;
+  video?: VideoClip;
   href: string;
   cta: string;
 }
@@ -250,7 +318,11 @@ export function HorizontalScroll({
           {items.map((item) => (
             <article className="im-hcard" key={item.title}>
               <div className="im-hcard-media">
-                <Img photo={item.photo} width={760} />
+                {item.video ? (
+                  <Video clip={item.video} />
+                ) : (
+                  <Img photo={item.photo} width={760} />
+                )}
               </div>
               <div className="im-hcard-body">
                 <span className="sg-mono">{item.label}</span>

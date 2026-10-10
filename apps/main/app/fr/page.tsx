@@ -31,6 +31,7 @@ import {
   photos,
   photoUrl,
   photoCredits,
+  videos,
   type Photo,
 } from '@smartsell/content/photos';
 import {
@@ -223,6 +224,7 @@ const services: HorizontalItem[] = [
     title: 'Réseaux sociaux & communauté',
     copy: 'Ligne éditoriale, posts, Reels et animation de communauté, au rythme de votre audience et de vos temps forts.',
     photo: photos.phonePink,
+    video: videos.phone,
     href: go('agency', 'services/social-media'),
     cta: 'Booster mes réseaux',
   },
@@ -239,6 +241,7 @@ const services: HorizontalItem[] = [
     title: 'Photo, vidéo & podcast',
     copy: 'Spots, portraits, captations et podcasts : nos studios donnent une image et une voix à vos histoires.',
     photo: photos.videoField,
+    video: videos.camera,
     href: go('studio', 'booking'),
     cta: 'Préparer un tournage',
   },
@@ -346,6 +349,7 @@ const spacesPanels: Panel[] = [
     title: 'Interviews, formats de marque, créations.',
     copy: 'Un cadre modulable avec éclairage et retour image pour des prises de parole soignées.',
     photo: photos.videoField,
+    video: videos.camera,
     href: go('studio', 'spaces/video'),
     cta: 'Découvrir le plateau vidéo',
   },
@@ -354,6 +358,7 @@ const spacesPanels: Panel[] = [
     title: 'Conversations enregistrées, audio et vidéo.',
     copy: 'Table de conversation, micros et retour casque : votre émission prend forme.',
     photo: photos.podcastNeon,
+    video: videos.podcast,
     href: go('studio', 'spaces/podcast'),
     cta: 'Découvrir l’espace podcast',
   },
@@ -500,9 +505,9 @@ export default function Home() {
               photos.phoneYellow,
             ],
             [
-              photos.cameraStreet,
+              photos.socialNight,
               photos.portraitYellow,
-              photos.learner,
+              photos.learnerFocus,
               photos.podcastNeon,
             ],
           ]}
@@ -569,6 +574,7 @@ export default function Home() {
       {/* 03 · Zoom : une seule équipe */}
       <ZoomReveal
         photo={photos.teamLaptop}
+        video={videos.team}
         eyebrow="02 · Une seule équipe"
         title={
           <>
@@ -1017,8 +1023,9 @@ export default function Home() {
             </div>
           </div>
           <p className="im-credits">
-            Photographies d’illustration : Unsplash ({photoCredits.join(', ')}).
-            Les explorations Agency sont des concepts avec des marques fictives.
+            Photographies et vidéos d’illustration : Envato Elements et Unsplash
+            ({photoCredits.join(', ')}). Les explorations Agency sont des
+            concepts avec des marques fictives.
           </p>
         </div>
       </section>

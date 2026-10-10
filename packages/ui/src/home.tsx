@@ -7,8 +7,8 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from 'react';
-import type { Photo } from '@smartsell/content/photos';
-import { CtaLink, Img } from './immersive';
+import type { Photo, VideoClip } from '@smartsell/content/photos';
+import { CtaLink, Img, Video } from './immersive';
 
 /*
  * Blocs interactifs de la page d'accueil : parcours par profil, rails
@@ -173,6 +173,7 @@ export interface Panel {
   kicker: string;
   copy: string;
   photo: Photo;
+  video?: VideoClip;
   href: string;
   cta: string;
 }
@@ -189,7 +190,11 @@ export function ExpandPanels({ panels }: { panels: Panel[] }) {
           onPointerEnter={() => setOpen(i)}
           onFocus={() => setOpen(i)}
         >
-          <Img photo={p.photo} width={900} />
+          {p.video ? (
+            <Video clip={p.video} />
+          ) : (
+            <Img photo={p.photo} width={900} />
+          )}
           <div className="hm-panel-copy">
             <span className="sg-mono">{p.kicker}</span>
             <h3>{p.title}</h3>
