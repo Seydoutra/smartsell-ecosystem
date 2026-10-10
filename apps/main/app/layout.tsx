@@ -8,6 +8,7 @@ import './globals.css';
 import '@smartsell/ui/experience.css';
 import '@smartsell/ui/signature.css';
 import '@smartsell/ui/immersive.css';
+import '@smartsell/ui/home.css';
 import { MotionLayer } from '@smartsell/ui/motion';
 import {
   IntroCurtain,

@@ -37,7 +37,11 @@ Le rideau disparaît en CSS même sans JavaScript. La pause, `prefers-reduced-mo
 
 La homepage parle désormais comme une agence de communication et de marketing digital, avec des appels à l’action vers le contact Agency à chaque section. `packages/ui/src/immersive.tsx` ajoute des colonnes de photos défilantes, un bandeau typographique, un zoom/dézoom au scroll, un défilement horizontal des expertises, un carrousel plein cadre des cinq sites, des cartes de méthode empilées, une galerie en parallaxe et un bouton « Parlons de votre projet » flottant. Chaque site vertical reçoit un bandeau de photos et un appel à l’action.
 
-Les photographies viennent d’Unsplash (licence libre) et sont chargées depuis `images.unsplash.com` ; leur liste et leurs auteurs sont dans `packages/content/src/photos.ts`. Ce sont des images d’illustration : elles ne présentent ni l’équipe ni des clients. À remplacer par des photos Smartsell dès qu’elles existent.
+Les photographies et vidéos viennent d’Envato Elements (16 photos et 4 vidéos sous licence de projet « Site web Smartsell », optimisées dans `apps/main/public/media` : photos en 1800 et 900 px, vidéos 540p de 8 s, muettes, lues seulement à l’écran) et d’Unsplash (licence libre, chargées depuis `images.unsplash.com`). Le registre et les auteurs sont dans `packages/content/src/photos.ts`. Ce sont des images d’illustration : elles ne présentent ni l’équipe ni des clients. À remplacer par des photos Smartsell dès qu’elles existent.
+
+## Page d’accueil « hub »
+
+La homepage donne accès à tout Smartsell : accès directs aux cinq univers, parcours « Je suis… » (entreprise, entrepreneur, talent, créateur, institution) en trois étapes cliquables, carrousel des sites avec raccourcis, mise en avant de Smartsell Management, rails des explorations Agency et des modules Academy, plateaux et packs Studios, magazine Media, métiers, méthode, chiffres réels des contenus, composition d’un brief (repris par le formulaire de contact Agency, sans envoi) et plan express de toutes les pages.
 
 ## Academy
 
