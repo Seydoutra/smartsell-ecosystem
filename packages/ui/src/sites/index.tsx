@@ -20,6 +20,7 @@ import { Brand } from '../brand';
 import { ChangingHeadline, PreviewFrame } from '../experience';
 import { MotionLayer } from './motion';
 import { MotionText, AgencyRibbon, CampaignVisual } from './visuals';
+import { CountUp, PixelMosaic, ScrollLitText } from '../signature';
 import {
   ArticleSearch,
   Booking,
@@ -271,6 +272,8 @@ function HomeHero({ id, page }: { id: VerticalId; page: SitePageData }) {
   const c = ctas[id];
   return (
     <section className={`site-hero hero-${id}`}>
+      <PixelMosaic tone={id} />
+      <div className="sg-hero-veil" aria-hidden="true" />
       <div className="site-container hero-stage">
         <div className="site-hero-copy">
           <p className="micro">
@@ -319,6 +322,77 @@ function HomeHero({ id, page }: { id: VerticalId; page: SitePageData }) {
                   : '05'}{' '}
           / 05
         </span>
+      </div>
+    </section>
+  );
+}
+const manifestos: Record<
+  VerticalId,
+  { label: string; text: string; figures: [number, string][] }
+> = {
+  agency: {
+    label: 'MANIFESTE AGENCY',
+    text: 'Une marque ne se résume pas à un logo. C’est une direction, une voix et des expériences qui se répondent. Nous relions stratégie, création et technologie pour que chaque point de contact fasse avancer la même ambition.',
+    figures: [
+      [cases.length, 'Explorations créatives'],
+      [agencyServices.length, 'Expertises'],
+      [4, 'Étapes de méthode'],
+    ],
+  },
+  academy: {
+    label: 'MANIFESTE ACADEMY',
+    text: 'Apprendre, c’est faire. Chaque module part d’un objectif clair, passe par des exemples concrets et se termine par un exercice. Les compétences deviennent des réflexes, puis des possibilités.',
+    figures: [
+      [courses.length, 'Modules'],
+      [3, 'Leçons d’aperçu par module'],
+      [1, 'Espace de progression'],
+    ],
+  },
+  media: {
+    label: 'MANIFESTE MEDIA',
+    text: 'Les outils changent, les idées circulent, les histoires comptent. Media observe la technologie, les entreprises et la culture créative pour aider à comprendre ce qui vient, depuis la Guinée et l’Afrique.',
+    figures: [
+      [articles.length, 'Guides et opinions'],
+      [3, 'Grandes rubriques'],
+      [1, 'Newsletter'],
+    ],
+  },
+  studio: {
+    label: 'MANIFESTE STUDIOS',
+    text: 'Une idée mérite un espace pour prendre forme. Image, son, lumière : Studios accompagne les créateurs et les marques de la préparation au rendu, pour que chaque histoire trouve sa présence.',
+    figures: [
+      [spaces.length, 'Espaces'],
+      [packs.length, 'Packs de production'],
+      [1, 'Parcours de réservation'],
+    ],
+  },
+  labs: {
+    label: 'MANIFESTE LABS',
+    text: 'Nous ne faisons pas qu’utiliser la technologie. Nous partons de problèmes réels pour construire des produits utiles aux entreprises et aux créateurs, puis nous les faisons grandir avec leurs usages.',
+    figures: [
+      [1, 'Produit existant'],
+      [1, 'Vision produit'],
+      [3, 'Pistes de recherche'],
+    ],
+  },
+};
+function SiteManifesto({ id }: { id: VerticalId }) {
+  const m = manifestos[id];
+  return (
+    <section className="sg-site-manifesto">
+      <div className="site-container">
+        <span className="micro">{m.label}</span>
+        <ScrollLitText text={m.text} />
+        <div className="sg-figures" data-reveal>
+          {m.figures.map(([n, label]) => (
+            <div key={label}>
+              <strong>
+                <CountUp value={n} />
+              </strong>
+              <span className="micro">{label}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -1137,6 +1211,7 @@ export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
           <>
             <HomeHero id={id} page={page} />
             {id === 'agency' && <AgencyRibbon />}
+            <SiteManifesto id={id} />
             <HomeBody id={id} />
           </>
         ) : (

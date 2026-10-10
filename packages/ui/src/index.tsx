@@ -57,7 +57,7 @@ export function Footer() {
       <div className="container footer-grid">
         <div className="footer-brand">
           <a href={withBasePath('/fr/')} aria-label="Smartsell, accueil">
-            <Brand />
+            <Brand variant="white" />
           </a>
           <p>
             Avec vous,

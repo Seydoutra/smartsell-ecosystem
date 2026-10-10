@@ -10,7 +10,9 @@
     "./sites.css": "./sites.css",
     "./motion": "./src/sites/motion.tsx",
     "./experience": "./src/experience.tsx",
-    "./experience.css": "./experience.css"
+    "./experience.css": "./experience.css",
+    "./signature": "./src/signature.tsx",
+    "./signature.css": "./signature.css"
   },
   "peerDependencies": {
     "react": "^19"

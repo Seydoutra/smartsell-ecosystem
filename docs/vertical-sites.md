@@ -22,6 +22,17 @@ Le mouvement utilise CSS, IntersectionObserver et un traitement limité du point
 
 Les titres se révèlent mot par mot. Agency ajoute une bande typographique défilante et six compositions SVG originales pour ses projets conceptuels : livres, interfaces, affiches, catalogue et parcours. Leurs plans flottent séparément et réagissent légèrement au pointeur sur ordinateur. Ces animations continues s’arrêtent hors du viewport ; les aperçus interactifs rejouent leur entrée au changement d’onglet. Les maquettes restent illustratives, sans suggérer de références clients réelles. La pause et la préférence de mouvement réduit gardent les textes et visuels entièrement lisibles.
 
+## Signature de mouvement
+
+`packages/ui/src/signature.tsx` et `signature.css` réunissent une grammaire commune à la maison et aux cinq sites. Elle est inspirée des compositions Amaset, Navia, Stoa, TBD Studio et Corndel, sans en reprendre de texte ni d’image :
+
+- un rideau pixel à l’arrivée, une fois par site et par session, puis une couverture pixel lors des changements de site ;
+- une mosaïque vivante dans les héros, teintée par site et sensible au pointeur ;
+- un manifeste dont les mots s’allument au défilement, avec des chiffres tirés des contenus existants ;
+- sur la homepage : l’orbite « maison mère + cinq sites », des onglets verticaux à progression automatique avec contour lumineux, une croix lumineuse pour le parcours et une clôture avec accès directs.
+
+Le rideau disparaît en CSS même sans JavaScript. La pause, `prefers-reduced-motion`, l’onglet masqué et la sortie du viewport arrêtent les animations ; les onglets s’arrêtent aussi au survol et au focus.
+
 ## Academy
 
 Huit modules et trois leçons d’aperçu par module. Le quiz donne un retour et bloque la validation tant que la réponse est incorrecte. Les modules choisis et indices des leçons terminées sont stockés sous `smartsell-academy-demo-v1`. La lecture ignore les modules inconnus, les indices hors limites et les données malformées. Les notes d’exercice restent temporaires. Le tableau de bord peut effacer la progression. Les récapitulatifs imprimables portent explicitement la mention sans valeur de certification officielle.
