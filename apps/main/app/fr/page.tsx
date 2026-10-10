@@ -96,8 +96,8 @@ export default function Home() {
             </div>
             <p>
               Chaque univers a son adresse, sa navigation et son rythme. Tous
-              partagent la même ambition et vous ramènent à la maison
-              Smartsell. Choisissez votre porte d’entrée.
+              partagent la même ambition et vous ramènent à la maison Smartsell.
+              Choisissez votre porte d’entrée.
             </p>
           </div>
           <UniverseOrbit />
@@ -223,7 +223,11 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="sg-path" id="parcours" aria-labelledby="sg-path-title">
+      <section
+        className="sg-path"
+        id="parcours"
+        aria-labelledby="sg-path-title"
+      >
         <div className="container">
           <div className="sg-path-head" data-reveal>
             <p className="sg-mono">06 / Continuez votre parcours</p>
@@ -253,7 +257,10 @@ export default function Home() {
             </h2>
             <nav className="sg-chips" aria-label="Accès directs aux sites">
               {closingLinks.map(([vertical, path, label]) => (
-                <a key={vertical + path} href={urlFor(vertical, 'fr', path, routingConfig)}>
+                <a
+                  key={vertical + path}
+                  href={urlFor(vertical, 'fr', path, routingConfig)}
+                >
                   <span>{names[vertical]}</span>
                   {label}
                 </a>

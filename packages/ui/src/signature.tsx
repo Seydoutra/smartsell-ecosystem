@@ -25,7 +25,10 @@ const still = () =>
 
 export type SignatureTone = 'main' | VerticalId;
 
-const palettes: Record<SignatureTone, { from: string; to: string; tile: string }> = {
+const palettes: Record<
+  SignatureTone,
+  { from: string; to: string; tile: string }
+> = {
   main: { from: '#2d103c', to: '#8a4fb0', tile: '255,255,255' },
   agency: { from: '#1d0c27', to: '#7b3ea0', tile: '243,228,51' },
   academy: { from: '#0c0a10', to: '#4a2263', tile: '214,182,229' },
@@ -112,7 +115,8 @@ export function SiteTransitions() {
       document.documentElement.dataset.leaving = 'true';
       setTimeout(() => location.assign(url.href), 520);
     };
-    const reset = () => document.documentElement.removeAttribute('data-leaving');
+    const reset = () =>
+      document.documentElement.removeAttribute('data-leaving');
     document.addEventListener('click', click);
     window.addEventListener('pageshow', reset);
     return () => {
@@ -149,7 +153,14 @@ export function PixelMosaic({
       frame = 0,
       visible = true,
       pointer = { x: -999, y: -999 },
-      tiles: { x: number; y: number; w: number; h: number; p: number; s: number }[] = [];
+      tiles: {
+        x: number;
+        y: number;
+        w: number;
+        h: number;
+        p: number;
+        s: number;
+      }[] = [];
     const build = () => {
       const box = el.getBoundingClientRect();
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -183,7 +194,9 @@ export function PixelMosaic({
           1 - Math.hypot(cx - pointer.x, cy - pointer.y) / 320,
         );
         const a =
-          0.025 + (Math.sin(t / 1600 * tile.s + tile.p) + 1) * 0.035 + near * 0.12;
+          0.025 +
+          (Math.sin((t / 1600) * tile.s + tile.p) + 1) * 0.035 +
+          near * 0.12;
         ctx.fillStyle = `rgba(${palette.tile},${a.toFixed(3)})`;
         ctx.fillRect(tile.x, tile.y, tile.w, tile.h);
       }
@@ -443,7 +456,9 @@ export function UniverseTabs() {
               <span
                 className="sg-tab-progress"
                 aria-hidden="true"
-                onAnimationEnd={() => setActive((active + 1) % verticals.length)}
+                onAnimationEnd={() =>
+                  setActive((active + 1) % verticals.length)
+                }
               />
             )}
           </button>
@@ -472,7 +487,10 @@ export function UniverseTabs() {
               <li key={f}>{f}</li>
             ))}
           </ul>
-          <a className="sg-pill-link" href={urlFor(v.id, 'fr', '', routingConfig)}>
+          <a
+            className="sg-pill-link"
+            href={urlFor(v.id, 'fr', '', routingConfig)}
+          >
             Entrer dans {v.name} <span aria-hidden="true">↗</span>
           </a>
         </div>
