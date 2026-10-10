@@ -19,6 +19,7 @@ import {
 import { Brand } from '../brand';
 import { ChangingHeadline, PreviewFrame } from '../experience';
 import { MotionLayer } from './motion';
+import { MotionText, AgencyRibbon, CampaignVisual } from './visuals';
 import {
   ArticleSearch,
   Booking,
@@ -227,7 +228,9 @@ function SectionTitle({
   return (
     <div className="site-section-title" data-reveal>
       <p className="micro">{label}</p>
-      <h2>{title}</h2>
+      <h2>
+        <MotionText text={title} />
+      </h2>
       {copy && <p>{copy}</p>}
     </div>
   );
@@ -330,11 +333,11 @@ function CaseCards({ limit = 6 }: { limit?: number }) {
           href={link('agency', `work/${c.slug}`)}
           key={c.slug}
         >
-          <div className="work-art">
+          <div className="work-art" data-motion-visual>
             <span className="concept-label">
               CONCEPT / {c.category.toUpperCase()}
             </span>
-            <b>{c.mark}</b>
+            <CampaignVisual index={i} />
             <i />
             <span className="work-art-caption">{c.tagline}</span>
           </div>
@@ -474,11 +477,13 @@ function HomeBody({ id }: { id: VerticalId }) {
               title="Du sens. De la forme. De l’impact."
               copy="Stratégie, création et technologie se rencontrent dans chaque projet."
             />
-            <div className="service-index">
+            <div className="service-index" data-reveal>
               {agencyServices.slice(0, 6).map((s, i) => (
                 <a key={s.slug} href={link(id, `services/${s.slug}`)}>
                   <span>0{i + 1}</span>
-                  <h3>{s.title}</h3>
+                  <h3>
+                    <MotionText text={s.title} />
+                  </h3>
                   <span>↗</span>
                 </a>
               ))}
@@ -504,7 +509,9 @@ function HomeBody({ id }: { id: VerticalId }) {
               ].map(([t, c], i) => (
                 <article data-reveal key={t}>
                   <span>0{i + 1} /</span>
-                  <h3>{t}.</h3>
+                  <h3>
+                    <MotionText text={t + '.'} />
+                  </h3>
                   <p>{c}</p>
                 </article>
               ))}
@@ -1129,6 +1136,7 @@ export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
         {page.kind === 'home' ? (
           <>
             <HomeHero id={id} page={page} />
+            {id === 'agency' && <AgencyRibbon />}
             <HomeBody id={id} />
           </>
         ) : (
@@ -1141,7 +1149,9 @@ export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
                   <span>{page.title.replace(/\n/g, ' ')}</span>
                 </nav>
                 <p className="micro">SMARTSELL {names[id].toUpperCase()}</p>
-                <h1>{page.title}</h1>
+                <h1 data-reveal>
+                  <MotionText text={page.title} />
+                </h1>
                 <p>{page.intro}</p>
               </div>
             </section>

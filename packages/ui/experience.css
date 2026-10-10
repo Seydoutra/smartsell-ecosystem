@@ -1292,3 +1292,411 @@ body {
   color: #201827;
   padding-inline: max(24px, calc((100% - 1320px) / 2));
 }
+
+/* Kinetic typography and original campaign mockups. */
+.word-mask {
+  display: inline-block;
+  overflow: clip;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.motion-word {
+  display: inline-block;
+  transform-origin: 50% 100%;
+}
+.is-revealed .motion-word {
+  animation: word-unfold 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--word, 0) * 55ms);
+}
+.site-hero h1 > span:first-child {
+  animation: headline-focus 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.service-index.is-revealed > a {
+  animation: service-enter 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.service-index > a:nth-child(2) {
+  animation-delay: 0.09s;
+}
+.service-index > a:nth-child(3) {
+  animation-delay: 0.18s;
+}
+.service-index > a:nth-child(4) {
+  animation-delay: 0.27s;
+}
+.service-index > a:nth-child(5) {
+  animation-delay: 0.36s;
+}
+.service-index > a:nth-child(6) {
+  animation-delay: 0.45s;
+}
+.service-index > a {
+  transition:
+    padding 0.3s,
+    background 0.3s;
+}
+.service-index > a:hover {
+  padding-inline: 16px;
+  background: #ffffff09;
+}
+.service-index > a > span:last-child {
+  transition: transform 0.3s;
+}
+.service-index > a:hover > span:last-child {
+  transform: translate(4px, -4px);
+}
+.agency-ribbon {
+  overflow: clip;
+  background: #f3e433;
+  color: #201827;
+  padding-block: 23px;
+  border-block: 1px solid #20182715;
+}
+.ribbon-track {
+  display: flex;
+  width: max-content;
+  animation: ribbon-flow 32s linear infinite;
+  animation-play-state: paused;
+}
+.agency-ribbon.is-motion-visible .ribbon-track {
+  animation-play-state: running;
+}
+.ribbon-copy {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.ribbon-copy > span {
+  display: flex;
+  gap: 38px;
+  align-items: center;
+  padding-right: 38px;
+  font: 600 clamp(25px, 3.5vw, 46px) / 1 var(--font-body);
+  letter-spacing: -0.055em;
+}
+.ribbon-copy i {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.8em;
+  color: #692b84;
+}
+.campaign-visual {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: translate(var(--visual-x, 0px), var(--visual-y, 0px));
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.campaign-visual text {
+  font-family: var(--font-body);
+}
+.work-art {
+  perspective: 800px;
+}
+.work-art > i {
+  animation: campaign-orbit 18s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.work-art.is-motion-visible > i {
+  animation-play-state: running;
+}
+.visual-back,
+.visual-front,
+.visual-float {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: campaign-drift 7s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.visual-front {
+  animation-name: campaign-forward;
+  animation-delay: -2s;
+}
+.visual-float {
+  animation-name: campaign-badge;
+  animation-duration: 9s;
+  animation-delay: -4s;
+}
+.is-motion-visible .visual-back,
+.is-motion-visible .visual-front,
+.is-motion-visible .visual-float {
+  animation-play-state: running;
+}
+.work-1 .visual-back,
+.work-3 .visual-back,
+.work-5 .visual-back {
+  animation-delay: -3s;
+}
+.work-art:after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    #ffffff13 50%,
+    transparent 70%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.9s ease;
+}
+.work-card:hover .work-art:after,
+.work-card:focus-visible .work-art:after {
+  transform: translateX(110%);
+}
+.work-card:hover .visual-front {
+  animation-duration: 4s;
+}
+.work-card .concept-label {
+  z-index: 2;
+}
+.work-card .work-art-caption {
+  z-index: 2;
+  font-size: 15px;
+}
+.work-card .work-art:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70px;
+  background: linear-gradient(transparent, #00000015);
+  z-index: 1;
+  pointer-events: none;
+}
+.work-caption h3 {
+  transition: transform 0.3s;
+}
+.work-card:hover .work-caption h3 {
+  transform: translateX(6px);
+}
+.experience-content > div {
+  animation: scene-switch 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.experience-content .scene-side h3 {
+  animation: scene-copy 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.scene-side .scene-row,
+.scene-side .scene-story {
+  animation: scene-copy 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.scene-side .scene-row:nth-child(4),
+.scene-side .scene-story:nth-child(4) {
+  animation-delay: 0.08s;
+}
+.scene-side .scene-row:nth-child(5),
+.scene-side .scene-story:nth-child(5) {
+  animation-delay: 0.16s;
+}
+.experience-frame .scene-brand strong {
+  animation: brand-breathe 8s ease-in-out infinite;
+  animation-play-state: paused;
+  transform-origin: left center;
+}
+.experience-frame.is-motion-visible .scene-brand strong {
+  animation-play-state: running;
+}
+.scene-brand:after,
+.lesson-symbol,
+.scene-lens,
+.scene-wave i {
+  animation-play-state: paused;
+}
+.experience-frame.is-motion-visible .scene-brand:after,
+.experience-frame.is-motion-visible .lesson-symbol,
+.experience-frame.is-motion-visible .scene-lens,
+.experience-frame.is-motion-visible .scene-wave i {
+  animation-play-state: running;
+}
+.course-art > span,
+.feature-art > span,
+.space-diagram > div,
+.obtura-orbit {
+  animation: illustration-float 9s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.is-motion-visible.course-art > span,
+.is-motion-visible.feature-art > span,
+.is-motion-visible.space-diagram > div,
+.is-motion-visible.obtura-window .obtura-orbit {
+  animation-play-state: running;
+}
+.hero-spark {
+  display: inline-block;
+  animation: spark-turn 14s ease-in-out infinite;
+}
+@keyframes word-unfold {
+  from {
+    opacity: 0.2;
+    transform: translateY(110%) rotate(4deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes headline-focus {
+  from {
+    opacity: 0.45;
+    filter: blur(5px);
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+@keyframes service-enter {
+  from {
+    opacity: 0.4;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ribbon-flow {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes campaign-drift {
+  50% {
+    transform: translate(-4px, -9px) rotate(-2deg);
+  }
+}
+@keyframes campaign-forward {
+  50% {
+    transform: translate(6px, 7px) rotate(2deg);
+  }
+}
+@keyframes campaign-badge {
+  50% {
+    transform: translate(0, -14px) rotate(7deg);
+  }
+}
+@keyframes campaign-orbit {
+  50% {
+    transform: rotate(-12deg) scaleY(0.55);
+  }
+}
+@keyframes scene-switch {
+  from {
+    opacity: 0.5;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes scene-copy {
+  from {
+    opacity: 0.25;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes brand-breathe {
+  50% {
+    transform: translateX(7px) scale(1.035);
+  }
+}
+@keyframes illustration-float {
+  50% {
+    translate: 0 -7px;
+  }
+}
+@keyframes spark-turn {
+  50% {
+    transform: rotate(180deg);
+  }
+}
+@media (max-width: 600px) {
+  .agency-ribbon {
+    padding-block: 18px;
+  }
+  .ribbon-copy > span {
+    gap: 22px;
+    padding-right: 22px;
+    font-size: 27px;
+  }
+  .work-card .work-art-caption {
+    font-size: 13px;
+  }
+  .work-art .campaign-visual {
+    width: 110%;
+    max-width: none;
+    margin-left: -5%;
+  }
+  .visual-back,
+  .visual-front,
+  .visual-float {
+    animation-duration: 10s;
+  }
+}
+html[data-motion-paused='true'] .motion-word,
+html[data-motion-paused='true'] .site-hero h1 > span:first-child,
+html[data-motion-paused='true'] .service-index > a,
+html[data-motion-paused='true'] .experience-content > div,
+html[data-motion-paused='true'] .scene-side h3,
+html[data-motion-paused='true'] .scene-row,
+html[data-motion-paused='true'] .scene-story {
+  animation: none !important;
+}
+html[data-motion-paused='true'] .campaign-visual {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-word,
+  .site-hero h1 > span:first-child,
+  .service-index > a,
+  .experience-content > div,
+  .scene-side h3,
+  .scene-row,
+  .scene-story,
+  .ribbon-track,
+  .visual-back,
+  .visual-front,
+  .visual-float,
+  .work-art > i,
+  .scene-brand strong,
+  .course-art > span,
+  .feature-art > span,
+  .space-diagram > div,
+  .obtura-orbit,
+  .hero-spark {
+    animation: none !important;
+  }
+  .campaign-visual,
+  .work-art:after,
+  .service-index > a,
+  .work-caption h3 {
+    transform: none !important;
+    transition: none !important;
+  }
+  .ribbon-track {
+    width: 100%;
+  }
+  .ribbon-copy {
+    flex-wrap: wrap;
+    gap: 12px 0;
+    justify-content: center;
+  }
+  .ribbon-copy > span {
+    font-size: 18px;
+    gap: 18px;
+    padding-right: 18px;
+  }
+  .ribbon-copy:nth-child(2) {
+    display: none;
+  }
+}

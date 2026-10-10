@@ -26,7 +26,42 @@ export function MotionLayer() {
     document
       .querySelectorAll('[data-reveal]')
       .forEach((el) => observer.observe(el));
+    const visualSelector =
+      '[data-motion-visual], .experience-frame, .course-art, .space-diagram, .feature-art, .obtura-window, .product-window, .learning-board, .studio-lettering, .agency-ribbon';
+    const visualObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) =>
+          entry.target.classList.toggle(
+            'is-motion-visible',
+            entry.isIntersecting,
+          ),
+        );
+      },
+      { rootMargin: '40px 0px' },
+    );
+    const observeVisuals = (root: Element | Document) => {
+      if (root instanceof Element && root.matches(visualSelector))
+        visualObserver.observe(root);
+      root
+        .querySelectorAll(visualSelector)
+        .forEach((el) => visualObserver.observe(el));
+    };
+    observeVisuals(document);
+    const additions = new MutationObserver((records) =>
+      records.forEach((record) =>
+        record.addedNodes.forEach((node) => {
+          if (node instanceof Element) observeVisuals(node);
+        }),
+      ),
+    );
+    additions.observe(document.body, { childList: true, subtree: true });
     let frame = 0;
+    let activeVisual: HTMLElement | null = null;
+    const resetVisual = () => {
+      activeVisual?.style.removeProperty('--visual-x');
+      activeVisual?.style.removeProperty('--visual-y');
+      activeVisual = null;
+    };
     const move = (event: PointerEvent) => {
       if (
         media.matches ||
@@ -35,7 +70,24 @@ export function MotionLayer() {
       )
         return;
       cancelAnimationFrame(frame);
+      const target =
+        event.target instanceof Element
+          ? event.target.closest<HTMLElement>('[data-motion-visual]')
+          : null;
       frame = requestAnimationFrame(() => {
+        if (activeVisual !== target) resetVisual();
+        if (target) {
+          activeVisual = target;
+          const box = target.getBoundingClientRect();
+          target.style.setProperty(
+            '--visual-x',
+            `${((event.clientX - box.left) / box.width - 0.5) * 14}px`,
+          );
+          target.style.setProperty(
+            '--visual-y',
+            `${((event.clientY - box.top) / box.height - 0.5) * 14}px`,
+          );
+        }
         const el = document.querySelector<HTMLElement>('.site-hero, .hero');
         if (!el) return;
         const box = el.getBoundingClientRect();
@@ -53,6 +105,9 @@ export function MotionLayer() {
     window.addEventListener('pointermove', move, { passive: true });
     return () => {
       observer.disconnect();
+      visualObserver.disconnect();
+      additions.disconnect();
+      resetVisual();
       cancelAnimationFrame(frame);
       window.removeEventListener('pointermove', move);
       media.removeEventListener('change', preference);

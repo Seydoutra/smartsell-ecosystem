@@ -4,6 +4,7 @@ import { urlFor, withBasePath, routingConfig } from '@smartsell/routing';
 export { GlobalNavigation } from './navigation';
 export { Brand } from './brand';
 import { Brand } from './brand';
+import { MotionText } from './sites/visuals';
 export function ButtonLink({
   children,
   tone = 'primary',
@@ -36,12 +37,15 @@ export function SectionHeading({
   return (
     <div
       className={`section-heading ${inverse ? 'section-heading--inverse' : ''}`}
+      data-reveal
     >
       <p className="eyebrow">
         <span>{number}</span> / {label}
       </p>
       <div>
-        <h2>{title}</h2>
+        <h2>
+          <MotionText text={title} />
+        </h2>
         {description && <p>{description}</p>}
       </div>
     </div>

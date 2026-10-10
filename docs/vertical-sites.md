@@ -20,6 +20,8 @@ La homepage présente également les cinq univers dans un aperçu à onglets ave
 
 Le mouvement utilise CSS, IntersectionObserver et un traitement limité du pointeur. La ligne changeante du titre conserve un texte accessible stable ; elle s’arrête quand elle sort de l’écran, quand l’onglet est masqué ou lorsque les animations sont en pause. Les contenus et le premier aperçu restent lisibles sans JavaScript. Le bouton de pause conserve le choix pour la session. `prefers-reduced-motion` désactive les animations et masque ce bouton. Aucun son ni vidéo ne démarre automatiquement.
 
+Les titres se révèlent mot par mot. Agency ajoute une bande typographique défilante et six compositions SVG originales pour ses projets conceptuels : livres, interfaces, affiches, catalogue et parcours. Leurs plans flottent séparément et réagissent légèrement au pointeur sur ordinateur. Ces animations continues s’arrêtent hors du viewport ; les aperçus interactifs rejouent leur entrée au changement d’onglet. Les maquettes restent illustratives, sans suggérer de références clients réelles. La pause et la préférence de mouvement réduit gardent les textes et visuels entièrement lisibles.
+
 ## Academy
 
 Huit modules et trois leçons d’aperçu par module. Le quiz donne un retour et bloque la validation tant que la réponse est incorrecte. Les modules choisis et indices des leçons terminées sont stockés sous `smartsell-academy-demo-v1`. La lecture ignore les modules inconnus, les indices hors limites et les données malformées. Les notes d’exercice restent temporaires. Le tableau de bord peut effacer la progression. Les récapitulatifs imprimables portent explicitement la mention sans valeur de certification officielle.

@@ -533,7 +533,7 @@ export function PreviewFrame({ id }: { id: VerticalId }) {
           aria-labelledby={uid + '-tab-' + active}
           tabIndex={0}
         >
-          <Scene id={id} active={active} />
+          <Scene key={active} id={id} active={active} />
         </div>
       </div>
       <div className="experience-bottom">
