@@ -200,7 +200,9 @@ export function Learner({ course }: { course: Course }) {
             value={completed.length}
             aria-label={t('Progression du module', 'Course progress')}
           />
-          <p>{completed.length} / 3 leçons terminées</p>
+          <p>
+            {completed.length} / 3 {t('leçons terminées', 'lessons completed')}
+          </p>
           {course.lessons.map((l, i) => (
             <button
               key={l.title}
@@ -216,7 +218,9 @@ export function Learner({ course }: { course: Course }) {
           </a>
         </aside>
         <article className="lesson-body" aria-labelledby="lesson-title">
-          <p className="micro">LEÇON 0{current + 1} / 03</p>
+          <p className="micro">
+            {t('LEÇON', 'LESSON')} 0{current + 1} / 03
+          </p>
           <h2 id="lesson-title">{content.title}</h2>
           <p>{content.copy}</p>
           <section className="exercise">
@@ -439,7 +443,10 @@ export function Dashboard({
                     value={progress[c.slug].length}
                     aria-label={`Progression : ${c.title}`}
                   />
-                  <p>{progress[c.slug].length} / 3 leçons terminées</p>
+                  <p>
+                    {progress[c.slug].length} / 3{' '}
+                    {t('leçons terminées', 'lessons completed')}
+                  </p>
                   <a
                     className="text-link"
                     href={href('academy', `learn/${c.slug}`)}
@@ -506,7 +513,8 @@ export function ArticleSearch({ category }: { category?: string }) {
         </label>
       </div>
       <p role="status">
-        {result.length} article{result.length > 1 ? 's' : ''} de démonstration
+        {result.length}{' '}
+        {t('article(s) de démonstration', 'demonstration article(s)')}
       </p>
       <div className="article-list">
         {result.map((a) => (

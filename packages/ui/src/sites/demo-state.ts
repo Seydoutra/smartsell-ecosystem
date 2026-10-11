@@ -1,3 +1,4 @@
+import { t } from '@smartsell/routing';
 import { courses, packs } from '@smartsell/content/sites';
 export type Progress = Record<string, number[]>;
 export function parseProgress(raw: string): Progress {
@@ -45,7 +46,10 @@ export function sessionError(
     new Date(date + 'T00:00:00Z').toISOString().slice(0, 10) !== date ||
     date < today
   )
-    return 'Choisissez aujourd’hui ou une date future.';
+    return t(
+      'Choisissez aujourd’hui ou une date future.',
+      'Choose today or a future date.',
+    );
   if (
     !/^(09|1[0-6]):00$/.test(time) ||
     !Number.isInteger(duration) ||
@@ -53,7 +57,10 @@ export function sessionError(
     duration > 6 ||
     Number(time.slice(0, 2)) + duration > 18
   )
-    return 'La session doit se terminer avant 18 h dans ce calendrier de démonstration.';
+    return t(
+      'La session doit se terminer avant 18 h dans ce calendrier de démonstration.',
+      'The session must end before 6 pm in this demonstration calendar.',
+    );
   return '';
 }
 export type BookingDemo = {
