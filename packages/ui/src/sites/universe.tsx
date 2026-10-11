@@ -177,7 +177,8 @@ function AgencyHome() {
             <em>{t('Rien de superflu.', 'Nothing it doesn’t.')}</em>
           </h2>
           <CtaLink href={go('agency', 'services')}>
-            Les {agencyServices.length} expertises
+            {t('Les', 'All')} {agencyServices.length}{' '}
+            {t('expertises', 'services')}
           </CtaLink>
         </div>
         <div className="uv-wrap">
@@ -561,7 +562,7 @@ function MediaHome() {
             <h2>{lead.title}</h2>
             <p>{lead.summary}</p>
             <span className="uv-md-by">
-              Par la rédaction · {lead.minutes} min
+              {t('Par la rédaction', 'By the newsroom')} · {lead.minutes} min
             </span>
           </a>
           <div className="uv-md-side">

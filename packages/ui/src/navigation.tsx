@@ -166,7 +166,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
             href={withBasePath(`/${locale}/`)}
             onClick={() => menu.current?.close()}
           >
-            La maison{' '}
+            {t('La maison', 'The house')}{' '}
             <span>
               <Icon name="arrowUpRight" />
             </span>
@@ -197,7 +197,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
             search.current?.showModal();
           }}
         >
-          Rechercher dans l’écosystème{' '}
+          {t('Rechercher dans l’écosystème', 'Search the ecosystem')}{' '}
           <span aria-hidden="true">
             <Icon name="search" />
           </span>
@@ -246,7 +246,10 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
           autoComplete="off"
         />
         <p className="search-count" aria-live="polite">
-          {results.length} résultat{results.length > 1 ? 's' : ''}
+          {results.length}{' '}
+          {results.length > 1
+            ? t('résultats', 'results')
+            : t('résultat', 'result')}
         </p>
         <ul className="search-results">
           {results.map((entry) => (
