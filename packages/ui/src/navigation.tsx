@@ -1,8 +1,16 @@
 'use client';
+import { LangSwitch, ThemeToggle } from './signature';
+import { Icon } from './icons';
 import { useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { verticals, searchEntries } from '@smartsell/content';
-import { withBasePath, routingConfig, urlFor } from '@smartsell/routing';
+import {
+  withBasePath,
+  routingConfig,
+  urlFor,
+  locale,
+  t,
+} from '@smartsell/routing';
 import type { VerticalId } from '@smartsell/types';
 import { Brand } from './brand';
 function closeOnEscape(event: KeyboardEvent<HTMLDialogElement>) {
@@ -31,34 +39,41 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
   return (
     <>
       <a className="skip-link" href="#main">
-        Aller au contenu
+        {t('Aller au contenu', 'Skip to content')}
       </a>
       <header className="site-header">
         <div className="container header-inner">
           <a
             className="home-link"
-            href={withBasePath('/fr/')}
-            aria-label="Smartsell, accueil"
+            href={withBasePath(`/${locale}/`)}
+            aria-label={t('Smartsell, accueil', 'Smartsell, home')}
           >
             <Brand variant="yellow" />
           </a>
-          <nav className="desktop-universes" aria-label="Navigation globale">
+          <nav
+            className="desktop-universes"
+            aria-label={t('Navigation globale', 'Main navigation')}
+          >
             {verticals.map((v) => (
               <a
                 aria-current={active === v.id ? 'page' : undefined}
                 key={v.id}
-                href={urlFor(v.id, 'fr', '', routingConfig)}
+                href={urlFor(v.id, locale, '', routingConfig)}
               >
                 {v.name}
               </a>
             ))}
           </nav>
           <div className="header-actions">
+            <ThemeToggle />
             <a
               className="header-quote"
-              href={urlFor('agency', 'fr', 'contact', routingConfig)}
+              href={urlFor('agency', locale, 'contact', routingConfig)}
             >
-              Demander un devis <span aria-hidden="true">↗</span>
+              {t('Demander un devis', 'Get a quote')}{' '}
+              <span aria-hidden="true">
+                <Icon name="arrowUpRight" />
+              </span>
             </a>
             <button
               className="search-trigger"
@@ -66,18 +81,22 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
               aria-haspopup="dialog"
               onClick={() => search.current?.showModal()}
             >
-              Rechercher <span aria-hidden="true">⌕</span>
+              {t('Rechercher', 'Search')}{' '}
+              <span aria-hidden="true">
+                <Icon name="search" />
+              </span>
             </button>
-            <span className="language" aria-label="Langue : français">
-              FR
-            </span>
+            <LangSwitch />
             <button
               className="menu-trigger"
               type="button"
               aria-haspopup="dialog"
               onClick={() => menu.current?.showModal()}
             >
-              Menu <span aria-hidden="true">☰</span>
+              Menu{' '}
+              <span aria-hidden="true">
+                <Icon name="menu" />
+              </span>
             </button>
           </div>
         </div>
@@ -87,7 +106,10 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
           <span>
             {active
               ? `SMARTSELL ${verticals.find((v) => v.id === active)?.name.toUpperCase()}`
-              : 'AGENCE DE COMMUNICATION & MARKETING DIGITAL'}
+              : t(
+                  'AGENCE DE COMMUNICATION & MARKETING DIGITAL',
+                  'COMMUNICATION & DIGITAL MARKETING AGENCY',
+                )}
           </span>
           <details
             ref={disclosure}
@@ -100,16 +122,22 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
             }}
           >
             <summary>
-              Tout l’écosystème <span aria-hidden="true">+</span>
+              {t('Tout l’écosystème', 'The whole ecosystem')}{' '}
+              <span aria-hidden="true">+</span>
             </summary>
-            <nav aria-label="Explorer les univers" className="mega-menu">
+            <nav
+              aria-label={t('Explorer les univers', 'Explore the universes')}
+              className="mega-menu"
+            >
               {verticals.map((v) => (
-                <a key={v.id} href={urlFor(v.id, 'fr', '', routingConfig)}>
+                <a key={v.id} href={urlFor(v.id, locale, '', routingConfig)}>
                   <small>
                     {v.number} / {v.verb}
                   </small>
                   <strong>{v.name}</strong>
-                  <span>{v.journey} ↗</span>
+                  <span>
+                    {v.journey} <Icon name="arrowUpRight" />
+                  </span>
                 </a>
               ))}
             </nav>
@@ -123,22 +151,30 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
         onKeyDown={closeOnEscape}
       >
         <div className="dialog-heading">
-          <h2 id="menu-title">Explorez l’écosystème.</h2>
+          <h2 id="menu-title">
+            {t('Explorez l’écosystème.', 'Explore the ecosystem.')}
+          </h2>
           <button
-            aria-label="Fermer le menu"
+            aria-label={t('Fermer le menu', 'Close the menu')}
             onClick={() => menu.current?.close()}
           >
             ×
           </button>
         </div>
-        <nav aria-label="Navigation mobile">
-          <a href={withBasePath('/fr/')} onClick={() => menu.current?.close()}>
-            La maison <span>↗</span>
+        <nav aria-label={t('Navigation mobile', 'Mobile navigation')}>
+          <a
+            href={withBasePath(`/${locale}/`)}
+            onClick={() => menu.current?.close()}
+          >
+            La maison{' '}
+            <span>
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
           {verticals.map((v) => (
             <a
               key={v.id}
-              href={urlFor(v.id, 'fr', '', routingConfig)}
+              href={urlFor(v.id, locale, '', routingConfig)}
               onClick={() => menu.current?.close()}
             >
               <span>
@@ -147,7 +183,9 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
                 </small>
                 {v.name}
               </span>
-              <span>↗</span>
+              <span>
+                <Icon name="arrowUpRight" />
+              </span>
             </a>
           ))}
         </nav>
@@ -159,9 +197,17 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
             search.current?.showModal();
           }}
         >
-          Rechercher dans l’écosystème <span aria-hidden="true">⌕</span>
+          Rechercher dans l’écosystème{' '}
+          <span aria-hidden="true">
+            <Icon name="search" />
+          </span>
         </button>
-        <p>Une maison. Cinq façons d’avancer.</p>
+        <p>
+          {t(
+            'Une maison. Cinq façons d’avancer.',
+            'One house. Five ways forward.',
+          )}
+        </p>
       </dialog>
       <dialog
         ref={search}
@@ -171,21 +217,29 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
         onClose={() => setQuery('')}
       >
         <div className="dialog-heading">
-          <h2 id="search-title">Que cherchez-vous ?</h2>
+          <h2 id="search-title">
+            {t('Que cherchez-vous ?', 'What are you looking for?')}
+          </h2>
           <button
-            aria-label="Fermer la recherche"
+            aria-label={t('Fermer la recherche', 'Close search')}
             onClick={() => search.current?.close()}
           >
             ×
           </button>
         </div>
         <label className="search-label" htmlFor="ecosystem-search">
-          Rechercher un site, une page ou un produit
+          {t(
+            'Rechercher un site, une page ou un produit',
+            'Search for a site, a page or a product',
+          )}
         </label>
         <input
           id="ecosystem-search"
           type="search"
-          placeholder="Essayez « design », « IA » ou « Management »"
+          placeholder={t(
+            'Essayez « design », « IA » ou « Management »',
+            'Try “design”, “AI” or “Management”',
+          )}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           autoFocus
@@ -207,7 +261,10 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
         </ul>
         {results.length === 0 && (
           <p>
-            Aucun résultat. Essayez un autre mot ou explorez les cinq univers.
+            {t(
+              'Aucun résultat. Essayez un autre mot ou explorez les cinq univers.',
+              'No results. Try another word or explore the five universes.',
+            )}
           </p>
         )}
       </dialog>

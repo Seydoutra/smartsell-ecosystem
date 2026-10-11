@@ -1,3 +1,4 @@
+import { Icon } from '../icons';
 import type { VerticalId } from '@smartsell/types';
 import { verticals } from '@smartsell/content';
 import {
@@ -15,13 +16,22 @@ import {
   urlFor,
   routingConfig,
   managementUrl,
+  locale,
+  t,
 } from '@smartsell/routing';
 import { Brand } from '../brand';
 import { ChangingHeadline, PreviewFrame } from '../experience';
 import { MotionLayer } from './motion';
 import { MotionText, AgencyRibbon, CampaignVisual } from './visuals';
-import { CountUp, PixelMosaic, ScrollLitText } from '../signature';
+import {
+  CountUp,
+  LangSwitch,
+  PixelMosaic,
+  ScrollLitText,
+  ThemeToggle,
+} from '../signature';
 import { CtaLink, PhotoRail } from '../immersive';
+import { InnerCta, InnerHero, VerticalHome } from './universe';
 import { photos, type Photo } from '@smartsell/content/photos';
 import {
   ArticleSearch,
@@ -36,7 +46,7 @@ import {
   ShareArticle,
 } from './interactions';
 const link = (id: VerticalId | 'main', path = '') =>
-  urlFor(id, 'fr', path, routingConfig);
+  urlFor(id, locale, path, routingConfig);
 const names = {
   agency: 'Agency',
   academy: 'Academy',
@@ -61,7 +71,9 @@ function Action({
       href={link(id, path)}
     >
       {children}
-      <span aria-hidden="true">↗</span>
+      <span aria-hidden="true">
+        <Icon name="arrowUpRight" />
+      </span>
     </a>
   );
 }
@@ -70,14 +82,17 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
   return (
     <>
       <a className="site-skip" href="#main">
-        Aller au contenu
+        {t('Aller au contenu', 'Skip to content')}
       </a>
       <div className="ecosystem-bar">
         <div className="site-container">
           <a href={link('main')}>
-            LA MAISON SMARTSELL <span aria-hidden="true">↗</span>
+            LA MAISON SMARTSELL{' '}
+            <span aria-hidden="true">
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
-          <nav aria-label="Les sites Smartsell">
+          <nav aria-label={t('Les sites Smartsell', 'The Smartsell sites')}>
             {verticals.map((v) => (
               <a
                 key={v.id}
@@ -96,14 +111,14 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
           <a
             className="site-identity"
             href={link(id)}
-            aria-label={`Smartsell ${names[id]}, accueil`}
+            aria-label={`Smartsell ${names[id]}, ${t('accueil', 'home')}`}
           >
             <Brand variant="white" />
             <span>{names[id]}</span>
           </a>
           <nav
             className="desktop-site-menu"
-            aria-label={`Navigation ${names[id]}`}
+            aria-label={`${t('Navigation', 'Navigation')} ${names[id]}`}
           >
             {menu.map((m) => (
               <a
@@ -119,12 +134,16 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
               </a>
             ))}
           </nav>
+          <div className="site-header-tools">
+            <LangSwitch />
+            <ThemeToggle />
+          </div>
           <details className="mobile-site-menu">
             <summary>
               Menu <span aria-hidden="true">+</span>
             </summary>
-            <nav aria-label={`Menu mobile ${names[id]}`}>
-              <a href={link(id)}>Accueil</a>
+            <nav aria-label={`${t('Menu mobile', 'Mobile menu')} ${names[id]}`}>
+              <a href={link(id)}>{t('Accueil', 'Home')}</a>
               {menu.map((m) => (
                 <a
                   key={m.path}
@@ -144,22 +163,25 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
 function Footer({ id }: { id: VerticalId }) {
   const extras: Record<VerticalId, { label: string; path: string }[]> = {
     agency: [
-      { label: 'À propos', path: 'about' },
-      { label: 'Rejoindre le collectif', path: 'careers' },
+      { label: t('À propos', 'About'), path: 'about' },
+      {
+        label: t('Rejoindre le collectif', 'Join the collective'),
+        path: 'careers',
+      },
     ],
     academy: [
-      { label: 'Ressources', path: 'resources' },
+      { label: t('Ressources', 'Resources'), path: 'resources' },
       { label: 'Support', path: 'support' },
     ],
     media: [
-      { label: 'Afrique', path: 'africa' },
-      { label: 'Guinée', path: 'guinea' },
+      { label: t('Afrique', 'Africa'), path: 'africa' },
+      { label: t('Guinée', 'Guinea'), path: 'guinea' },
       { label: 'Opinions', path: 'opinions' },
-      { label: 'Entretiens', path: 'interviews' },
+      { label: t('Entretiens', 'Interviews'), path: 'interviews' },
       { label: 'Newsletter', path: 'newsletter' },
     ],
     studio: [
-      { label: 'Questions fréquentes', path: 'faq' },
+      { label: t('Questions fréquentes', 'FAQ'), path: 'faq' },
       { label: 'Contact', path: 'contact' },
     ],
     labs: [],
@@ -170,9 +192,9 @@ function Footer({ id }: { id: VerticalId }) {
         <div>
           <p className="micro">SMARTSELL {names[id].toUpperCase()}</p>
           <h2>
-            La suite commence
+            {t('La suite commence', 'What’s next starts')}
             <br />
-            <em>avec vous.</em>
+            <em>{t('avec vous.', 'with you.')}</em>
           </h2>
           <a
             className="text-link"
@@ -187,23 +209,31 @@ function Footer({ id }: { id: VerticalId }) {
                     : 'contact',
             )}
           >
-            Faire le prochain mouvement ↗
+            {t('Faire le prochain mouvement', 'Make the next move')}{' '}
+            <Icon name="arrowUpRight" />
           </a>
         </div>
-        <nav aria-label="Pages du site">
+        <nav aria-label={t('Pages du site', 'Site pages')}>
           {[...siteMenus[id], ...extras[id]].map((m) => (
             <a key={m.path} href={link(id, m.path)}>
-              {m.label} ↗
+              {m.label} <Icon name="arrowUpRight" />
             </a>
           ))}
         </nav>
-        <nav aria-label="Continuer dans l’écosystème">
-          <span className="micro">UNE MAISON. CINQ SITES.</span>
+        <nav
+          aria-label={t(
+            'Continuer dans l’écosystème',
+            'Continue in the ecosystem',
+          )}
+        >
+          <span className="micro">
+            {t('UNE MAISON. CINQ SITES.', 'ONE HOUSE. FIVE SITES.')}
+          </span>
           {verticals
             .filter((v) => v.id !== id)
             .map((v) => (
               <a key={v.id} href={link(v.id)}>
-                {v.name} ↗
+                {v.name} <Icon name="arrowUpRight" />
               </a>
             ))}
         </nav>
@@ -213,8 +243,10 @@ function Footer({ id }: { id: VerticalId }) {
           <Brand variant="white" />
         </a>
         <span>© {new Date().getUTCFullYear()} Smartsell · Conakry</span>
-        <a href={link(id, 'privacy')}>Vos données</a>
-        <a href="#top">Retour en haut ↑</a>
+        <a href={link(id, 'privacy')}>{t('Vos données', 'Your data')}</a>
+        <a href="#top">
+          {t('Retour en haut', 'Back to top')} <Icon name="arrowUp" />
+        </a>
       </div>
     </footer>
   );
@@ -238,231 +270,6 @@ function SectionTitle({
     </div>
   );
 }
-function HomeHero({ id, page }: { id: VerticalId; page: SitePageData }) {
-  const ctas: Record<VerticalId, [string, string, string, string]> = {
-    agency: [
-      'work',
-      'Explorer le portfolio',
-      'contact',
-      'Parlons de votre projet',
-    ],
-    academy: [
-      'courses',
-      'Explorer les modules',
-      'dashboard',
-      'Ouvrir mon espace démo',
-    ],
-    media: [
-      'latest',
-      'Lire les idées',
-      'newsletter',
-      'Découvrir la newsletter',
-    ],
-    studio: [
-      'spaces',
-      'Explorer les espaces',
-      'booking',
-      'Simuler une session',
-    ],
-    labs: [
-      'products',
-      'Découvrir les produits',
-      'research',
-      'Explorer nos pistes',
-    ],
-  };
-  const c = ctas[id];
-  return (
-    <section className={`site-hero hero-${id}`}>
-      <PixelMosaic tone={id} />
-      <div className="sg-hero-veil" aria-hidden="true" />
-      <div className="site-container hero-stage">
-        <div className="site-hero-copy">
-          <p className="micro">
-            <span className="signal-dot" /> SMARTSELL {names[id].toUpperCase()}{' '}
-            /{' '}
-            {id === 'academy'
-              ? 'APPRENDRE PAR LA PRATIQUE'
-              : id === 'studio'
-                ? 'L’ESPACE DES POSSIBLES'
-                : id === 'media'
-                  ? 'LE REGARD EN MOUVEMENT'
-                  : id === 'labs'
-                    ? 'BUILD THE NEXT'
-                    : 'MAKE THE MOVE'}
-          </p>
-          <h1>
-            <span>{page.title.split('\n')[0]}</span>
-            <ChangingHeadline id={id} />
-          </h1>
-          <p className="hero-lead">{page.intro}</p>
-          <div className="site-actions">
-            <Action id={id} path={c[0]}>
-              {c[1]}
-            </Action>
-            <Action secondary id={id} path={c[2]}>
-              {c[3]}
-            </Action>
-          </div>
-        </div>
-        <div className="hero-preview" data-reveal>
-          <PreviewFrame id={id} />
-        </div>
-      </div>
-      <div className="site-container hero-foot">
-        <span>UNE MAISON. UNE AMBITION.</span>
-        <a href="#explore">La suite se découvre ↓</a>
-        <span>
-          {id === 'agency'
-            ? '01'
-            : id === 'academy'
-              ? '02'
-              : id === 'media'
-                ? '03'
-                : id === 'studio'
-                  ? '04'
-                  : '05'}{' '}
-          / 05
-        </span>
-      </div>
-    </section>
-  );
-}
-const manifestos: Record<
-  VerticalId,
-  { label: string; text: string; figures: [number, string][] }
-> = {
-  agency: {
-    label: 'MANIFESTE AGENCY',
-    text: 'Une marque ne se résume pas à un logo. C’est une direction, une voix et des expériences qui se répondent. Nous relions stratégie, création et technologie pour que chaque point de contact fasse avancer la même ambition.',
-    figures: [
-      [cases.length, 'Explorations créatives'],
-      [agencyServices.length, 'Expertises'],
-      [4, 'Étapes de méthode'],
-    ],
-  },
-  academy: {
-    label: 'MANIFESTE ACADEMY',
-    text: 'Apprendre, c’est faire. Chaque module part d’un objectif clair, passe par des exemples concrets et se termine par un exercice. Les compétences deviennent des réflexes, puis des possibilités.',
-    figures: [
-      [courses.length, 'Modules'],
-      [3, 'Leçons d’aperçu par module'],
-      [1, 'Espace de progression'],
-    ],
-  },
-  media: {
-    label: 'MANIFESTE MEDIA',
-    text: 'Les outils changent, les idées circulent, les histoires comptent. Media observe la technologie, les entreprises et la culture créative pour aider à comprendre ce qui vient, depuis la Guinée et l’Afrique.',
-    figures: [
-      [articles.length, 'Guides et opinions'],
-      [3, 'Grandes rubriques'],
-      [1, 'Newsletter'],
-    ],
-  },
-  studio: {
-    label: 'MANIFESTE STUDIOS',
-    text: 'Une idée mérite un espace pour prendre forme. Image, son, lumière : Studios accompagne les créateurs et les marques de la préparation au rendu, pour que chaque histoire trouve sa présence.',
-    figures: [
-      [spaces.length, 'Espaces'],
-      [packs.length, 'Packs de production'],
-      [1, 'Parcours de réservation'],
-    ],
-  },
-  labs: {
-    label: 'MANIFESTE LABS',
-    text: 'Nous ne faisons pas qu’utiliser la technologie. Nous partons de problèmes réels pour construire des produits utiles aux entreprises et aux créateurs, puis nous les faisons grandir avec leurs usages.',
-    figures: [
-      [1, 'Produit existant'],
-      [1, 'Vision produit'],
-      [3, 'Pistes de recherche'],
-    ],
-  },
-};
-const rails: Record<VerticalId, { photos: Photo[]; cta: [string, string] }> = {
-  agency: {
-    photos: [
-      photos.teamSofa,
-      photos.phonePink,
-      photos.portraitWall,
-      photos.meeting,
-      photos.phoneYellow,
-      photos.creator,
-      photos.portraitPrint,
-    ],
-    cta: ['contact', 'Parlons de votre projet'],
-  },
-  academy: {
-    photos: [
-      photos.learnerFocus,
-      photos.learner,
-      photos.teamLaptop,
-      photos.learnerDesk,
-      photos.portraitPro,
-      photos.phoneDesk,
-    ],
-    cta: ['courses', 'Choisir mon module'],
-  },
-  media: {
-    photos: [
-      photos.phoneShop,
-      photos.portraitYellow,
-      photos.podcastWhite,
-      photos.founder,
-      photos.portraitTurban,
-      photos.partners,
-    ],
-    cta: ['newsletter', 'Recevoir la newsletter'],
-  },
-  studio: {
-    photos: [
-      photos.videoField,
-      photos.podcastNeon,
-      photos.cameraClose,
-      photos.portraitGold,
-      photos.videoGimbal,
-      photos.podcastLaptop,
-      photos.cameraStreet,
-    ],
-    cta: ['booking', 'Préparer ma session'],
-  },
-  labs: {
-    photos: [
-      photos.manager,
-      photos.phoneDesk,
-      photos.founder,
-      photos.meeting,
-      photos.learnerFocus,
-      photos.partners,
-    ],
-    cta: ['products', 'Découvrir nos produits'],
-  },
-};
-function SiteManifesto({ id }: { id: VerticalId }) {
-  const m = manifestos[id];
-  const rail = rails[id];
-  return (
-    <section className="sg-site-manifesto">
-      <div className="site-container">
-        <span className="micro">{m.label}</span>
-        <ScrollLitText text={m.text} />
-        <div className="sg-figures" data-reveal>
-          {m.figures.map(([n, label]) => (
-            <div key={label}>
-              <strong>
-                <CountUp value={n} />
-              </strong>
-              <span className="micro">{label}</span>
-            </div>
-          ))}
-        </div>
-        <div className="im-actions sg-site-cta">
-          <CtaLink href={link(id, rail.cta[0])}>{rail.cta[1]}</CtaLink>
-        </div>
-      </div>
-      <PhotoRail photos={rail.photos} />
-    </section>
-  );
-}
 function CaseCards({ limit = 6 }: { limit?: number }) {
   return (
     <div className="work-grid">
@@ -483,7 +290,9 @@ function CaseCards({ limit = 6 }: { limit?: number }) {
           </div>
           <div className="work-caption">
             <h3>{c.title}</h3>
-            <span>{c.category} ↗</span>
+            <span>
+              {c.category} <Icon name="arrowUpRight" />
+            </span>
           </div>
         </a>
       ))}
@@ -501,7 +310,15 @@ function CourseCards({ limit = 8 }: { limit?: number }) {
           key={c.slug}
         >
           <div className={`course-art course-art-${i % 4}`} aria-hidden="true">
-            <span>{['↗', '∿', '✳', '◈'][i % 4]}</span>
+            <span>
+              <Icon
+                name={
+                  (['arrowUpRight', 'microphone', 'stars', 'puzzle'] as const)[
+                    i % 4
+                  ]
+                }
+              />
+            </span>
             <b>0{i + 1}</b>
           </div>
           <div className="course-caption">
@@ -511,10 +328,16 @@ function CourseCards({ limit = 8 }: { limit?: number }) {
             <h3>{c.title}</h3>
             <p>{c.goal}</p>
             <div>
-              <span>{c.hours} h · format envisagé</span>
-              <span aria-hidden="true">↗</span>
+              <span>
+                {c.hours} {t('h · format envisagé', 'h · planned format')}
+              </span>
+              <span aria-hidden="true">
+                <Icon name="arrowUpRight" />
+              </span>
             </div>
-            <small>Module de démonstration</small>
+            <small>
+              {t('Module de démonstration', 'Demonstration course')}
+            </small>
           </div>
         </a>
       ))}
@@ -529,7 +352,9 @@ function ProductCards() {
         href={link('labs', 'products/management')}
         className="lab-product"
       >
-        <p className="micro">01 / PRODUIT EXISTANT</p>
+        <p className="micro">
+          {t('01 / PRODUIT EXISTANT', '01 / EXISTING PRODUCT')}
+        </p>
         <div className="product-window" aria-hidden="true">
           <div>
             <i />
@@ -538,32 +363,57 @@ function ProductCards() {
           </div>
           <aside>SM / MANAGEMENT</aside>
           <b>
-            Le travail,
+            {t('Le travail,', 'Work,')}
             <br />
-            réuni.
+            {t('réuni.', 'together.')}
           </b>
-          <span>CLIENTS · PROJETS · PLANNING · FINANCES</span>
+          <span>
+            {t(
+              'CLIENTS · PROJETS · PLANNING · FINANCES',
+              'CLIENTS · PROJECTS · PLANNING · FINANCES',
+            )}
+          </span>
         </div>
         <h3>
-          Smartsell Management <span>↗</span>
+          Smartsell Management{' '}
+          <span>
+            <Icon name="arrowUpRight" />
+          </span>
         </h3>
-        <p>Un produit pour relier les opérations du quotidien.</p>
+        <p>
+          {t(
+            'Un produit pour relier les opérations du quotidien.',
+            'A product that connects everyday operations.',
+          )}
+        </p>
       </a>
       <a
         data-reveal
         href={link('labs', 'products/obtura')}
         className="lab-product obtura-card"
       >
-        <p className="micro">02 / VISION PRODUIT</p>
+        <p className="micro">
+          {t('02 / VISION PRODUIT', '02 / PRODUCT VISION')}
+        </p>
         <div className="obtura-window" aria-hidden="true">
           <div className="obtura-orbit" />
           <b>O.</b>
-          <span>LE TRAVAIL CRÉATIF, RELIÉ.</span>
+          <span>
+            {t('LE TRAVAIL CRÉATIF, RELIÉ.', 'CREATIVE WORK, CONNECTED.')}
+          </span>
         </div>
         <h3>
-          Obtura <span>↗</span>
+          Obtura{' '}
+          <span>
+            <Icon name="arrowUpRight" />
+          </span>
         </h3>
-        <p>Un Business OS envisagé pour les créateurs visuels.</p>
+        <p>
+          {t(
+            'Un Business OS envisagé pour les créateurs visuels.',
+            'A Business OS envisioned for visual creators.',
+          )}
+        </p>
       </a>
     </div>
   );
@@ -580,355 +430,26 @@ function SpaceCards() {
         >
           <div className={`space-diagram diagram-${i}`} aria-hidden="true">
             <div />
-            <b>{s.symbol}</b>
-            <span>ÉTUDE DE PLATEAU / 0{i + 1}</span>
+            <b>
+              <Icon
+                name={(['eye', 'dashboard', 'microphone'] as const)[i % 3]}
+              />
+            </b>
+            <span>
+              {t('ÉTUDE DE PLATEAU', 'SET STUDY')} / 0{i + 1}
+            </span>
           </div>
           <h3>
-            {s.title} <span>↗</span>
+            {s.title}{' '}
+            <span>
+              <Icon name="arrowUpRight" />
+            </span>
           </h3>
           <p>{s.copy}</p>
           <small>{s.use}</small>
         </a>
       ))}
     </div>
-  );
-}
-function HomeBody({ id }: { id: VerticalId }) {
-  if (id === 'agency')
-    return (
-      <>
-        <section className="site-section" id="explore">
-          <div className="site-container">
-            <SectionTitle
-              label="01 / EXPLORATIONS CRÉATIVES"
-              title="Une direction. Plusieurs expressions."
-              copy="Six concepts pour rendre notre démarche visible. Chaque étude expose le contexte, la direction et les livrables envisagés."
-            />
-            <CaseCards limit={4} />
-            <Action secondary id={id} path="work">
-              Les six explorations
-            </Action>
-          </div>
-        </section>
-        <section className="site-section agency-services">
-          <div className="site-container split-layout">
-            <SectionTitle
-              label="02 / EXPERTISES"
-              title="Du sens. De la forme. De l’impact."
-              copy="Stratégie, création et technologie se rencontrent dans chaque projet."
-            />
-            <div className="service-index" data-reveal>
-              {agencyServices.slice(0, 6).map((s, i) => (
-                <a key={s.slug} href={link(id, `services/${s.slug}`)}>
-                  <span>0{i + 1}</span>
-                  <h3>
-                    <MotionText text={s.title} />
-                  </h3>
-                  <span>↗</span>
-                </a>
-              ))}
-              <a href={link(id, 'services')}>Toutes les expertises →</a>
-            </div>
-          </div>
-        </section>
-        <section className="site-section">
-          <div className="site-container">
-            <SectionTitle
-              label="03 / NOTRE MANIÈRE DE FAIRE"
-              title="Une idée ne s’arrête pas au premier écran."
-            />
-            <div className="process-grid">
-              {[
-                [
-                  'Écouter',
-                  'Comprendre le contexte, les personnes et l’objectif.',
-                ],
-                ['Explorer', 'Proposer une direction et la rendre concrète.'],
-                ['Construire', 'Relier la forme aux parcours et aux usages.'],
-                ['Transmettre', 'Documenter les choix et préparer la suite.'],
-              ].map(([t, c], i) => (
-                <article data-reveal key={t}>
-                  <span>0{i + 1} /</span>
-                  <h3>
-                    <MotionText text={t + '.'} />
-                  </h3>
-                  <p>{c}</p>
-                </article>
-              ))}
-            </div>
-            <Action secondary id={id} path="history">
-              L’histoire de la maison
-            </Action>
-          </div>
-        </section>
-      </>
-    );
-  if (id === 'academy')
-    return (
-      <>
-        <section id="explore" className="site-section">
-          <div className="site-container">
-            <SectionTitle
-              label="01 / LES MODULES"
-              title="Votre curiosité a de l’avenir."
-              copy="Choisissez un terrain de pratique, découvrez le projet et essayez trois leçons de démonstration."
-            />
-            <CourseCards limit={4} />
-            <Action secondary id={id} path="courses">
-              Explorer les huit modules
-            </Action>
-          </div>
-        </section>
-        <section className="academy-manifesto site-section">
-          <div className="site-container split-layout">
-            <div className="big-asterisk" aria-hidden="true">
-              ✳
-            </div>
-            <div>
-              <p className="micro">02 / LE SAVOIR EN ACTION</p>
-              <h2>
-                Ce que vous apprenez.
-                <br />
-                <em>Ce que vous en faites.</em>
-              </h2>
-              <p>
-                Un objectif clair, des exemples, un exercice. Le parcours
-                transforme une notion en pratique, puis vous invite à revenir
-                sur vos choix.
-              </p>
-              <Action id={id} path="resources">
-                Ouvrir la boîte à outils
-              </Action>
-            </div>
-          </div>
-        </section>
-        <section className="site-section">
-          <div className="site-container split-layout">
-            <SectionTitle
-              label="03 / PROCHAINS FORMATS"
-              title="L’apprentissage continue ensemble."
-              copy="Ateliers, sessions guidées et parcours d’équipe. Les dates réelles seront annoncées après validation."
-            />
-            <div className="event-stack">
-              {courses.slice(0, 3).map((c, i) => (
-                <a href={link(id, `courses/${c.slug}`)} key={c.slug}>
-                  <span>0{i + 1}</span>
-                  <div>
-                    <p className="micro">FORMAT À PROGRAMMER</p>
-                    <h3>{c.title}</h3>
-                    <p>
-                      {c.hours} h · {c.level}
-                    </p>
-                  </div>
-                  <span>↗</span>
-                </a>
-              ))}
-              <Action secondary id={id} path="corporate">
-                Construire un parcours d’équipe
-              </Action>
-            </div>
-          </div>
-        </section>
-      </>
-    );
-  if (id === 'media') {
-    const lead = articles[0];
-    return (
-      <>
-        <section className="site-section media-front" id="explore">
-          <div className="site-container">
-            <div className="edition-line">
-              <span>SMARTSELL MEDIA / ÉDITION DE DÉMONSTRATION</span>
-              <span>CONAKRY → LE MONDE</span>
-            </div>
-            <a
-              className="editorial-feature"
-              href={link(id, `article/${lead.slug}`)}
-            >
-              <div className="feature-art" aria-hidden="true">
-                <span>
-                  FORM
-                  <br />
-                  FOLLOWS
-                  <br />
-                  <em>IDEA.</em>
-                </span>
-                <i />
-              </div>
-              <div>
-                <p className="micro">À LA UNE / {lead.category}</p>
-                <h2>{lead.title}</h2>
-                <p>{lead.summary}</p>
-                <span className="text-link">Lire l’article ↗</span>
-              </div>
-            </a>
-            <SectionTitle
-              label="01 / LE FIL"
-              title="Des idées à faire circuler."
-            />
-            <div className="media-home-grid">
-              {articles.slice(1, 7).map((a, i) => (
-                <a
-                  key={a.slug}
-                  data-reveal
-                  href={link(id, `article/${a.slug}`)}
-                >
-                  <div
-                    className={`article-cover cover-${i % 3}`}
-                    aria-hidden="true"
-                  >
-                    <b>{['↗', '✳', '∿'][i % 3]}</b>
-                    <span>{a.number}</span>
-                  </div>
-                  <p className="micro">
-                    {a.category} · {a.minutes} MIN
-                  </p>
-                  <h3>{a.title}</h3>
-                  <p>{a.summary}</p>
-                </a>
-              ))}
-            </div>
-            <Action secondary id={id} path="latest">
-              Tous les articles
-            </Action>
-          </div>
-        </section>
-        <section className="site-section">
-          <div className="site-container">
-            <Newsletter />
-          </div>
-        </section>
-      </>
-    );
-  }
-  if (id === 'studio')
-    return (
-      <>
-        <section className="site-section" id="explore">
-          <div className="site-container">
-            <SectionTitle
-              label="01 / LES ESPACES"
-              title="Pour chaque histoire, un cadre."
-              copy="Photo, vidéo, podcast. Explorez trois configurations illustratives et préparez les besoins de votre production."
-            />
-            <SpaceCards />
-          </div>
-        </section>
-        <section className="studio-manifesto">
-          <div className="site-container">
-            <p className="micro">02 / L’INTENTION EN PREMIER</p>
-            <h2>
-              Une lumière.
-              <br />
-              Un geste.
-              <br />
-              <em>Une présence.</em>
-            </h2>
-            <div>
-              <p>
-                De la première référence au dernier plan, le plateau sert votre
-                récit. Nous préparons le format, les besoins et les livrables
-                avec vous.
-              </p>
-              <Action id={id} path="gallery">
-                Explorer les directions visuelles
-              </Action>
-            </div>
-          </div>
-        </section>
-        <section className="site-section">
-          <div className="site-container">
-            <SectionTitle
-              label="03 / COMPOSER SA SESSION"
-              title="Votre prochain tournage commence ici."
-              copy="Découvrez les packs illustratifs, puis essayez le parcours de réservation sans engagement."
-            />
-            <div className="pack-strip">
-              {packs.slice(0, 3).map((p) => (
-                <a key={p.slug} href={link(id, `packs/${p.slug}`)}>
-                  <p className="micro">{p.duration} H / FORMAT INDICATIF</p>
-                  <h3>{p.title}</h3>
-                  <p>{p.copy}</p>
-                  <span>Explorer le pack ↗</span>
-                </a>
-              ))}
-            </div>
-            <Action id={id} path="booking">
-              Simuler une session
-            </Action>
-          </div>
-        </section>
-      </>
-    );
-  return (
-    <>
-      <section className="site-section" id="explore">
-        <div className="site-container">
-          <SectionTitle
-            label="01 / LES PRODUITS"
-            title="Faire avancer le quotidien."
-            copy="La technologie prend son sens dans ce qu’elle permet de faire."
-          />
-          <ProductCards />
-        </div>
-      </section>
-      <section className="site-section labs-method">
-        <div className="site-container split-layout">
-          <div>
-            <p className="micro">02 / LA DÉMARCHE</p>
-            <h2>
-              Observe.
-              <br />
-              Build.
-              <br />
-              <em>Improve.</em>
-            </h2>
-          </div>
-          <div className="research-stack">
-            {[
-              [
-                'Un problème avant un outil.',
-                'Observer la réalité du travail et les points de friction.',
-              ],
-              [
-                'Un prototype avant une promesse.',
-                'Donner une forme testable à une hypothèse.',
-              ],
-              [
-                'La maîtrise, jusqu’à la suite.',
-                'Documenter, valider et transmettre les décisions.',
-              ],
-            ].map(([t, c], i) => (
-              <article data-reveal key={t}>
-                <span>0{i + 1}</span>
-                <h3>{t}</h3>
-                <p>{c}</p>
-              </article>
-            ))}
-            <Action secondary id={id} path="research">
-              Les pistes de recherche
-            </Action>
-          </div>
-        </div>
-      </section>
-      <section className="site-section">
-        <div className="site-container lab-invitation">
-          <p className="micro">03 / INTELLIGENCE & INTENTION</p>
-          <h2>
-            L’IA n’est qu’un début.
-            <br />
-            <em>L’usage fait la différence.</em>
-          </h2>
-          <p>
-            Cartographier une tâche, préparer un prototype et définir les points
-            de contrôle humain.
-          </p>
-          <Action id={id} path="ai">
-            Explorer l’approche
-          </Action>
-        </div>
-      </section>
-    </>
   );
 }
 function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
@@ -950,13 +471,13 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
   if (page.kind === 'category') {
     const mapping: Record<string, string> = {
       tech: 'Tech',
-      ai: 'IA',
+      ai: t('IA', 'AI'),
       startups: 'Startups',
       business: 'Business',
       marketing: 'Marketing',
-      creative: 'Création',
-      africa: 'Afrique',
-      guinea: 'Guinée',
+      creative: t('Création', 'Creative'),
+      africa: t('Afrique', 'Africa'),
+      guinea: t('Guinée', 'Guinea'),
       opinions: 'Opinions',
       interviews: 'Interviews',
     };
@@ -974,7 +495,9 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
               <h2>{s.title}</h2>
               <p>{s.copy}</p>
             </div>
-            <span>↗</span>
+            <span>
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
         ))}
       </div>
@@ -992,7 +515,7 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
             href={link(id, `packs/${p.slug}`)}
           >
             <p className="micro">
-              0{i + 1} / {p.duration} H INDICATIVES
+              0{i + 1} / {p.duration} {t('H INDICATIVES', 'H INDICATIVE')}
             </p>
             <h2>{p.title}</h2>
             <p>{p.copy}</p>
@@ -1001,8 +524,11 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
                 <li key={s}>{s}</li>
               ))}
             </ul>
-            <p className="price-note">Sur demande</p>
-            <span className="text-link">Voir le périmètre ↗</span>
+            <p className="price-note">{t('Sur demande', 'On request')}</p>
+            <span className="text-link">
+              {t('Voir le périmètre', 'See the scope')}{' '}
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
         ))}
       </div>
@@ -1011,28 +537,35 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
     return (
       <>
         <DemoNote>
-          Programme illustratif de {course.hours} h. L’aperçu contient trois
-          leçons. Aucune session réelle n’est annoncée.
+          {t(
+            `Programme illustratif de ${course.hours} h. L’aperçu contient trois leçons. Aucune session réelle n’est annoncée.`,
+            `Illustrative ${course.hours}-hour programme. The preview contains three lessons. No real session is announced.`,
+          )}
         </DemoNote>
         <div className="course-detail">
           <div>
-            <h2>Le projet qui donne un sens au module.</h2>
+            <h2>
+              {t(
+                'Le projet qui donne un sens au module.',
+                'The project that gives the course its meaning.',
+              )}
+            </h2>
             <p>{course.project}</p>
             <dl className="facts">
               <div>
-                <dt>Niveau</dt>
+                <dt>{t('Niveau', 'Level')}</dt>
                 <dd>{course.level}</dd>
               </div>
               <div>
-                <dt>Catégorie</dt>
+                <dt>{t('Catégorie', 'Category')}</dt>
                 <dd>{course.category}</dd>
               </div>
               <div>
-                <dt>Tarif réel</dt>
-                <dd>À définir</dd>
+                <dt>{t('Tarif réel', 'Actual price')}</dt>
+                <dd>{t('À définir', 'To be defined')}</dd>
               </div>
             </dl>
-            <h2>Le programme de l’aperçu</h2>
+            <h2>{t('Le programme de l’aperçu', 'The preview programme')}</h2>
             {course.lessons.map((l, i) => (
               <details key={l.title} className="curriculum">
                 <summary>
@@ -1040,31 +573,35 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
                 </summary>
                 <p>{l.copy}</p>
                 <p>
-                  <strong>Exercice : </strong>
+                  <strong>{t('Exercice :', 'Exercise:')} </strong>
                   {l.exercise}
                 </p>
               </details>
             ))}
-            <h3>Avant de commencer</h3>
+            <h3>{t('Avant de commencer', 'Before you start')}</h3>
             <p>
-              Prévoyez un carnet ou un document pour noter vos idées. Aucun
-              outil payant n’est nécessaire pour parcourir cet aperçu.
+              {t(
+                'Prévoyez un carnet ou un document pour noter vos idées. Aucun outil payant n’est nécessaire pour parcourir cet aperçu.',
+                'Keep a notebook or a document to write down your ideas. No paid tool is needed to go through this preview.',
+              )}
             </p>
           </div>
           <aside className="course-enroll-panel">
             <span className="course-symbol" aria-hidden="true">
-              ✳
+              <Icon name="stars" />
             </span>
-            <h3>Faites le premier pas.</h3>
+            <h3>{t('Faites le premier pas.', 'Take the first step.')}</h3>
             <p>
-              Choisissez ce module, essayez les leçons et retrouvez votre
-              progression dans votre espace.
+              {t(
+                'Choisissez ce module, essayez les leçons et retrouvez votre progression dans votre espace.',
+                'Choose this course, try the lessons and find your progress in your space.',
+              )}
             </p>
             <Action id={id} path={`enroll/${course.slug}`}>
-              Explorer le parcours démo
+              {t('Explorer le parcours démo', 'Explore the demo journey')}
             </Action>
             <Action secondary id={id} path="events">
-              Les formats à venir
+              {t('Les formats à venir', 'Upcoming formats')}
             </Action>
           </aside>
         </div>
@@ -1077,10 +614,16 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           <p className="micro">
             {article.category} / {article.minutes} MIN
           </p>
-          <a href={link(id, 'authors/redaction')}>Rédaction Smartsell ↗</a>
-          <p>10 octobre 2026</p>
+          <a href={link(id, 'authors/redaction')}>
+            {t('Rédaction Smartsell', 'Smartsell newsroom')}{' '}
+            <Icon name="arrowUpRight" />
+          </a>
+          <p>{t('10 octobre 2026', '10 October 2026')}</p>
           <p className="form-note">
-            Exemple éditorial original. Guide ou opinion de démonstration.
+            {t(
+              'Exemple éditorial original. Guide ou opinion de démonstration.',
+              'Original editorial example. Demonstration guide or opinion.',
+            )}
           </p>
           <ShareArticle />
         </aside>
@@ -1095,23 +638,33 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           </div>
           {article.paragraphs.map((text, i) => (
             <section key={text}>
-              <h2>{i === 0 ? 'Le point de départ' : 'À mettre en pratique'}</h2>
+              <h2>
+                {i === 0
+                  ? t('Le point de départ', 'The starting point')
+                  : t('À mettre en pratique', 'Putting it into practice')}
+              </h2>
               <p>{text}</p>
             </section>
           ))}
           <div className="reading-next">
-            <p className="micro">POURSUIVRE LA LECTURE</p>
+            <p className="micro">
+              {t('POURSUIVRE LA LECTURE', 'KEEP READING')}
+            </p>
             {articles
               .filter((a) => a.slug !== article.slug)
               .filter((a) => a.category === article.category)
               .slice(0, 2)
               .map((a) => (
                 <a href={link(id, `article/${a.slug}`)} key={a.slug}>
-                  {a.title} ↗
+                  {a.title} <Icon name="arrowUpRight" />
                 </a>
               ))}
             <a href={link('academy', 'courses')}>
-              Passer de la lecture à la pratique avec Academy ↗
+              {t(
+                'Passer de la lecture à la pratique avec Academy',
+                'Move from reading to practice with Academy',
+              )}{' '}
+              <Icon name="arrowUpRight" />
             </a>
           </div>
         </article>
@@ -1124,13 +677,20 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           <a key={c.slug} href={link(id, `courses/${c.slug}`)}>
             <span>{String(i + 1).padStart(2, '0')}</span>
             <div>
-              <p className="micro">DATE À ANNONCER / FORMAT ENVISAGÉ</p>
+              <p className="micro">
+                {t(
+                  'DATE À ANNONCER / FORMAT ENVISAGÉ',
+                  'DATE TO BE ANNOUNCED / PLANNED FORMAT',
+                )}
+              </p>
               <h2>{c.title}</h2>
               <p>
                 {c.hours} h · {c.level}
               </p>
             </div>
-            <span>↗</span>
+            <span>
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
         ))}
       </div>
@@ -1140,24 +700,45 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
       <div className="faq-list">
         {[
           [
-            'Peut-on réserver réellement sur ce site ?',
-            'Le parcours actuel est une démonstration. Il permet de préparer une session sans bloquer de créneau ni transmettre de demande.',
+            t(
+              'Peut-on réserver réellement sur ce site ?',
+              'Can I really book on this site?',
+            ),
+            t(
+              'Le parcours actuel est une démonstration. Il permet de préparer une session sans bloquer de créneau ni transmettre de demande.',
+              'The current journey is a demonstration. It lets you prepare a session without holding a slot or sending a request.',
+            ),
           ],
           [
-            'Que faut-il préparer ?',
-            'Votre format, le nombre de personnes, vos références et les livrables attendus. Les besoins d’image, de son et de postproduction seront cadrés ensemble.',
+            t('Que faut-il préparer ?', 'What should I prepare?'),
+            t(
+              'Votre format, le nombre de personnes, vos références et les livrables attendus. Les besoins d’image, de son et de postproduction seront cadrés ensemble.',
+              'Your format, the number of people, your references and the expected deliverables. Image, sound and post-production needs will be scoped together.',
+            ),
           ],
           [
-            'Les équipements sont-ils confirmés ?',
-            'Les configurations présentées sont illustratives. L’équipe devra confirmer les équipements, les conditions et la disponibilité avant une prestation réelle.',
+            t(
+              'Les équipements sont-ils confirmés ?',
+              'Is the equipment confirmed?',
+            ),
+            t(
+              'Les configurations présentées sont illustratives. L’équipe devra confirmer les équipements, les conditions et la disponibilité avant une prestation réelle.',
+              'The setups shown are illustrative. The team will confirm equipment, conditions and availability before any real service.',
+            ),
           ],
           [
-            'Comment connaître le tarif ?',
-            'Le tarif dépend du périmètre, de la durée, de l’accompagnement et des livrables. Les packs illustrent des points de départ ; le chiffrage réel reste à établir.',
+            t('Comment connaître le tarif ?', 'How do I get a price?'),
+            t(
+              'Le tarif dépend du périmètre, de la durée, de l’accompagnement et des livrables. Les packs illustrent des points de départ ; le chiffrage réel reste à établir.',
+              'The price depends on scope, duration, support and deliverables. The packs illustrate starting points; the actual quote remains to be established.',
+            ),
           ],
           [
-            'Le montage est-il inclus ?',
-            'Chaque production doit préciser les livrables, les versions et la postproduction. Le récapitulatif d’un pack est une proposition à cadrer, pas un contrat.',
+            t('Le montage est-il inclus ?', 'Is editing included?'),
+            t(
+              'Chaque production doit préciser les livrables, les versions et la postproduction. Le récapitulatif d’un pack est une proposition à cadrer, pas un contrat.',
+              'Each production must specify deliverables, versions and post-production. A pack summary is a proposal to scope, not a contract.',
+            ),
           ],
         ].map(([q, a]) => (
           <details key={q}>
@@ -1169,7 +750,7 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           </details>
         ))}
         <Action id={id} path="booking">
-          Essayer le parcours démo
+          {t('Essayer le parcours démo', 'Try the demo journey')}
         </Action>
       </div>
     );
@@ -1178,8 +759,10 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
       {study && (
         <>
           <p className="concept-disclaimer">
-            Étude conceptuelle de démonstration · marque fictive · aucune
-            commande client revendiquée.
+            {t(
+              'Étude conceptuelle de démonstration · marque fictive · aucune commande client revendiquée.',
+              'Demonstration concept study · fictional brand · no client commission claimed.',
+            )}
           </p>
           <div
             className={`case-banner work-${cases.indexOf(study)}`}
@@ -1196,8 +779,16 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           aria-hidden="true"
         >
           <div />
-          <b>{space.symbol}</b>
-          <span>CONFIGURATION ILLUSTRATIVE</span>
+          <b>
+            <Icon
+              name={
+                (['eye', 'dashboard', 'microphone'] as const)[
+                  spaces.indexOf(space) % 3
+                ]
+              }
+            />
+          </b>
+          <span>{t('CONFIGURATION ILLUSTRATIVE', 'ILLUSTRATIVE SETUP')}</span>
         </div>
       )}
       <div className="story-blocks">
@@ -1221,37 +812,47 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
       {pack && (
         <>
           <DemoNote>
-            Périmètre et durée illustratifs. Aucun tarif engagé ni disponibilité
-            réelle.
+            {t(
+              'Périmètre et durée illustratifs. Aucun tarif engagé ni disponibilité réelle.',
+              'Illustrative scope and duration. No committed price or real availability.',
+            )}
           </DemoNote>
           <Action id={id} path="booking">
-            Composer une session démo
+            {t('Composer une session démo', 'Put together a demo session')}
           </Action>
         </>
       )}
       {space && (
         <Action id={id} path="booking">
-          Préparer une session démo
+          {t('Préparer une session démo', 'Prepare a demo session')}
         </Action>
       )}
       {page.kind === 'management' && (
         <a className="site-button" href={managementUrl}>
-          Ouvrir Management, le produit existant ↗
+          {t(
+            'Ouvrir Management, le produit existant',
+            'Open Management, the existing product',
+          )}{' '}
+          <Icon name="arrowUpRight" />
         </a>
       )}
       {page.kind === 'obtura' && (
         <Action id={id} path="contact">
-          Partager un besoin de créateur
+          {t('Partager un besoin de créateur', 'Share a creator’s need')}
         </Action>
       )}
       {study && (
-        <nav className="case-next" aria-label="Autres explorations">
+        <nav
+          className="case-next"
+          aria-label={t('Autres explorations', 'Other explorations')}
+        >
           {cases
             .filter((c) => c.slug !== study.slug)
             .slice(0, 2)
             .map((c) => (
               <a href={link(id, `work/${c.slug}`)} key={c.slug}>
-                Explorer {c.title} ↗
+                {t('Explorer', 'Explore')} {c.title}{' '}
+                <Icon name="arrowUpRight" />
               </a>
             ))}
         </nav>
@@ -1262,7 +863,9 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           id={id}
           path={id === 'academy' ? 'courses' : 'contact'}
         >
-          {id === 'academy' ? 'Choisir un module' : 'Parlons de votre projet'}
+          {id === 'academy'
+            ? t('Choisir un module', 'Choose a course')
+            : t('Parlons de votre projet', 'Let’s talk about your project')}
         </Action>
       )}
     </>
@@ -1274,33 +877,39 @@ export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
       <Header id={id} path={page.path} />
       <main id="main">
         {page.kind === 'home' ? (
-          <>
-            <HomeHero id={id} page={page} />
-            {id === 'agency' && <AgencyRibbon />}
-            <SiteManifesto id={id} />
-            <HomeBody id={id} />
-          </>
+          <VerticalHome id={id} />
         ) : (
           <>
-            <section className="inner-hero">
-              <div className="site-container">
-                <nav className="breadcrumbs" aria-label="Fil d’Ariane">
+            <InnerHero
+              id={id}
+              page={page}
+              crumbs={
+                <nav
+                  className="breadcrumbs"
+                  aria-label={t('Fil d’Ariane', 'Breadcrumb')}
+                >
                   <a href={link(id)}>{names[id]}</a>
                   <span>/</span>
                   <span>{page.title.replace(/\n/g, ' ')}</span>
                 </nav>
-                <p className="micro">SMARTSELL {names[id].toUpperCase()}</p>
-                <h1 data-reveal>
-                  <MotionText text={page.title} />
-                </h1>
-                <p>{page.intro}</p>
-              </div>
-            </section>
-            <section className="site-section inner-content">
+              }
+            />
+            <section
+              className={`site-section inner-content uv-body uv-body-${id}`}
+            >
               <div className="site-container">
                 <Content id={id} page={page} />
               </div>
             </section>
+            {![
+              'enroll',
+              'learn',
+              'dashboard',
+              'certificates',
+              'booking',
+            ].includes(page.kind || '') && (
+              <InnerCta id={id} path={page.path} />
+            )}
           </>
         )}
       </main>

@@ -16,7 +16,9 @@
     "./immersive": "./src/immersive.tsx",
     "./immersive.css": "./immersive.css",
     "./home": "./src/home.tsx",
-    "./home.css": "./home.css"
+    "./home.css": "./home.css",
+    "./universe.css": "./universe.css",
+    "./icons": "./src/icons.tsx"
   },
   "peerDependencies": {
     "react": "^19"

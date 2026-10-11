@@ -1,4 +1,5 @@
 'use client';
+import { Icon } from './icons';
 import {
   useEffect,
   useId,
@@ -9,7 +10,14 @@ import {
 } from 'react';
 import type { VerticalId } from '@smartsell/types';
 import { verticals } from '@smartsell/content';
-import { routingConfig, urlFor } from '@smartsell/routing';
+import {
+  routingConfig,
+  urlFor,
+  locale,
+  otherLocale,
+  withBasePath,
+  t,
+} from '@smartsell/routing';
 import { PreviewFrame } from './experience';
 
 /*
@@ -67,7 +75,9 @@ export function IntroCurtain({
         ))}
       </div>
       <div className="sg-curtain-copy">
-        <span className="sg-mono">SMARTSELL ✳ {tagline}</span>
+        <span className="sg-mono">
+          SMARTSELL <Icon name="stars" /> {tagline}
+        </span>
         <strong>{name}</strong>
         <span className="sg-curtain-line" />
       </div>
@@ -77,8 +87,69 @@ export function IntroCurtain({
 
 /** Script en tête : n'affiche le rideau qu'une fois par site et par session. */
 export function IntroScript({ site }: { site: string }) {
-  const code = `var d=document.documentElement;d.dataset.sg='1';try{var k='sg-intro-${site}';if(sessionStorage.getItem(k)||sessionStorage.getItem('smartsell-motion-paused')==='true'){d.dataset.intro='skip'}else{sessionStorage.setItem(k,'1')}if(sessionStorage.getItem('sg-leaving')){d.dataset.intro='arrive';sessionStorage.removeItem('sg-leaving')}}catch(e){}`;
+  const native = site === 'academy' || site === 'media' ? 'light' : 'dark';
+  const code = `var d=document.documentElement;d.dataset.sg='1';d.dataset.native='${native}';try{var th=localStorage.getItem('smartsell-theme');if(th==='light'||th==='dark')d.dataset.theme=th}catch(e){}try{var k='sg-intro-${site}';if(sessionStorage.getItem(k)||sessionStorage.getItem('smartsell-motion-paused')==='true'){d.dataset.intro='skip'}else{sessionStorage.setItem(k,'1')}if(sessionStorage.getItem('sg-leaving')){d.dataset.intro='arrive';sessionStorage.removeItem('sg-leaving')}}catch(e){}`;
   return <script dangerouslySetInnerHTML={{ __html: code }} />;
+}
+
+/** Bascule entre mode clair et mode sombre, mémorisée pour le visiteur. */
+export function ThemeToggle() {
+  const [mode, setMode] = useState<'light' | 'dark'>('dark');
+  useEffect(() => {
+    const d = document.documentElement;
+    setMode(
+      (d.dataset.theme || d.dataset.native || 'dark') as 'light' | 'dark',
+    );
+  }, []);
+  const next = mode === 'dark' ? 'light' : 'dark';
+  return (
+    <button
+      type="button"
+      className={`sg-theme sg-theme-${mode}`}
+      aria-label={
+        next === 'light'
+          ? t('Passer en mode clair', 'Switch to light mode')
+          : t('Passer en mode sombre', 'Switch to dark mode')
+      }
+      onClick={() => {
+        document.documentElement.dataset.theme = next;
+        try {
+          localStorage.setItem('smartsell-theme', next);
+        } catch {}
+        setMode(next);
+      }}
+    >
+      <span className="sg-theme-dot" aria-hidden="true" />
+      <span className="sg-theme-label">
+        {next === 'light' ? t('Clair', 'Light') : t('Sombre', 'Dark')}
+      </span>
+    </button>
+  );
+}
+
+/** Passe à la même page dans l'autre langue. */
+export function LangSwitch() {
+  const [href, setHref] = useState(withBasePath(`/${otherLocale}/`));
+  useEffect(() => {
+    setHref(
+      location.pathname.replace(`/${locale}/`, `/${otherLocale}/`) +
+        location.hash,
+    );
+  }, []);
+  return (
+    <a
+      className="sg-lang"
+      href={href}
+      hrefLang={otherLocale}
+      lang={otherLocale}
+      aria-label={
+        otherLocale === 'en' ? 'English version' : 'Version française'
+      }
+    >
+      <span aria-hidden="true">{locale.toUpperCase()}</span>
+      <b>{otherLocale.toUpperCase()}</b>
+    </a>
+  );
 }
 
 /** Transition sortante : couvre l'écran en pixels avant de changer de site. */
@@ -106,7 +177,8 @@ export function SiteTransitions() {
       if (url.pathname === location.pathname && url.hash) return;
       // Seuls les changements de site déclenchent le rideau.
       const site = (path: string) =>
-        path.match(/\/fr\/(agency|academy|media|studio|labs)\//)?.[1] ?? 'main';
+        path.match(/\/(?:fr|en)\/(agency|academy|media|studio|labs)\//)?.[1] ??
+        'main';
       if (site(url.pathname) === site(location.pathname)) return;
       event.preventDefault();
       try {
@@ -367,7 +439,7 @@ export function UniverseOrbit() {
         <i />
       </div>
       <div className="sg-orbit-core">
-        <span className="sg-mono">MAISON MÈRE</span>
+        <span className="sg-mono">{t('MAISON MÈRE', 'PARENT HOUSE')}</span>
         <strong>Smartsell</strong>
         <span>Conakry · GN</span>
       </div>
@@ -377,7 +449,7 @@ export function UniverseOrbit() {
           <a
             key={id}
             className={`sg-satellite sg-sat-${i}`}
-            href={urlFor(id, 'fr', '', routingConfig)}
+            href={urlFor(id, locale, '', routingConfig)}
           >
             <span className="sg-mono">{v.number}</span>
             <strong>{v.name}</strong>
@@ -436,7 +508,7 @@ export function UniverseTabs() {
         className="sg-tablist"
         role="tablist"
         aria-orientation="vertical"
-        aria-label="Les cinq sites Smartsell"
+        aria-label={t('Les cinq sites Smartsell', 'The five Smartsell sites')}
       >
         {verticals.map((x, i) => (
           <button
@@ -489,9 +561,12 @@ export function UniverseTabs() {
           </ul>
           <a
             className="sg-pill-link"
-            href={urlFor(v.id, 'fr', '', routingConfig)}
+            href={urlFor(v.id, locale, '', routingConfig)}
           >
-            Entrer dans {v.name} <span aria-hidden="true">↗</span>
+            Entrer dans {v.name}{' '}
+            <span aria-hidden="true">
+              <Icon name="arrowUpRight" />
+            </span>
           </a>
         </div>
         <div className="sg-panel-visual">
@@ -517,7 +592,11 @@ export function CrossGrid({
             <span className="sg-mono">{item.label}</span>
             <h3>{item.title}</h3>
             <p>{item.copy}</p>
-            {item.href && <span aria-hidden="true">↗</span>}
+            {item.href && (
+              <span aria-hidden="true">
+                <Icon name="arrowUpRight" />
+              </span>
+            )}
           </>
         );
         return item.href ? (

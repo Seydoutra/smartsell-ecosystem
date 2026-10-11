@@ -1,4 +1,6 @@
 'use client';
+import { t } from '@smartsell/routing';
+import { Icon } from './icons';
 import {
   useEffect,
   useRef,
@@ -24,7 +26,7 @@ const still = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
   document.documentElement.dataset.motionPaused === 'true';
 
-/** Avancement d'un élément dans la fenêtre, exposé en CSS via --p (0 → 1). */
+/** Avancement d'un élément dans la fenêtre, exposé en CSS via --p (0 <Icon name="arrowRight" /> 1). */
 function useScrollProgress<T extends HTMLElement>(
   mode: 'sticky' | 'through' = 'sticky',
   onProgress?: (p: number, el: T) => void,
@@ -173,7 +175,9 @@ export function CtaLink({
   return (
     <a className={`im-cta im-cta-${tone}`} href={href}>
       <span>{children}</span>
-      <i aria-hidden="true">↗</i>
+      <i aria-hidden="true">
+        <Icon name="arrowUpRight" />
+      </i>
     </a>
   );
 }
@@ -219,7 +223,10 @@ export function Marquee({
           <span key={k}>
             {items.map((item) => (
               <span key={item}>
-                {item} <b>✳</b>
+                {item}{' '}
+                <b>
+                  <Icon name="stars" />
+                </b>
               </span>
             ))}
           </span>
@@ -311,7 +318,7 @@ export function HorizontalScroll({
           <p className="sg-mono">{eyebrow}</p>
           <h2>{title}</h2>
           <span className="im-hscroll-hint" aria-hidden="true">
-            Faites défiler →
+            {t('Faites défiler', 'Keep scrolling')} <Icon name="arrowRight" />
           </span>
         </div>
         <div className="im-hscroll-track" ref={track}>
@@ -411,7 +418,7 @@ export function Carousel({
     <div
       className="im-carousel"
       role="region"
-      aria-roledescription="carrousel"
+      aria-roledescription={t('carrousel', 'carousel')}
       aria-label={label}
       onPointerEnter={() => setHold(true)}
       onPointerLeave={() => setHold(false)}
@@ -423,8 +430,8 @@ export function Carousel({
           <article
             key={s.id}
             className={`im-slide im-slide-${s.id}`}
-            aria-roledescription="diapositive"
-            aria-label={`${i + 1} sur ${slides.length} : ${s.name}`}
+            aria-roledescription={t('diapositive', 'slide')}
+            aria-label={`${i + 1} ${t('sur', 'of')} ${slides.length} : ${s.name}`}
           >
             <Img photo={s.photo} width={1500} />
             <div className="im-slide-copy">
@@ -444,7 +451,10 @@ export function Carousel({
                 >
                   {s.links.map((l) => (
                     <a key={l.href} href={l.href}>
-                      {l.label} <span aria-hidden="true">→</span>
+                      {l.label}{' '}
+                      <span aria-hidden="true">
+                        <Icon name="arrowRight" />
+                      </span>
                     </a>
                   ))}
                 </nav>
@@ -457,16 +467,16 @@ export function Carousel({
         <button
           type="button"
           onClick={() => go(active - 1)}
-          aria-label="Diapositive précédente"
+          aria-label={t('Diapositive précédente', 'Previous slide')}
         >
-          ←
+          <Icon name="arrowLeft" />
         </button>
         <div className="im-dots">
           {slides.map((s, i) => (
             <button
               key={s.id}
               type="button"
-              aria-label={`Aller à ${s.name}`}
+              aria-label={`${t('Aller à', 'Go to')} ${s.name}`}
               aria-current={i === active ? 'true' : undefined}
               onClick={() => go(i)}
             >
@@ -477,9 +487,9 @@ export function Carousel({
         <button
           type="button"
           onClick={() => go(active + 1)}
-          aria-label="Diapositive suivante"
+          aria-label={t('Diapositive suivante', 'Next slide')}
         >
-          →
+          <Icon name="arrowRight" />
         </button>
       </div>
     </div>
@@ -617,7 +627,9 @@ export function FloatingCta({ href, label }: { href: string; label: string }) {
     >
       <span className="im-floating-dot" aria-hidden="true" />
       {label}
-      <i aria-hidden="true">↗</i>
+      <i aria-hidden="true">
+        <Icon name="arrowUpRight" />
+      </i>
     </a>
   );
 }

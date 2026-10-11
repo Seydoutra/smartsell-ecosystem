@@ -1,22 +1,26 @@
-import { withBasePath } from '@smartsell/routing';
+import { Icon } from '@smartsell/ui/icons';
+import { withBasePath, locale, t } from '@smartsell/routing';
 export default function NotFound() {
   return (
     <main id="main" className="container section">
       <p className="eyebrow">SMARTSELL / 404</p>
       <h1>
-        Cette page
+        {t('Cette page', 'This page')}
         <br />
-        n’est pas ici.
+        {t('n’est pas ici.', 'isn’t here.')}
       </h1>
       <p style={{ marginTop: 24 }}>
-        Retrouvez les cinq univers de Smartsell depuis la maison.
+        {t(
+          'Retrouvez les cinq univers de Smartsell depuis la maison.',
+          'Find the five Smartsell universes from the house.',
+        )}
       </p>
       <a
         className="button button--primary"
         style={{ marginTop: 32 }}
-        href={withBasePath('/fr/')}
+        href={withBasePath(`/${locale}/`)}
       >
-        Revenir à l’accueil ↗
+        {t('Revenir à l’accueil', 'Back to home')} <Icon name="arrowUpRight" />
       </a>
     </main>
   );

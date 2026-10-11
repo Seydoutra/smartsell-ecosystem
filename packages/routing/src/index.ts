@@ -1,4 +1,12 @@
 import type { Locale, VerticalId } from '@smartsell/types';
+/** Langue du build courant : chaque langue est exportée séparément. */
+export const locale: Locale =
+  process.env.NEXT_PUBLIC_LOCALE === 'en' ? 'en' : 'fr';
+export const otherLocale: Locale = locale === 'en' ? 'fr' : 'en';
+/** Choisit le texte de la langue courante. */
+export function t(fr: string, en: string): string {
+  return locale === 'en' ? en : fr;
+}
 export const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(
   /\/+$/,
   '',
@@ -34,7 +42,7 @@ export function isVertical(value: string): value is VerticalId {
 }
 export function urlFor(
   vertical: VerticalId | 'main',
-  locale: Locale = 'fr',
+  lang: Locale = locale,
   path = '',
   config: RouteConfig = {},
 ): string {
@@ -57,10 +65,10 @@ export function urlFor(
       parsed.password
     )
       throw new Error('Vertical origins must be HTTPS origins.');
-    return `${parsed.origin}/${locale}/${tail ? tail + '/' : ''}`;
+    return `${parsed.origin}/${lang}/${tail ? tail + '/' : ''}`;
   }
   return withBasePath(
-    `/${locale}/${vertical === 'main' ? '' : vertical + '/'}${tail ? tail + '/' : ''}`,
+    `/${lang}/${vertical === 'main' ? '' : vertical + '/'}${tail ? tail + '/' : ''}`,
     config.basePath ?? basePath,
   );
 }

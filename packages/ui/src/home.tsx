@@ -1,4 +1,6 @@
 'use client';
+import { t } from '@smartsell/routing';
+import { Icon } from './icons';
 import {
   useEffect,
   useId,
@@ -50,9 +52,13 @@ export function JourneyPicker({ journeys }: { journeys: Journey[] }) {
   };
   return (
     <div className="hm-journey">
-      <div className="hm-journey-tabs" role="tablist" aria-label="Votre profil">
+      <div
+        className="hm-journey-tabs"
+        role="tablist"
+        aria-label={t('Votre profil', 'Your profile')}
+      >
         <span className="hm-journey-prefix" aria-hidden="true">
-          Je suis
+          {t('Je suis', 'I am')}
         </span>
         {journeys.map((x, i) => (
           <button
@@ -92,7 +98,7 @@ export function JourneyPicker({ journeys }: { journeys: Journey[] }) {
                   <span>{s.copy}</span>
                 </span>
                 <span className="hm-step-arrow" aria-hidden="true">
-                  ↗
+                  <Icon name="arrowUpRight" />
                 </span>
               </a>
             </li>
@@ -156,11 +162,19 @@ export function Rail({
           <i style={{ transform: `scaleX(${Math.max(0.08, progress)})` }} />
         </div>
         <div className="hm-rail-arrows">
-          <button type="button" onClick={() => move(-1)} aria-label="Précédent">
-            ←
+          <button
+            type="button"
+            onClick={() => move(-1)}
+            aria-label={t('Précédent', 'Previous')}
+          >
+            <Icon name="arrowLeft" />
           </button>
-          <button type="button" onClick={() => move(1)} aria-label="Suivant">
-            →
+          <button
+            type="button"
+            onClick={() => move(1)}
+            aria-label={t('Suivant', 'Next')}
+          >
+            <Icon name="arrowRight" />
           </button>
         </div>
       </div>
@@ -222,8 +236,10 @@ export function BriefBuilder({
   contactHref: string;
 }) {
   const [picked, setPicked] = useState<string[]>([]);
-  const [goal, setGoal] = useState('Gagner en visibilité');
-  const [when, setWhen] = useState('Dans le mois');
+  const [goal, setGoal] = useState(
+    t('Gagner en visibilité', 'Get more visibility'),
+  );
+  const [when, setWhen] = useState(t('Dans le mois', 'Within the month'));
   useEffect(() => {
     try {
       const saved = JSON.parse(sessionStorage.getItem(briefKey) || 'null');
@@ -247,22 +263,24 @@ export function BriefBuilder({
   const toggle = (n: string) =>
     setPicked((p) => (p.includes(n) ? p.filter((x) => x !== n) : [...p, n]));
   const goals = [
-    'Gagner en visibilité',
-    'Vendre davantage',
-    'Lancer une marque',
-    'Former une équipe',
+    t('Gagner en visibilité', 'Get more visibility'),
+    t('Vendre davantage', 'Sell more'),
+    t('Lancer une marque', 'Launch a brand'),
+    t('Former une équipe', 'Train a team'),
   ];
   const times = [
-    'Au plus vite',
-    'Dans le mois',
-    'Ce trimestre',
-    'Je me renseigne',
+    t('Au plus vite', 'As soon as possible'),
+    t('Dans le mois', 'Within the month'),
+    t('Ce trimestre', 'This quarter'),
+    t('Je me renseigne', 'Just exploring'),
   ];
   return (
     <div className="hm-brief">
       <div className="hm-brief-form">
         <fieldset>
-          <legend>1. De quoi avez-vous besoin ?</legend>
+          <legend>
+            {t('1. De quoi avez-vous besoin ?', '1. What do you need?')}
+          </legend>
           <div className="hm-chips">
             {needs.map((n) => (
               <button
@@ -271,14 +289,16 @@ export function BriefBuilder({
                 aria-pressed={picked.includes(n)}
                 onClick={() => toggle(n)}
               >
-                {picked.includes(n) ? '✓ ' : '+ '}
+                {picked.includes(n) ? '' : '+ '}
                 {n}
               </button>
             ))}
           </div>
         </fieldset>
         <fieldset>
-          <legend>2. Votre objectif principal</legend>
+          <legend>
+            {t('2. Votre objectif principal', '2. Your main objective')}
+          </legend>
           <div className="hm-chips">
             {goals.map((g) => (
               <button
@@ -293,7 +313,7 @@ export function BriefBuilder({
           </div>
         </fieldset>
         <fieldset>
-          <legend>3. Votre calendrier</legend>
+          <legend>{t('3. Votre calendrier', '3. Your timeline')}</legend>
           <div className="hm-chips">
             {times.map((t) => (
               <button
@@ -309,29 +329,38 @@ export function BriefBuilder({
         </fieldset>
       </div>
       <aside className="hm-brief-card" aria-live="polite">
-        <span className="sg-mono">Votre brief</span>
+        <span className="sg-mono">{t('Votre brief', 'Your brief')}</span>
         <strong className="hm-brief-count">
           {String(picked.length).padStart(2, '0')}
-          <small>{picked.length > 1 ? 'besoins' : 'besoin'}</small>
+          <small>
+            {picked.length > 1 ? t('besoins', 'needs') : t('besoin', 'need')}
+          </small>
         </strong>
         <ul>
           {picked.length ? (
             picked.map((n) => <li key={n}>{n}</li>)
           ) : (
             <li className="hm-brief-empty">
-              Choisissez un ou plusieurs besoins.
+              {t(
+                'Choisissez un ou plusieurs besoins.',
+                'Choose one or more needs.',
+              )}
             </li>
           )}
         </ul>
         <p>
-          Objectif : <b>{goal}</b>
+          {t('Objectif :', 'Objective:')} <b>{goal}</b>
           <br />
-          Calendrier : <b>{when}</b>
+          {t('Calendrier :', 'Timeline:')} <b>{when}</b>
         </p>
-        <CtaLink href={contactHref}>Finaliser mon brief</CtaLink>
+        <CtaLink href={contactHref}>
+          {t('Finaliser mon brief', 'Finish my brief')}
+        </CtaLink>
         <small className="hm-brief-note">
-          Votre sélection est reprise dans le formulaire de contact. Rien n’est
-          envoyé sans votre accord.
+          {t(
+            'Votre sélection est reprise dans le formulaire de contact. Rien n’est envoyé sans votre accord.',
+            'Your selection is carried over to the contact form. Nothing is sent without your consent.',
+          )}
         </small>
       </aside>
     </div>
@@ -343,7 +372,7 @@ export function readBrief(): string {
   try {
     const saved = JSON.parse(sessionStorage.getItem(briefKey) || 'null');
     if (!saved || !Array.isArray(saved.needs) || !saved.needs.length) return '';
-    return `${saved.needs.join(', ')} — objectif : ${saved.goal} — calendrier : ${saved.when}`.slice(
+    return `${saved.needs.join(', ')} — ${t('objectif', 'objective')} : ${saved.goal} — ${t('calendrier', 'timeline')} : ${saved.when}`.slice(
       0,
       200,
     );

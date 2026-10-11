@@ -1,4 +1,5 @@
 'use client';
+import { t } from '@smartsell/routing';
 import { useEffect, useState } from 'react';
 export function MotionLayer() {
   const [paused, setPaused] = useState(false);
@@ -129,11 +130,13 @@ export function MotionLayer() {
       }}
       aria-pressed={paused}
       aria-label={
-        paused ? 'Activer les animations' : 'Mettre les animations en pause'
+        paused
+          ? t('Activer les animations', 'Turn animations on')
+          : t('Mettre les animations en pause', 'Pause animations')
       }
     >
-      <span aria-hidden="true">{paused ? '▶' : 'Ⅱ'}</span> Mouvement :{' '}
-      {paused ? 'en pause' : 'actif'}
+      {t('Mouvement :', 'Motion:')}{' '}
+      {paused ? t('en pause', 'paused') : t('actif', 'on')}
     </button>
   );
 }
