@@ -1,4 +1,4 @@
-import { withBasePath, locale } from '@smartsell/routing';
+import { withBasePath, locale, t } from '@smartsell/routing';
 import type { Metadata } from 'next';
 import '@fontsource-variable/inter/wght.css';
 import '@fontsource-variable/space-grotesk/wght.css';
@@ -57,7 +57,10 @@ export default function RootLayout({
     <html lang={locale} suppressHydrationWarning>
       <body id="top">
         <IntroScript site="main" />
-        <IntroCurtain name="Smartsell" tagline="Une maison. Cinq sites." />
+        <IntroCurtain
+          name="Smartsell"
+          tagline={t('Une maison. Cinq sites.', 'One house. Five sites.')}
+        />
         {children}
         <SiteTransitions />
         <MotionLayer />
