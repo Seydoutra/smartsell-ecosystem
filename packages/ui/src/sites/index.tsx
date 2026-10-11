@@ -87,7 +87,7 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
       <div className="ecosystem-bar">
         <div className="site-container">
           <a href={link('main')}>
-            LA MAISON SMARTSELL{' '}
+            {t('LA MAISON SMARTSELL', 'THE SMARTSELL HOUSE')}{' '}
             <span aria-hidden="true">
               <Icon name="arrowUpRight" />
             </span>

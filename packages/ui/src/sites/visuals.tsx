@@ -1,3 +1,4 @@
+import { t } from '@smartsell/routing';
 import { Icon } from '../icons';
 import { Fragment, type CSSProperties } from 'react';
 export function MotionText({ text }: { text: string }) {
@@ -103,7 +104,7 @@ export function CampaignVisual({ index }: { index: number }) {
               strokeWidth="2"
             />
             <text x="305" y="312" fill="#692b84" fontSize="8" letterSpacing="1">
-              LE CHAMP DES POSSIBLES.
+              {t('LE CHAMP DES POSSIBLES.', 'THE FIELD OF POSSIBILITIES.')}
             </text>
           </g>
           <g className="visual-float">
@@ -130,10 +131,10 @@ export function CampaignVisual({ index }: { index: number }) {
               noura.
             </text>
             <text x="98" y="191" fill="#403229" fontSize="29">
-              Le geste.
+              {t('Le geste.', 'The gesture.')}
             </text>
             <text x="98" y="224" fill="#403229" fontSize="29">
-              La matière.
+              {t('La matière.', 'The material.')}
             </text>
             <rect x="98" y="248" width="91" height="22" rx="4" fill="#403229" />
             <text x="109" y="262" fill="#f8f2e9" fontSize="7">
@@ -230,7 +231,7 @@ export function CampaignVisual({ index }: { index: number }) {
             </text>
             <text x="385" y="237" fill="#692b84" fontSize="52"></text>
             <text x="382" y="268" fill="#281333" fontSize="10">
-              LE COLLECTIF.
+              {t('LE COLLECTIF.', 'THE COLLECTIVE.')}
             </text>
             <text x="382" y="285" fill="#281333" fontSize="10">
               EN MOUVEMENT.
@@ -272,7 +273,7 @@ export function CampaignVisual({ index }: { index: number }) {
               strokeWidth="15"
             />
             <text x="99" y="308" fill="#e7d8ed" fontSize="9" letterSpacing="1">
-              UNE HISTOIRE SE PROLONGE.
+              {t('UNE HISTOIRE SE PROLONGE.', 'A STORY THAT CARRIES ON.')}
             </text>
           </g>
           <g className="visual-front">
@@ -322,7 +323,7 @@ export function CampaignVisual({ index }: { index: number }) {
             <path d="M141 189h108v77H141z" fill="#29232d" />
             <path d="M125 263h19v40h-19M244 263h19v40h-19" fill="#ba9c7d" />
             <text x="106" y="314" fill="#293329" fontSize="9">
-              FAIRE PARLER LA MATIÈRE.
+              {t('FAIRE PARLER LA MATIÈRE.', 'LET THE MATERIAL SPEAK.')}
             </text>
           </g>
           <g className="visual-front">
@@ -341,7 +342,7 @@ export function CampaignVisual({ index }: { index: number }) {
               opacity=".4"
             />
             <text x="347" y="305" fill="#ece7da" fontSize="19">
-              MATIÈRE / 01
+              {t('MATIÈRE', 'MATERIAL')} / 01
             </text>
           </g>
         </>
@@ -382,7 +383,10 @@ export function CampaignVisual({ index }: { index: number }) {
               </g>
             ))}
             <text x="103" y="286" fill="#dae2d2" fontSize="10">
-              LE BON GESTE. AU BON MOMENT.
+              {t(
+                'LE BON GESTE. AU BON MOMENT.',
+                'THE RIGHT MOVE. AT THE RIGHT TIME.',
+              )}
             </text>
           </g>
           <g className="visual-float">
@@ -395,7 +399,7 @@ export function CampaignVisual({ index }: { index: number }) {
               fill="#f3e433"
             />
             <text x="367" y="91" fill="#293329" fontSize="12">
-              CONTRÔLE HUMAIN
+              {t('CONTRÔLE HUMAIN', 'HUMAN CHECK')}
             </text>
           </g>
         </>
