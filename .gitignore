@@ -11,3 +11,4 @@ dist/
 .DS_Store
 
 .npmrc
+apps/main/public/admin/content.json
