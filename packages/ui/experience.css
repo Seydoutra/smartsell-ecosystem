@@ -1,6 +1,6 @@
 /* Shared visual language derived from the Smartsell Management showcase. */
 body {
-  background: #08080b;
+  background: #0e0614;
 }
 .site-header {
   width: calc(100% - 28px);
@@ -63,7 +63,7 @@ body {
 }
 .ecosystem-bar,
 .local-bar {
-  background: #08080b;
+  background: #0e0614;
   border: 0;
   color: #a69bad;
 }
@@ -85,7 +85,7 @@ body {
   position: relative;
   isolation: isolate;
   overflow: clip;
-  background: #08080b;
+  background: #0e0614;
   color: #f7f5f8;
 }
 .hero:before,
@@ -1252,7 +1252,7 @@ html[data-motion-paused='true'] .experience-content > div {
 }
 
 .vertical-site {
-  background: #08080b;
+  background: #0e0614;
 }
 .site-agency .site-section:not(.agency-services),
 .site-academy .site-section:not(.academy-manifesto),

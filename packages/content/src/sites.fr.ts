@@ -8,360 +8,10 @@ export type SitePageData = {
   ref?: string;
   blocks?: Block[];
 };
-export type Course = {
-  slug: string;
-  title: string;
-  category: string;
-  level: string;
-  hours: number;
-  goal: string;
-  project: string;
-  lessons: {
-    title: string;
-    copy: string;
-    exercise: string;
-    question: string;
-    options: string[];
-    answer: number;
-  }[];
-};
-const lesson = (
-  title: string,
-  copy: string,
-  exercise: string,
-  question: string,
-  options: string[],
-  answer = 0,
-) => ({ title, copy, exercise, question, options, answer });
-export const courses: Course[] = [
-  {
-    slug: 'marketing-digital',
-    title: 'Construire sa stratégie digitale',
-    category: 'Marketing',
-    level: 'Débutant',
-    hours: 12,
-    goal: 'Passer d’une présence dispersée à un plan de communication cohérent.',
-    project:
-      'Un plan de campagne pour le lancement d’une boutique de quartier.',
-    lessons: [
-      lesson(
-        'Choisir un objectif',
-        'Une campagne commence par une action attendue : être découvert, obtenir un rendez-vous ou faire revenir un client. Pour notre boutique, nous choisissons une visite en magasin. Ce choix guide le message et le canal.',
-        'Écrivez une phrase : « Nous voulons que [public] réalise [action] avant [échéance]. »',
-        'Quel objectif est le plus précis ?',
-        [
-          'Obtenir des visites en boutique',
-          'Être partout',
-          'Avoir une belle marque',
-        ],
-      ),
-      lesson(
-        'Relier message et canal',
-        'Un message utile répond à une question du public. La boutique explique ses horaires et la disponibilité de ses produits. Un calendrier organise la répétition du message sans publier la même chose chaque jour.',
-        'Préparez trois publications : découverte, explication et invitation.',
-        'Que doit contenir une invitation ?',
-        [
-          'Une action claire',
-          'Tous les services de la marque',
-          'Seulement un logo',
-        ],
-      ),
-      lesson(
-        'Lire et ajuster',
-        'Les impressions racontent l’exposition, les réactions racontent une partie de l’intérêt et les visites racontent l’action. Reliez chaque indicateur à votre objectif avant de changer de campagne.',
-        'Créez un tableau avec objectif, indicateur, résultat et prochaine décision.',
-        'Pourquoi suivre un indicateur ?',
-        [
-          'Pour prendre une décision',
-          'Pour remplir un rapport',
-          'Pour garantir un résultat',
-        ],
-      ),
-    ],
-  },
-  {
-    slug: 'community-management',
-    title: 'Animer une communauté',
-    category: 'Communication',
-    level: 'Débutant',
-    hours: 10,
-    goal: 'Définir une ligne éditoriale, organiser les échanges et modérer avec soin.',
-    project: 'Une semaine éditoriale pour un collectif culturel.',
-    lessons: [
-      lesson(
-        'Écouter avant de publier',
-        'Une communauté se construit autour d’intérêts partagés. Recueillez les questions du public et distinguez information utile, conversation et promotion.',
-        'Classez six questions de votre public en trois thèmes.',
-        'Par quoi commencer ?',
-        [
-          'Les besoins du public',
-          'Le nombre de publications',
-          'La taille du logo',
-        ],
-      ),
-      lesson(
-        'Composer un calendrier',
-        'Associez chaque publication à un thème, une intention, un format et une personne responsable. Prévoyez du temps pour répondre plutôt que de remplir uniquement le calendrier.',
-        'Préparez cinq publications et deux moments de réponse.',
-        'Que faut-il prévoir après publication ?',
-        ['Les échanges', 'Une autre publicité immédiate', 'Aucun suivi'],
-      ),
-      lesson(
-        'Répondre avec discernement',
-        'Un commentaire critique mérite une réponse factuelle. Évitez de publier des informations personnelles. Si la situation demande un examen individuel, proposez un échange privé avec la personne compétente.',
-        'Rédigez une réponse à une demande de renseignement et à une critique.',
-        'Quel réflexe protège la conversation ?',
-        [
-          'Une réponse calme et pertinente',
-          'Révéler les données du client',
-          'Supprimer toute critique',
-        ],
-      ),
-    ],
-  },
-  {
-    slug: 'design-graphique',
-    title: 'Donner forme à une identité',
-    category: 'Design',
-    level: 'Débutant',
-    hours: 16,
-    goal: 'Composer un langage visuel utilisable sur plusieurs supports.',
-    project: 'Une mini-identité pour une librairie indépendante.',
-    lessons: [
-      lesson(
-        'Hiérarchiser une composition',
-        'La taille, le contraste et l’espace orientent la lecture. Sur une affiche de librairie, le titre annonce le sujet, la date précise le rendez-vous et le contact donne la suite.',
-        'Composez une affiche en trois niveaux de lecture.',
-        'Que sert la hiérarchie ?',
-        ['La compréhension', 'Le remplissage', 'La multiplication des polices'],
-      ),
-      lesson(
-        'Créer un système',
-        'Une identité peut associer deux familles de caractères, quelques couleurs et une grille. Des règles simples rendent les supports cohérents sans les rendre identiques.',
-        'Définissez une palette, deux styles de texte et une règle de marge.',
-        'Qu’est-ce qu’un système visuel ?',
-        [
-          'Des règles réutilisables',
-          'Une affiche unique',
-          'Un effet à reproduire partout',
-        ],
-      ),
-      lesson(
-        'Décliner et vérifier',
-        'Un visuel doit rester lisible dans son contexte. Vérifiez votre affiche à taille réduite, sur téléphone et en niveaux de gris pour repérer les éléments qui disparaissent.',
-        'Déclinez votre affiche en publication carrée et bannière.',
-        'Que vérifier avant la livraison ?',
-        [
-          'La lisibilité aux tailles réelles',
-          'Seulement les couleurs',
-          'Uniquement le fichier source',
-        ],
-      ),
-    ],
-  },
-  {
-    slug: 'ui-ux',
-    title: 'Designer une expérience utile',
-    category: 'Produit',
-    level: 'Intermédiaire',
-    hours: 18,
-    goal: 'Passer d’un besoin utilisateur à un prototype de parcours.',
-    project: 'Le prototype d’une inscription à un atelier.',
-    lessons: [
-      lesson(
-        'Formuler le besoin',
-        'Décrivez la personne, son contexte et l’action à accomplir. Un apprenant veut connaître le contenu, le niveau et l’horaire avant de choisir un atelier.',
-        'Écrivez le parcours avant, pendant et après l’inscription.',
-        'Que décrit un besoin ?',
-        [
-          'Une intention dans un contexte',
-          'Une couleur de bouton',
-          'Un style de page',
-        ],
-      ),
-      lesson(
-        'Structurer le parcours',
-        'Chaque écran doit aider à avancer ou à corriger. Un formulaire demande les informations nécessaires, explique les erreurs et permet de revenir sans perdre ses choix.',
-        'Dessinez trois écrans : choix, coordonnées et récapitulatif.',
-        'Que faire en cas d’erreur ?',
-        [
-          'Expliquer comment la corriger',
-          'Effacer le formulaire',
-          'Masquer le bouton',
-        ],
-      ),
-      lesson(
-        'Tester une hypothèse',
-        'Un test observe ce que fait une personne devant une tâche. Donnez une consigne neutre, puis notez les hésitations. Modifiez les points bloquants avant les détails décoratifs.',
-        'Faites tester votre prototype et notez trois observations.',
-        'Que mesure ce test ?',
-        [
-          'La compréhension du parcours',
-          'Les goûts du designer',
-          'La popularité de la marque',
-        ],
-      ),
-    ],
-  },
-  {
-    slug: 'web',
-    title: 'Créer sa première page web',
-    category: 'Web',
-    level: 'Débutant',
-    hours: 20,
-    goal: 'Comprendre la structure d’une page et construire une présentation responsive.',
-    project: 'Une page de présentation pour un projet personnel.',
-    lessons: [
-      lesson(
-        'Structurer le contenu',
-        'Une page a un titre principal, des sections et des liens qui annoncent leur destination. Avant de coder, rédigez le contenu et ordonnez les informations selon les besoins du visiteur.',
-        'Rédigez un titre, une introduction et trois sections.',
-        'Quel élément donne le sujet principal ?',
-        ['Le titre principal', 'Une bordure', 'La couleur du fond'],
-      ),
-      lesson(
-        'Composer pour le mobile',
-        'Une composition doit s’adapter à la largeur disponible. Sur téléphone, empilez les colonnes, conservez des textes lisibles et vérifiez que les liens restent faciles à atteindre.',
-        'Dessinez les versions téléphone et ordinateur de votre page.',
-        'Que doit éviter le mobile ?',
-        [
-          'Un débordement horizontal',
-          'Une lecture verticale',
-          'Des liens visibles',
-        ],
-      ),
-      lesson(
-        'Vérifier le parcours',
-        'Suivez chaque lien et chaque bouton. Vérifiez le titre, le contenu, les images et la navigation au clavier. Une page terminée est une page dont le parcours fonctionne.',
-        'Rédigez une liste de vérifications et effectuez-les.',
-        'Que teste-t-on avant publication ?',
-        [
-          'Le parcours réel',
-          'Seulement le premier écran',
-          'Uniquement les couleurs',
-        ],
-      ),
-    ],
-  },
-  {
-    slug: 'intelligence-artificielle',
-    title: 'Pratiquer l’IA avec recul',
-    category: 'IA & data',
-    level: 'Débutant',
-    hours: 8,
-    goal: 'Utiliser un assistant pour préparer, comparer et réviser un travail.',
-    project:
-      'Un brief et trois variantes de message pour une association fictive.',
-    lessons: [
-      lesson(
-        'Donner du contexte',
-        'Un assistant peut produire une réponse plausible sans disposer de vos faits. Précisez l’objectif, le public et les informations autorisées. Demandez-lui de signaler ce qui manque.',
-        'Rédigez une demande contenant objectif, contexte et contraintes.',
-        'Quel contexte utiliser ?',
-        [
-          'Des informations autorisées',
-          'Tous les dossiers clients',
-          'Une consigne sans objectif',
-        ],
-      ),
-      lesson(
-        'Comparer des propositions',
-        'Demander plusieurs propositions aide à voir les choix possibles. Comparez-les avec des critères définis : clarté, ton, pertinence et respect du brief.',
-        'Comparez trois versions d’un message avec les mêmes critères.',
-        'Qui choisit la proposition finale ?',
-        [
-          'La personne responsable',
-          'Toujours l’assistant',
-          'Le texte le plus long',
-        ],
-      ),
-      lesson(
-        'Vérifier avant diffusion',
-        'Relisez les noms, dates et affirmations. Séparez ce qui vient du brief de ce qui doit être vérifié. Un brouillon produit par un assistant reste un travail à réviser.',
-        'Marquez les affirmations à vérifier et réécrivez le message final.',
-        'Quel statut donner à la première réponse ?',
-        [
-          'Un brouillon à examiner',
-          'Une preuve',
-          'Une publication automatique',
-        ],
-      ),
-    ],
-  },
-  {
-    slug: 'power-bi',
-    title: 'Penser un tableau de bord',
-    category: 'IA & data',
-    level: 'Intermédiaire',
-    hours: 14,
-    goal: 'Préparer les questions et les données d’un tableau de bord à construire dans Power BI.',
-    project:
-      'Le suivi de ventes d’une boutique fictive, sans données personnelles.',
-    lessons: [
-      lesson(
-        'Partir d’une question',
-        'Un tableau de bord répond à une question de gestion. Avant de choisir un graphique, demandez ce que la personne doit comprendre : évolution des ventes, répartition des produits ou suivi d’un objectif.',
-        'Écrivez trois questions et associez un indicateur à chacune.',
-        'Par quoi commencer ?',
-        ['La décision à éclairer', 'Le graphique préféré', 'Les couleurs'],
-      ),
-      lesson(
-        'Décrire les données',
-        'Précisez ce qu’une ligne représente : une vente, un produit ou une journée. Documentez les colonnes, les unités et les valeurs manquantes avant toute comparaison.',
-        'Dessinez une table de cinq ventes fictives avec date, produit et montant.',
-        'Pourquoi documenter une unité ?',
-        [
-          'Pour interpréter le chiffre',
-          'Pour décorer la table',
-          'Pour augmenter les données',
-        ],
-      ),
-      lesson(
-        'Présenter une lecture',
-        'Un graphique a besoin d’un titre, d’une période et d’unités. Expliquez ce qui est observé et ce qui reste inconnu. La mise en page doit faciliter la comparaison.',
-        'Esquissez un tableau de bord avec trois indicateurs et une note de contexte.',
-        'Que doit préciser un montant ?',
-        ['Sa devise et sa période', 'Seulement sa taille', 'Un effet visuel'],
-      ),
-    ],
-  },
-  {
-    slug: 'creation-video',
-    title: 'Raconter en vidéo',
-    category: 'Création',
-    level: 'Débutant',
-    hours: 12,
-    goal: 'Préparer un tournage court et organiser son montage.',
-    project: 'Une vidéo de présentation de 45 secondes pour un atelier fictif.',
-    lessons: [
-      lesson(
-        'Écrire l’intention',
-        'Décidez ce que le spectateur doit retenir et ressentir. Un format court gagne à avoir une idée centrale. Une introduction pose le sujet, le développement montre et la fin ouvre une action.',
-        'Écrivez un synopsis de cinq phrases pour votre atelier.',
-        'Combien d’idées centrales choisir ici ?',
-        ['Une idée forte', 'Toutes les idées possibles', 'Aucune'],
-      ),
-      lesson(
-        'Préparer les plans',
-        'Une liste de plans relie image et information. Prévoyez une vue d’ensemble, un geste, un détail et une parole. Vérifiez les autorisations nécessaires pour les personnes et les lieux.',
-        'Composez une liste de six plans avec leur intention.',
-        'Que prépare une liste de plans ?',
-        [
-          'Les images nécessaires',
-          'Le nombre d’abonnés',
-          'La publication seule',
-        ],
-      ),
-      lesson(
-        'Monter pour comprendre',
-        'Assemblez les plans selon votre histoire. Le son doit rester compréhensible et les sous-titres lisibles. Regardez une fois le montage sans son pour vérifier le sens des images.',
-        'Décrivez votre ordre de montage et rédigez les sous-titres.',
-        'Que vérifier sans son ?',
-        ['La compréhension visuelle', 'La musique', 'Le volume'],
-      ),
-    ],
-  },
-];
+export type { Course } from './academy';
+import { courses } from './academy';
+import { brands, films } from './portfolio';
+export { courses };
 export const agencyServices = [
   [
     'strategie',
@@ -732,104 +382,143 @@ export const articles = [
 }));
 export const spaces = [
   {
-    slug: 'photo',
-    title: 'Plateau photo',
-    copy: 'Un espace pensé pour les portraits, les produits et les séries de marque.',
+    slug: 'podcast',
+    title: 'Studio podcast',
+    copy: 'Un plateau feutré pour vos émissions, interviews et vidéocasts, filmés en multicaméra.',
     equipment: [
-      'Fonds interchangeables',
-      'Zone lumière',
-      'Table de prise de vue',
+      'Micros broadcast',
+      'Captation 3 caméras',
+      'Éclairage studio',
+      'Retour casque',
     ],
-    use: 'Portrait · Produit · Éditorial',
+    use: 'Podcast · Interview · Vidéocast',
+    symbol: '',
+  },
+  {
+    slug: 'photo',
+    title: 'Studio photo',
+    copy: 'Un studio équipé pour les portraits, la mode et les produits, avec fonds interchangeables.',
+    equipment: [
+      'Fonds blanc, noir, rouge et vert',
+      'Flashs et boîtes à lumière',
+      'Table produit',
+      'Coin maquillage',
+    ],
+    use: 'Portrait · Mode · Produit',
     symbol: '',
   },
   {
     slug: 'video',
     title: 'Plateau vidéo',
-    copy: 'Un cadre modulable pour les prises de parole, les interviews et les formats de marque.',
-    equipment: ['Cadre de tournage', 'Zone éclairage', 'Retour image'],
-    use: 'Interview · Corporate · Création',
-    symbol: '',
-  },
-  {
-    slug: 'podcast',
-    title: 'Espace podcast',
-    copy: 'Une proposition de plateau pour les conversations enregistrées et les formats audio.',
-    equipment: ['Table de conversation', 'Zone micros', 'Retour casque'],
-    use: 'Conversation · Audio · Vidéo',
+    copy: 'Un cadre modulable pour les prises de parole, les films de marque et les contenus courts.',
+    equipment: [
+      'Cadre de tournage',
+      'Éclairage continu',
+      'Retour image',
+      'Prompteur',
+    ],
+    use: 'Corporate · Création · Reels',
     symbol: '',
   },
 ];
 export const packs = [
   {
-    slug: 'photo',
-    title: 'Session Photo',
-    space: 'photo',
-    duration: 2,
-    copy: 'Construire une série de portraits ou de produits.',
-    includes: [
-      'Préparation du brief',
-      'Session de prise de vue',
-      'Sélection accompagnée',
-    ],
-    deliverable: 'Une sélection à définir avec le brief.',
-  },
-  {
-    slug: 'podcast',
-    title: 'Podcast',
+    slug: 'podcast-brut',
+    family: 'podcast',
+    title: 'Podcast brut',
     space: 'podcast',
-    duration: 2,
-    copy: 'Donner une forme à votre conversation.',
+    duration: 1,
+    best: false,
+    copy: 'Enregistrement brut, fichiers prêts à monter.',
     includes: [
-      'Préparation du conducteur',
-      'Installation audio',
-      'Enregistrement',
+      'Studio entièrement équipé',
+      'Opérateur de studio',
+      'Captation multicaméra (3 caméras)',
     ],
-    deliverable: 'Un épisode brut ; montage à préciser.',
+    deliverable: 'Les fichiers audio et vidéo bruts de votre épisode.',
   },
   {
-    slug: 'creator',
-    title: 'Creator Session',
-    space: 'video',
-    duration: 3,
-    copy: 'Produire plusieurs formats courts dans une même session.',
+    slug: 'podcast-montage',
+    family: 'podcast',
+    title: 'Podcast + montage',
+    space: 'podcast',
+    duration: 1,
+    best: true,
+    copy: 'La formule la plus demandée : votre épisode monté, prêt à publier.',
     includes: [
-      'Liste des formats',
-      'Préparation du cadre',
-      'Tournage en série',
+      'Tout le podcast brut',
+      'Montage de l’épisode',
+      'Mixage audio',
+      'Étalonnage colorimétrique',
     ],
-    deliverable: 'Des prises à décliner selon le plan éditorial.',
+    deliverable: 'Un épisode final monté, en version vidéo et audio.',
   },
   {
-    slug: 'interview',
-    title: 'Interview Corporate',
-    space: 'video',
-    duration: 2,
-    copy: 'Préparer une prise de parole claire et soignée.',
+    slug: 'podcast-reels',
+    family: 'podcast',
+    title: 'Podcast + montage + Reels',
+    space: 'podcast',
+    duration: 1,
+    best: false,
+    copy: 'L’épisode monté et ses extraits verticaux pour les réseaux sociaux.',
     includes: [
-      'Guide d’entretien',
-      'Cadre image et son',
-      'Session de tournage',
+      'Tout le podcast + montage',
+      'Reels verticaux montés',
+      'Teaser promotionnel',
+      'Sous-titres dynamiques',
     ],
-    deliverable: 'Une interview ; durée finale à cadrer.',
+    deliverable: 'L’épisode final et une série de Reels prêts à publier.',
   },
   {
-    slug: 'product',
-    title: 'Product Story',
+    slug: 'shooting-pro',
+    family: 'shooting',
+    title: 'Shooting professionnel',
     space: 'photo',
-    duration: 3,
-    copy: 'Mettre la matière, l’usage et les détails au premier plan.',
-    includes: ['Moodboard', 'Plan de prises de vue', 'Session produit'],
-    deliverable: 'Une série de vues produit à définir.',
+    duration: 1,
+    best: false,
+    copy: 'Une séance photo professionnelle pour une personne : portrait, CV, profil, réseaux.',
+    includes: [
+      'Photos retouchées',
+      'Coaching pose avec le photographe',
+      'Fonds blanc, noir, rouge ou vert',
+      'Une vidéo Reel de la séance',
+    ],
+    deliverable: 'Une sélection de portraits retouchés, prêts à publier.',
   },
   {
-    slug: 'production',
-    title: 'Production complète',
-    space: 'video',
-    duration: 4,
-    copy: 'Relier la préparation, le plateau et la postproduction.',
-    includes: ['Synopsis', 'Organisation du tournage', 'Plan de montage'],
-    deliverable: 'Un film et ses déclinaisons à cadrer.',
+    slug: 'shooting-mode',
+    family: 'shooting',
+    title: 'Shooting mode',
+    space: 'photo',
+    duration: 2,
+    best: true,
+    copy: 'Une séance complète avec plusieurs changements de tenue.',
+    includes: [
+      'Plusieurs tenues',
+      'Coaching styliste inclus',
+      'Fonds multiples',
+      'Photos retouchées pro',
+      'Vidéo Reel de la séance',
+    ],
+    deliverable: 'Une série mode retouchée et sa vidéo des coulisses.',
+  },
+  {
+    slug: 'shooting-produits',
+    family: 'shooting',
+    title: 'Shooting produits',
+    space: 'photo',
+    duration: 2,
+    best: false,
+    copy: 'Photos packshot pour e-commerce, catalogues et réseaux sociaux.',
+    includes: [
+      'Photos packshot professionnelles',
+      'Éclairage studio optimal',
+      'Fond blanc ou personnalisé',
+      'Retouches incluses',
+      'Formats adaptés e-commerce',
+    ],
+    deliverable:
+      'Des visuels produits retouchés ; devis selon le nombre de produits.',
   },
 ];
 export const siteMenus: Record<VerticalId, { label: string; path: string }[]> =
@@ -843,24 +532,22 @@ export const siteMenus: Record<VerticalId, { label: string; path: string }[]> =
     ],
     academy: [
       { label: 'Modules', path: 'courses' },
-      { label: 'Sessions', path: 'events' },
       { label: 'Entreprises', path: 'corporate' },
-      { label: 'Intervenants', path: 'instructors' },
       { label: 'Mon espace', path: 'dashboard' },
     ],
     media: [
-      { label: 'À la une', path: 'latest' },
+      { label: 'Vidéos', path: 'videos' },
+      { label: 'Articles', path: 'latest' },
       { label: 'Tech & IA', path: 'tech' },
       { label: 'Business', path: 'business' },
-      { label: 'Création', path: 'creative' },
       { label: 'Rechercher', path: 'search' },
     ],
     studio: [
-      { label: 'Espaces', path: 'spaces' },
-      { label: 'Services', path: 'services' },
-      { label: 'Packs', path: 'pricing' },
-      { label: 'Galerie', path: 'gallery' },
-      { label: 'Simuler une réservation', path: 'booking' },
+      { label: 'Podcast', path: 'podcast' },
+      { label: 'Shooting', path: 'shooting' },
+      { label: 'Plateaux', path: 'spaces' },
+      { label: 'Formules', path: 'pricing' },
+      { label: 'Réserver', path: 'booking' },
     ],
     labs: [
       { label: 'Produits', path: 'products' },
@@ -882,20 +569,20 @@ export function getSitePages(id: VerticalId): SitePageData[] {
     p(
       'privacy',
       'Vos données, vos choix.',
-      'Cette version de démonstration ne crée ni compte ni transaction.',
+      'Ce que le site garde, et ce que vous choisissez de nous envoyer.',
       'story',
       [
         {
           title: 'Sur votre appareil',
-          copy: 'Academy conserve uniquement les modules choisis et les leçons terminées dans votre navigateur. Studios conserve le récapitulatif simulé, sans coordonnées personnelles. Vous pouvez effacer ces éléments dans les parcours concernés. Le choix de pause des animations est conservé pour la session de navigation.',
+          copy: 'Academy conserve uniquement vos modules et vos leçons terminées dans votre navigateur ; vous pouvez les effacer depuis Mon espace. Le choix de pause des animations est conservé pour la session de navigation.',
         },
         {
-          title: 'Formulaires de démonstration',
-          copy: 'Les champs ne sont pas transmis à Smartsell. Les brouillons de contact peuvent être copiés ; vous choisissez vous-même comment les envoyer.',
+          title: 'Brief et réservations',
+          copy: 'Le brief intelligent et la réservation Studios ne stockent rien sur le site : ils ouvrent WhatsApp avec votre message prêt, et c’est vous qui décidez de l’envoyer.',
         },
         {
           title: 'Hébergement & lecture',
-          copy: 'Le site est hébergé sur GitHub Pages. Aucun outil de mesure ou de publicité n’est ajouté par Smartsell dans cette version. Le navigateur charge les ressources du site depuis cet hébergement.',
+          copy: 'Le site est hébergé sur GitHub Pages. Aucun outil de mesure ou de publicité n’est ajouté par Smartsell. Le navigateur charge les ressources du site depuis cet hébergement.',
         },
       ],
     ),
@@ -929,27 +616,12 @@ export function getSitePages(id: VerticalId): SitePageData[] {
       ),
       p(
         'work',
-        'Le travail prend forme.',
-        'Six explorations créatives pour découvrir notre approche. Concepts de démonstration, sans commandes ni résultats clients revendiqués.',
+        'Le travail parle.',
+        'Identités de marque, sites web, séances photo et films : une sélection de projets réalisés par Smartsell.',
         'work',
       ),
-      ...cases.map((c) =>
-        p(
-          `work/${c.slug}`,
-          c.title,
-          c.tagline,
-          'case',
-          [
-            { title: 'Le point de départ', copy: c.challenge },
-            { title: 'La direction', copy: c.direction },
-            {
-              title: 'Les livrables envisagés',
-              copy: 'Cette exploration illustre une proposition de travail.',
-              items: c.deliverables,
-            },
-          ],
-          c.slug,
-        ),
+      ...brands.map((b) =>
+        p(`work/${b.slug}`, b.name, b.summary, 'brand', [], b.slug),
       ),
       p(
         'history',
@@ -1020,7 +692,7 @@ export function getSitePages(id: VerticalId): SitePageData[] {
       p(
         'contact',
         'Parlons de votre prochain mouvement.',
-        'Préparez un brief. Vous pourrez copier le message et choisir comment nous le transmettre.',
+        'Remplissez notre brief intelligent : six étapes, et vos réponses arrivent directement sur notre WhatsApp.',
         'contact',
       ),
       ...common,
@@ -1030,127 +702,37 @@ export function getSitePages(id: VerticalId): SitePageData[] {
       p(
         '',
         'Le savoir ouvre\nle champ.',
-        'Des compétences à pratiquer. Des projets à faire grandir. Votre prochaine étape commence ici.',
+        'Des formations pratiques en marketing digital, design, vidéo et IA.',
         'home',
       ),
       p(
         'courses',
-        'Votre prochain terrain de jeu.',
-        'Huit modules de démonstration, avec objectifs, exercices et progression locale.',
+        'Nos modules de formation.',
+        'Treize formations pratiques, du fondamental à l’expert : stratégie, rédaction, design, réseaux sociaux, vidéo, IA et IA créative.',
         'courses',
       ),
       ...courses.flatMap((c) => [
         p(`courses/${c.slug}`, c.title, c.goal, 'course', [], c.slug),
         p(
-          `enroll/${c.slug}`,
-          'Faire le premier pas.',
-          `Explorer le module « ${c.title} » en démonstration. Aucune inscription réelle, aucun paiement.`,
-          'enroll',
-          [],
-          c.slug,
-        ),
-        p(
           `learn/${c.slug}`,
           c.title,
-          'Trois leçons et un projet guidé. Votre progression reste sur cet appareil.',
+          'Trois leçons pratiques avec quiz. Votre progression s’affiche dans Mon espace.',
           'learn',
           [],
           c.slug,
         ),
       ]),
       p(
-        'events',
-        'Les prochains rendez-vous.',
-        'Exemples de formats à programmer. Les dates et inscriptions réelles seront annoncées après validation.',
-        'events',
-      ),
-      p(
         'corporate',
-        'Faire grandir les compétences ensemble.',
-        'Construire un parcours à partir des situations de travail de votre équipe.',
-        'story',
-        [
-          {
-            title: 'Diagnostic',
-            copy: 'Identifier les tâches, les pratiques actuelles et les compétences à développer.',
-          },
-          {
-            title: 'Atelier',
-            copy: 'Choisir un projet commun, pratiquer les méthodes puis discuter les choix.',
-          },
-          {
-            title: 'Transmission',
-            copy: 'Prévoir des exercices de reprise et des repères pour poursuivre le travail.',
-          },
-        ],
-      ),
-      p(
-        'instructors',
-        'Des pratiques à transmettre.',
-        'Les intervenants seront présentés après validation. Découvrez les expertises prévues.',
-        'story',
-        [
-          {
-            title: 'Marketing & communication',
-            copy: 'Stratégie, ligne éditoriale et lecture des campagnes.',
-          },
-          {
-            title: 'Design & produit',
-            copy: 'Composition, systèmes d’identité et conception de parcours.',
-          },
-          {
-            title: 'Web, IA & data',
-            copy: 'Pratique des outils, formulation des questions et vérification des résultats.',
-          },
-          {
-            title: 'Image & vidéo',
-            copy: 'Intention, préparation du plateau et construction du récit.',
-          },
-        ],
+        'Former vos équipes.',
+        'Des parcours de formation pour les entreprises, les institutions et les administrations, construits à partir de vos outils et de vos objectifs.',
+        'corporate',
       ),
       p(
         'dashboard',
-        'Votre espace pour avancer.',
-        'Démonstration sur cet appareil : retrouvez les modules choisis et votre progression.',
+        'Mon espace.',
+        'Retrouvez vos modules, vos leçons terminées et votre progression.',
         'dashboard',
-      ),
-      p(
-        'my-courses',
-        'Mes modules.',
-        'Reprendre là où vous en êtes.',
-        'dashboard',
-      ),
-      p(
-        'resources',
-        'La boîte à outils.',
-        'Des canevas à copier pour cadrer, pratiquer et réviser.',
-        'story',
-        [
-          {
-            title: 'Le brief en une page',
-            copy: 'Public · problème · objectif · action attendue · contraintes · validation.',
-          },
-          {
-            title: 'Le journal de pratique',
-            copy: 'Ce que j’ai essayé · ce que j’ai observé · ce que je modifierai · ce que je veux vérifier.',
-          },
-          {
-            title: 'La grille de retour',
-            copy: 'Compréhension · lisibilité · cohérence · action suivante · point à reprendre.',
-          },
-        ],
-      ),
-      p(
-        'certificates',
-        'Attestations de démonstration.',
-        'Une fois un parcours terminé, un récapitulatif de progression devient disponible. Il ne constitue pas une certification officielle.',
-        'certificates',
-      ),
-      p(
-        'support',
-        'Besoin d’un repère ?',
-        'Préparez votre question sur le contenu, le niveau ou le parcours.',
-        'contact',
       ),
       ...common,
     ];
@@ -1158,14 +740,23 @@ export function getSitePages(id: VerticalId): SitePageData[] {
     return [
       p(
         '',
-        'Les idées qui\nfont la suite.',
-        'Tech, business et culture créative. Un regard depuis Conakry, ouvert sur les possibles.',
+        'Smartsell Media.',
+        'Vidéos, reportages et idées : la plateforme de contenus de Smartsell.',
         'home',
       ),
       p(
+        'videos',
+        'Nos vidéos.',
+        'Clips, films de marque, publicités et mode : les productions signées Smartsell.',
+        'videos',
+      ),
+      ...films.map((f) =>
+        p(`video/${f.slug}`, f.title, f.kind, 'film', [], f.slug),
+      ),
+      p(
         'latest',
-        'Le fil des idées.',
-        'Vingt exemples éditoriaux originaux pour explorer notre ligne. Guides et opinions de démonstration ; aucune actualité ni interview réelle revendiquée.',
+        'Les articles.',
+        'Guides, analyses et opinions sur la tech, le business et la culture créative.',
         'articles',
       ),
       ...[
@@ -1194,7 +785,7 @@ export function getSitePages(id: VerticalId): SitePageData[] {
             'Opinions',
             'Entretiens',
           ][i],
-          'Des repères, des méthodes et des angles à explorer. Articles de démonstration.',
+          'Des repères, des méthodes et des angles à explorer.',
           'category',
           [],
           path,
@@ -1212,13 +803,13 @@ export function getSitePages(id: VerticalId): SitePageData[] {
       p(
         'authors/redaction',
         'La rédaction Smartsell.',
-        'Signature collective des exemples éditoriaux de cette version.',
+        'Les articles signés par l’équipe éditoriale de Smartsell Media.',
         'articles',
       ),
       p(
         'newsletter',
         'La suite dans votre boîte mail.',
-        'Découvrez le parcours d’abonnement. Cette simulation ne transmet aucune adresse.',
+        'Recevez nos nouvelles vidéos et nos articles.',
         'newsletter',
       ),
       ...common,
@@ -1227,14 +818,26 @@ export function getSitePages(id: VerticalId): SitePageData[] {
     return [
       p(
         '',
-        'L’idée devient\nune présence.',
-        'Image, son, mouvement. Un univers de production pour les marques, les créateurs et leurs histoires.',
+        'Studio podcast & photo\nà Conakry.',
+        'Des plateaux équipés pour vos podcasts, interviews, shootings et vidéos de marque.',
         'home',
       ),
       p(
+        'podcast',
+        'Studio podcast à Conakry.',
+        'Un plateau équipé, une captation multicaméra et un opérateur : venez avec l’idée, repartez avec l’épisode.',
+        'podcast',
+      ),
+      p(
+        'shooting',
+        'Studio photo à Conakry.',
+        'Shooting professionnel dans notre studio équipé. Trois formules : professionnel, mode ou produits.',
+        'shooting',
+      ),
+      p(
         'spaces',
-        'Un cadre pour chaque intention.',
-        'Trois propositions de plateau. Configurations illustratives, à valider avant toute réservation réelle.',
+        'Nos plateaux.',
+        'Trois espaces de production, équipés et accompagnés par notre équipe technique.',
         'spaces',
       ),
       ...spaces.map((s) =>
@@ -1244,47 +847,19 @@ export function getSitePages(id: VerticalId): SitePageData[] {
           s.copy,
           'space',
           [
-            { title: 'Le cadre envisagé', copy: s.use, items: s.equipment },
+            { title: 'Équipement', copy: s.use, items: s.equipment },
             {
-              title: 'Préparer votre session',
-              copy: 'Précisez le format, le nombre de personnes, la durée et les besoins de postproduction. Les équipements et la disponibilité seront confirmés par l’équipe avant toute prestation.',
+              title: 'Préparer votre séance',
+              copy: 'Précisez le format, le nombre de personnes, la durée et les besoins de postproduction. Notre équipe confirme la disponibilité et vous accompagne jusqu’au rendu.',
             },
           ],
           s.slug,
         ),
       ),
       p(
-        'services',
-        'Du brief à la dernière image.',
-        'Photo, vidéo, podcast, interview, contenus créateurs et production de marque.',
-        'story',
-        [
-          {
-            title: 'Photo & produits',
-            copy: 'Préparer les références, construire la lumière et organiser les prises de vue.',
-          },
-          {
-            title: 'Vidéo & interviews',
-            copy: 'Cadrer le récit, préparer les questions et organiser le tournage.',
-          },
-          {
-            title: 'Podcast & conversations',
-            copy: 'Construire un conducteur, prévoir l’installation et définir le format final.',
-          },
-          {
-            title: 'Corporate & live',
-            copy: 'Cadrer le dispositif, les intervenants et les conditions techniques avant chiffrage.',
-          },
-          {
-            title: 'Créateurs & formation',
-            copy: 'Composer une session de production ou un atelier adapté à votre pratique.',
-          },
-        ],
-      ),
-      p(
         'pricing',
-        'Choisir son point de départ.',
-        'Six packs illustratifs. Durées et périmètres de démonstration ; tarifs sur demande après cadrage.',
+        'Des formules claires, sans surprise.',
+        'Opérateur et matériel toujours inclus. Tarifs communiqués sur demande, selon la durée et les livrables.',
         'packs',
       ),
       ...packs.map((s) =>
@@ -1295,37 +870,36 @@ export function getSitePages(id: VerticalId): SitePageData[] {
           'pack',
           [
             {
-              title: 'Dans cette proposition',
-              copy: `Durée indicative : ${s.duration} h. Le périmètre final sera validé avec vous.`,
+              title: 'Inclus dans la formule',
+              copy: s.deliverable,
               items: s.includes,
             },
-            { title: 'La suite de la session', copy: s.deliverable },
           ],
           s.slug,
         ),
       ),
       p(
         'booking',
-        'Préparer votre session.',
-        'Simulez un parcours de réservation, du choix du pack au récapitulatif. Aucun créneau n’est réellement réservé.',
+        'Réserver une séance.',
+        'Choisissez votre formule, votre date et votre créneau : votre demande part directement sur notre WhatsApp.',
         'booking',
       ),
       p(
         'gallery',
         'Lumière. Cadre. Matière.',
-        'Études graphiques de plateau et directions de production. Ces compositions ne sont pas des photographies des locaux.',
+        'Des images et des films réalisés par nos équipes.',
         'gallery',
       ),
       p(
         'faq',
-        'Avant d’entrer en plateau.',
-        'Les repères pour préparer votre projet.',
+        'Avant d’entrer en studio.',
+        'Les repères pour préparer votre séance.',
         'faq',
       ),
       p(
         'contact',
-        'Donnez-nous le premier plan.',
-        'Préparez un brief de production et choisissez comment le transmettre.',
+        'Parlons de votre production.',
+        'Décrivez votre projet : nous revenons vers vous avec une proposition.',
         'contact',
       ),
       ...common,

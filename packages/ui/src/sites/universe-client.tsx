@@ -291,3 +291,80 @@ export function TypedPrompt({ lines }: { lines: string[] }) {
     </pre>
   );
 }
+
+/** Media : vidéo à la une qui change seule, façon plateforme de streaming. */
+export function FeaturedFilms({
+  items,
+}: {
+  items: {
+    href: string;
+    title: string;
+    kind: string;
+    copy: string;
+    src: string;
+    poster: string;
+  }[];
+}) {
+  const [i, setI] = useState(0);
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (!still() && !document.hidden) setI((n) => (n + 1) % items.length);
+    }, 9000);
+    return () => clearInterval(id);
+  }, [items.length]);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    v.load();
+    if (!still()) v.play().catch(() => {});
+  }, [i]);
+  const f = items[i];
+  return (
+    <div className="md2-feature">
+      <a className="md2-feature-media" href={f.href}>
+        <video
+          ref={ref}
+          muted
+          loop
+          playsInline
+          poster={f.poster}
+          aria-hidden="true"
+        >
+          <source src={f.src} type="video/mp4" />
+        </video>
+        <span className="md2-play" aria-hidden="true">
+          <Icon name="arrowRight" />
+        </span>
+      </a>
+      <div className="md2-feature-copy" key={f.href}>
+        <span className="md2-tag">{f.kind}</span>
+        <h2>{f.title}</h2>
+        <p>{f.copy}</p>
+        <a className="md2-watch" href={f.href}>
+          {t('Regarder', 'Watch')} <Icon name="arrowRight" />
+        </a>
+      </div>
+      <div className="md2-feature-nav">
+        <button
+          type="button"
+          aria-label={t('Vidéo précédente', 'Previous video')}
+          onClick={() => setI((n) => (n - 1 + items.length) % items.length)}
+        >
+          <Icon name="arrowLeft" />
+        </button>
+        <button
+          type="button"
+          aria-label={t('Vidéo suivante', 'Next video')}
+          onClick={() => setI((n) => (n + 1) % items.length)}
+        >
+          <Icon name="arrowRight" />
+        </button>
+        <span className="sg-mono">
+          {String(i + 1).padStart(2, '0')} /{' '}
+          {String(items.length).padStart(2, '0')}
+        </span>
+      </div>
+    </div>
+  );
+}

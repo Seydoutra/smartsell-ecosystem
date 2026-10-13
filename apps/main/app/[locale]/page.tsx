@@ -21,10 +21,8 @@ import {
   type Slide,
 } from '@smartsell/ui/immersive';
 import {
-  BriefBuilder,
   ExpandPanels,
   JourneyPicker,
-  Rail,
   type Journey,
   type Panel,
 } from '@smartsell/ui/home';
@@ -38,12 +36,29 @@ import {
 import {
   agencyServices,
   articles,
-  cases,
   courses,
   packs,
   siteMenus,
 } from '@smartsell/content/sites';
 import { verticals } from '@smartsell/content';
+import {
+  brands,
+  clients,
+  films,
+  products as solutions,
+  shoots,
+  websites,
+} from '@smartsell/content/portfolio';
+import { DigitalField, RotatingWords } from '@smartsell/ui/kinetic';
+import {
+  ClientMarquee,
+  ClipTile,
+  CourseCarousel,
+  PortfolioTabs,
+  SlideRail,
+  SmartBrief,
+  SolutionsShowcase,
+} from '@smartsell/ui/showcase';
 import {
   withBasePath,
   routingConfig,
@@ -167,7 +182,7 @@ const journeys: Journey[] = [
           'Une Creator Session pour tourner plusieurs formats courts d’un coup.',
           'A Creator Session to shoot several short formats in one go.',
         ),
-        href: go('studio', 'packs/creator'),
+        href: go('studio', 'packs/shooting-mode'),
       },
       {
         site: 'Agency',
@@ -209,7 +224,7 @@ const journeys: Journey[] = [
           'Trois leçons d’aperçu par module, avec exercice et quiz.',
           'Three preview lessons per course, with exercises and quizzes.',
         ),
-        href: go('academy', 'courses/marketing-digital'),
+        href: go('academy', 'courses/communication-digitale'),
       },
       {
         site: 'Agency',
@@ -251,7 +266,7 @@ const journeys: Journey[] = [
           'Conducteur, installation audio et enregistrement accompagné.',
           'Running order, audio setup and supported recording.',
         ),
-        href: go('studio', 'packs/podcast'),
+        href: go('studio', 'packs/podcast-montage'),
       },
       {
         site: 'Academy',
@@ -260,7 +275,7 @@ const journeys: Journey[] = [
           'Tournage, montage et formats courts pour les réseaux.',
           'Shooting, editing and short formats for social media.',
         ),
-        href: go('academy', 'courses/creation-video'),
+        href: go('academy', 'courses/montage-video'),
       },
     ],
     cta: {
@@ -296,7 +311,7 @@ const journeys: Journey[] = [
           'Une interview soignée, de la préparation au tournage.',
           'A polished interview, from preparation to shoot.',
         ),
-        href: go('studio', 'packs/interview'),
+        href: go('studio', 'packs/podcast-reels'),
       },
       {
         site: 'Media',
@@ -444,7 +459,7 @@ const slideSecondary: Record<VerticalId, { href: string; label: string }> = {
   },
   studio: {
     href: go('studio', 'booking'),
-    label: t('Simuler une réservation', 'Try a booking'),
+    label: t('Réserver une séance', 'Book a session'),
   },
   labs: {
     href: managementUrl,
@@ -463,32 +478,6 @@ const slides: Slide[] = verticals.map((v) => ({
     .slice(0, 4)
     .map((m) => ({ href: go(v.id, m.path), label: m.label })),
 }));
-
-const casePhotos: Photo[] = [
-  photos.teamSofa,
-  photos.portraitTurban,
-  photos.meeting,
-  photos.partners,
-  photos.learnerDesk,
-  photos.phoneShop,
-];
-const coursePhotos: Record<string, Photo> = {
-  'marketing-digital': photos.learnerFocus,
-  'community-management': photos.phonePink,
-  'design-graphique': photos.portraitWall,
-  'ui-ux': photos.learnerDesk,
-  web: photos.phoneDesk,
-  'intelligence-artificielle': photos.founder,
-  'power-bi': photos.manager,
-  'creation-video': photos.videoGimbal,
-};
-const articlePhotos: Photo[] = [
-  photos.teamLaptop,
-  photos.creator,
-  photos.portraitPro,
-  photos.phoneShop,
-  photos.founder,
-];
 
 const spacesPanels: Panel[] = [
   {
@@ -590,8 +579,8 @@ const people: Panel[] = [
       'Practitioners first, they teach methods your teams use the very next day.',
     ),
     photo: photos.portraitPro,
-    href: go('academy', 'instructors'),
-    cta: t('Découvrir les intervenants', 'Meet the instructors'),
+    href: go('academy', 'corporate'),
+    cta: t('Former mon équipe', 'Train my team'),
   },
 ];
 
@@ -638,25 +627,12 @@ const method = [
   },
 ];
 
-const needs = [
-  t('Stratégie de marque', 'Brand strategy'),
-  t('Identité visuelle', 'Visual identity'),
-  t('Réseaux sociaux', 'Social media'),
-  t('Publicité digitale', 'Digital advertising'),
-  t('Site web', 'Website'),
-  t('Vidéo / photo', 'Video / photo'),
-  'Podcast',
-  t('Formation d’équipe', 'Team training'),
-  t('Outil de gestion', 'Management tool'),
-];
-
 export default function Home() {
-  const [lead, ...more] = articles;
   return (
     <main id="main">
       {/* 01 · Héros */}
       <section className="im-hero" aria-labelledby="hero-title">
-        <PixelMosaic tone="main" />
+        <DigitalField />
         <div className="im-hero-copy">
           <p className="sg-mono">
             <Icon name="stars" />{' '}
@@ -667,9 +643,17 @@ export default function Home() {
           </p>
           <h1 id="hero-title">
             <span>{t('Votre marque', 'Your brand')}</span>
-            <span>{t('mérite qu’on', 'deserves to be')}</span>
+            <span>{t('mérite d’être', 'deserves to be')}</span>
             <span>
-              <Highlight>{t('parle d’elle.', 'talked about.')}</Highlight>
+              <RotatingWords
+                words={[
+                  t('vue.', 'seen.'),
+                  t('choisie.', 'chosen.'),
+                  t('retenue.', 'remembered.'),
+                  t('partagée.', 'shared.'),
+                  t('recommandée.', 'recommended.'),
+                ]}
+              />
             </span>
           </h1>
           <p className="im-hero-lead">
@@ -766,6 +750,18 @@ export default function Home() {
           t('Formation', 'Training'),
           t('Outils digitaux', 'Digital tools'),
         ]}
+      />
+
+      <ClientMarquee
+        clients={clients}
+        title={
+          <>
+            {t('Des marques et institutions', 'Brands and institutions')}{' '}
+            <Highlight>
+              {t('qui avancent avec nous.', 'moving forward with us.')}
+            </Highlight>
+          </>
+        }
       />
 
       {/* 02 · Parcours par profil */}
@@ -867,142 +863,82 @@ export default function Home() {
         />
       </section>
 
-      {/* 06 · Produit phare */}
-      <section className="im-section im-light" aria-labelledby="spot-title">
-        <div className="hm-wrap">
-          <div className="hm-spotlight">
-            <PixelMosaic tone="labs" />
-            <div className="hm-spotlight-copy">
-              <span className="hm-badge">
-                <i aria-hidden="true" />{' '}
+      {/* 06 · Nos solutions */}
+      <section
+        className="sc-section sc-deep"
+        id="solutions"
+        aria-labelledby="sol-title"
+      >
+        <div className="sc-wrap">
+          <div className="sc-head">
+            <div>
+              <span className="sg-mono">
                 {t(
-                  'Produit disponible · Smartsell Labs',
-                  'Available product · Smartsell Labs',
+                  '05 · Nos solutions digitales',
+                  '05 · Our digital solutions',
                 )}
               </span>
-              <h2 id="spot-title">
-                Smartsell <em>Management</em>
-                {t(
-                  ', votre activité sur un seul écran.',
-                  ', your business on a single screen.',
-                )}
+              <h2 id="sol-title">
+                {t('Des outils conçus', 'Tools designed')}{' '}
+                <Highlight>
+                  {t('pour votre métier.', 'for your trade.')}
+                </Highlight>
               </h2>
-              <p>
-                {t(
-                  'Un produit conçu par Smartsell Labs pour réunir le travail de votre entreprise : clients, projets, planning et finances.',
-                  'A product designed by Smartsell Labs to bring your company’s work together: clients, projects, planning and finances.',
-                )}
-              </p>
-              <div className="im-actions">
-                <CtaLink href={managementUrl}>
-                  {t('Découvrir Management', 'Discover Management')}
-                </CtaLink>
-                <CtaLink href={go('labs', 'products')} tone="ghost">
-                  {t('Tous nos produits', 'All our products')}
-                </CtaLink>
-              </div>
             </div>
-            <div className="hm-features">
-              {[
-                [
-                  '01',
-                  'Clients',
-                  t(
-                    'Un historique clair de chaque relation.',
-                    'A clear history of each relationship.',
-                  ),
-                ],
-                [
-                  '02',
-                  t('Projets', 'Projects'),
-                  t(
-                    'Les étapes et les responsables au même endroit.',
-                    'Steps and owners in one place.',
-                  ),
-                ],
-                [
-                  '03',
-                  'Planning',
-                  t(
-                    'Les échéances de l’équipe, visibles d’un coup d’œil.',
-                    'The team’s deadlines, visible at a glance.',
-                  ),
-                ],
-                [
-                  '04',
-                  'Finances',
-                  t(
-                    'Devis, factures et suivi réunis.',
-                    'Quotes, invoices and tracking together.',
-                  ),
-                ],
-              ].map(([n, t, c]) => (
-                <div key={t}>
-                  <span className="sg-mono">{n}</span>
-                  <strong>{t}</strong>
-                  <p>{c}</p>
-                </div>
-              ))}
-            </div>
+            <p>
+              {t(
+                'Smartsell Labs développe des produits utilisés au quotidien : gestion d’activité, assistant WhatsApp multilingue, plateforme pour photographes et certification de documents.',
+                'Smartsell Labs builds products used every day: business management, a multilingual WhatsApp assistant, a platform for photographers and document certification.',
+              )}
+            </p>
           </div>
+          <SolutionsShowcase
+            products={solutions}
+            allHref={go('labs', 'products')}
+          />
         </div>
       </section>
 
-      {/* 07 · Explorations créatives (Agency) */}
-      <section className="im-section im-dark" aria-labelledby="work-title">
-        <div className="im-head">
-          <div>
-            <span className="sg-mono">05 · Smartsell Agency</span>
-            <h2 id="work-title">
-              {t('Des idées qui prennent', 'Ideas that take')}{' '}
-              <Highlight>{t('forme.', 'shape.')}</Highlight>
-            </h2>
+      {/* 07 · Portfolio */}
+      <section
+        className="sc-section sc-dark"
+        id="portfolio"
+        aria-labelledby="work-title"
+      >
+        <div className="sc-wrap">
+          <div className="sc-head">
+            <div>
+              <span className="sg-mono">06 · Portfolio</span>
+              <h2 id="work-title">
+                {t('Le travail', 'The work')}{' '}
+                <Highlight>{t('parle pour nous.', 'speaks for us.')}</Highlight>
+              </h2>
+            </div>
+            <div>
+              <p>
+                {t(
+                  'Identités de marque, sites web, séances photo et films : une sélection de projets réalisés pour nos clients.',
+                  'Brand identities, websites, photo shoots and films: a selection of projects made for our clients.',
+                )}
+              </p>
+              <CtaLink href={go('agency', 'work')}>
+                {t('Tout le portfolio', 'The whole portfolio')}
+              </CtaLink>
+            </div>
           </div>
-          <div className="im-head-side">
-            <p>
-              {t(
-                'Six explorations créatives pour montrer notre manière de faire : du contexte à la direction, jusqu’aux livrables.',
-                'Six creative explorations to show how we work: from context to direction, all the way to deliverables.',
-              )}
-            </p>
-            <CtaLink href={go('agency', 'work')}>
-              {t('Tout le portfolio', 'The whole portfolio')}
-            </CtaLink>
-          </div>
+          <PortfolioTabs
+            brands={brands}
+            websites={websites}
+            photos={[...shoots.fashion, ...shoots.sport, ...shoots.spaces]}
+            films={films}
+            brandHrefs={Object.fromEntries(
+              brands.map((b) => [b.slug, go('agency', `work/${b.slug}`)]),
+            )}
+            filmHrefs={Object.fromEntries(
+              films.map((f) => [f.slug, go('media', `video/${f.slug}`)]),
+            )}
+          />
         </div>
-        <Rail
-          label={t(
-            'Explorations créatives Agency',
-            'Agency creative explorations',
-          )}
-          tone="dark"
-        >
-          {cases.map((c, i) => (
-            <a
-              key={c.slug}
-              className="hm-case"
-              href={go('agency', `work/${c.slug}`)}
-            >
-              <Img photo={casePhotos[i % casePhotos.length]} width={700} />
-              <span className="hm-case-mark" aria-hidden="true">
-                {c.mark}
-              </span>
-              <div className="hm-case-body">
-                <span className="sg-mono">
-                  {c.category} ·{' '}
-                  {t('Exploration créative', 'Creative exploration')}
-                </span>
-                <h3>{c.title}</h3>
-                <p>{c.tagline}</p>
-                <ul>
-                  {c.deliverables.map((d) => (
-                    <li key={d}>{d}</li>
-                  ))}
-                </ul>
-              </div>
-            </a>
-          ))}
-        </Rail>
       </section>
 
       {/* 08 · Academy */}
@@ -1018,8 +954,8 @@ export default function Home() {
           <div className="im-head-side">
             <p>
               {t(
-                'Huit modules pratiques, un projet concret par module et trois leçons à essayer dès maintenant.',
-                'Eight hands-on courses, one real project per course and three lessons to try right now.',
+                'Treize formations pratiques : marketing digital, design, réseaux sociaux, vidéo, IA et IA créative.',
+                'Thirteen hands-on courses: digital marketing, design, social media, video, AI and creative AI.',
               )}
             </p>
             <CtaLink href={go('academy', 'courses')} tone="dark">
@@ -1027,36 +963,14 @@ export default function Home() {
             </CtaLink>
           </div>
         </div>
-        <Rail label={t('Modules Academy', 'Academy courses')}>
-          {courses.map((c) => (
-            <a
-              key={c.slug}
-              className="hm-course"
-              href={go('academy', `courses/${c.slug}`)}
-            >
-              <div className="hm-course-media">
-                <Img
-                  photo={coursePhotos[c.slug] ?? photos.learner}
-                  width={600}
-                />
-                <span>{c.category}</span>
-              </div>
-              <div className="hm-course-body">
-                <span className="sg-mono">{c.level}</span>
-                <h3>{c.title}</h3>
-                <p>{c.goal}</p>
-                <div className="hm-course-meta">
-                  <span>
-                    {t('Format envisagé :', 'Planned format:')} {c.hours} h
-                  </span>
-                  <b>
-                    {t('Essayer', 'Try')} <Icon name="arrowUpRight" />
-                  </b>
-                </div>
-              </div>
-            </a>
-          ))}
-        </Rail>
+        <div className="hm-wrap">
+          <CourseCarousel
+            courses={courses}
+            hrefs={Object.fromEntries(
+              courses.map((c) => [c.slug, go('academy', `courses/${c.slug}`)]),
+            )}
+          />
+        </div>
       </section>
 
       {/* 09 · Studios */}
@@ -1105,54 +1019,36 @@ export default function Home() {
           <div>
             <span className="sg-mono">08 · Smartsell Media</span>
             <h2 id="media-title">
-              {t('Les idées qui font', 'The ideas that')}{' '}
-              <Highlight>{t('bouger', 'move')}</Highlight>{' '}
-              {t('l’Afrique.', 'Africa.')}
+              {t('Des images qui', 'Images that')}{' '}
+              <Highlight>{t('font bouger', 'move')}</Highlight>{' '}
+              {t('les écrans.', 'screens.')}
             </h2>
           </div>
           <div className="im-head-side">
             <p>
               {t(
-                'Guides, analyses et opinions sur la tech, le business et la culture créative.',
-                'Guides, analyses and opinions on tech, business and creative culture.',
+                'Clips, films de marque, publicités et mode : nos productions, et des articles sur la tech, le business et la création.',
+                'Music videos, brand films, adverts and fashion: our productions, plus articles on tech, business and creativity.',
               )}
             </p>
-            <CtaLink href={go('media', 'newsletter')} tone="dark">
-              {t('Recevoir la newsletter', 'Get the newsletter')}
+            <CtaLink href={go('media', 'videos')} tone="dark">
+              {t('Toutes nos vidéos', 'All our videos')}
             </CtaLink>
           </div>
         </div>
-        <div className="hm-wrap hm-mag">
-          <a className="hm-mag-lead" href={go('media', `article/${lead.slug}`)}>
-            <Img photo={articlePhotos[0]} width={1100} />
-            <div>
-              <span className="hm-tag">
-                {lead.category} · {t('À la une', 'Top story')}
-              </span>
-              <h3>{lead.title}</h3>
-              <p>{lead.summary}</p>
-            </div>
-          </a>
-          <div className="hm-mag-list">
-            {more.slice(0, 4).map((a, i) => (
-              <a
-                key={a.slug}
-                className="hm-mag-item"
-                href={go('media', `article/${a.slug}`)}
-              >
-                <figure>
-                  <Img photo={articlePhotos[i + 1]} width={260} />
-                </figure>
-                <div>
-                  <span className="sg-mono">
-                    {a.category} · {a.minutes} min
-                  </span>
-                  <h3>{a.title}</h3>
-                  <p>{a.summary}</p>
-                </div>
-              </a>
+        <div className="hm-wrap">
+          <SlideRail
+            label={t('Vidéos Smartsell Media', 'Smartsell Media videos')}
+          >
+            {films.slice(0, 10).map((f) => (
+              <ClipTile
+                key={f.slug}
+                film={f}
+                href={go('media', `video/${f.slug}`)}
+                className="hm-film"
+              />
             ))}
-          </div>
+          </SlideRail>
         </div>
       </section>
 
@@ -1300,10 +1196,7 @@ export default function Home() {
         <div className="im-head">
           <div>
             <span className="sg-mono">
-              {t(
-                '13 · Votre brief en 30 secondes',
-                '13 · Your brief in 30 seconds',
-              )}
+              {t('13 · Votre brief intelligent', '13 · Your smart brief')}
             </span>
             <h2 id="brief-title">
               {t('Composez votre projet.', 'Compose your project.')}{' '}
@@ -1314,13 +1207,13 @@ export default function Home() {
           </div>
           <p>
             {t(
-              'Sélectionnez vos besoins, votre objectif et votre calendrier : votre brief vous suit jusqu’au formulaire de contact.',
-              'Select your needs, your objective and your timeline: your brief follows you to the contact form.',
+              'Six étapes, des questions qui s’adaptent à vos besoins, et vos réponses arrivent directement sur notre WhatsApp.',
+              'Six steps, questions that adapt to your needs, and your answers go straight to our WhatsApp.',
             )}
           </p>
         </div>
         <div className="hm-wrap">
-          <BriefBuilder needs={needs} contactHref={contact} />
+          <SmartBrief />
         </div>
       </section>
 
@@ -1412,8 +1305,8 @@ export default function Home() {
             )}
             ({photoCredits.join(', ')}).{' '}
             {t(
-              'Les explorations Agency sont des concepts avec des marques fictives.',
-              'Agency explorations are concepts with fictional brands.',
+              'Portfolio, photos de shooting et films : réalisations Smartsell.',
+              'Portfolio, shoot photos and films: Smartsell productions.',
             )}
           </p>
         </div>

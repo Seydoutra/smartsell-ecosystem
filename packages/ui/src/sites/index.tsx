@@ -2,8 +2,6 @@ import { Icon } from '../icons';
 import type { VerticalId } from '@smartsell/types';
 import { verticals } from '@smartsell/content';
 import {
-  agencyServices,
-  cases,
   courses,
   articles,
   spaces,
@@ -30,17 +28,45 @@ import {
   ScrollLitText,
   ThemeToggle,
 } from '../signature';
-import { CtaLink, PhotoRail } from '../immersive';
-import { InnerCta, InnerHero, VerticalHome } from './universe';
+import {
+  Backdrops,
+  CorporateOffers,
+  FormulaCards,
+  InnerCta,
+  InnerHero,
+  MediaSide,
+  ShootingAdvice,
+  SpaceSlides,
+  StudioBand,
+  VerticalHome,
+  expertiseItems,
+} from './universe';
+import {
+  brands,
+  films,
+  shootSeries,
+  shoots,
+  websites,
+} from '@smartsell/content/portfolio';
+import { corporateSteps } from '@smartsell/content/academy';
+import {
+  ClipTile,
+  CourseCarousel,
+  ExpertiseBento,
+  FilmPlayer,
+  PhotoWall,
+  PortfolioTabs,
+  SiteCard,
+  SlideRail,
+  SmartBrief,
+} from '../showcase';
+import { Img } from '../immersive';
 import { photos, type Photo } from '@smartsell/content/photos';
 import {
   ArticleSearch,
   Booking,
   Dashboard,
-  DemoNote,
   DraftForm,
-  Enrollment,
-  Gallery,
   Learner,
   Newsletter,
   ShareArticle,
@@ -169,10 +195,7 @@ function Footer({ id }: { id: VerticalId }) {
         path: 'careers',
       },
     ],
-    academy: [
-      { label: t('Ressources', 'Resources'), path: 'resources' },
-      { label: 'Support', path: 'support' },
-    ],
+    academy: [],
     media: [
       { label: t('Afrique', 'Africa'), path: 'africa' },
       { label: t('Guinée', 'Guinea'), path: 'guinea' },
@@ -181,6 +204,7 @@ function Footer({ id }: { id: VerticalId }) {
       { label: 'Newsletter', path: 'newsletter' },
     ],
     studio: [
+      { label: t('Galerie', 'Gallery'), path: 'gallery' },
       { label: t('Questions fréquentes', 'FAQ'), path: 'faq' },
       { label: 'Contact', path: 'contact' },
     ],
@@ -270,202 +294,88 @@ function SectionTitle({
     </div>
   );
 }
-function CaseCards({ limit = 6 }: { limit?: number }) {
+const storyPhotos: Record<VerticalId, Photo[]> = {
+  agency: [
+    photos.agencyGlass,
+    shoots.fashion[1],
+    photos.agencyDesigner,
+    photos.meeting,
+    shoots.sport[0],
+  ],
+  academy: [
+    photos.academyRoom,
+    photos.learnerFocus,
+    photos.academyHome,
+    photos.learnerDesk,
+  ],
+  media: [photos.mediaInterview, photos.mediaReader, photos.mediaPresenter],
+  studio: [
+    photos.podcastNeon,
+    photos.studioPink,
+    photos.videoField,
+    shoots.spaces[0],
+  ],
+  labs: [photos.labsCoder, photos.labsNight, photos.founder, photos.manager],
+};
+function StoryCards({ id, page }: { id: VerticalId; page: SitePageData }) {
+  const pool = storyPhotos[id];
   return (
-    <div className="work-grid">
-      {cases.slice(0, limit).map((c, i) => (
-        <a
+    <div className="uv-story">
+      {page.blocks?.map((b, i) => (
+        <article
+          key={b.title}
           data-reveal
-          className={`work-card work-${i}`}
-          href={link('agency', `work/${c.slug}`)}
-          key={c.slug}
+          style={{ '--i': i } as React.CSSProperties}
         >
-          <div className="work-art" data-motion-visual>
-            <span className="concept-label">
-              CONCEPT / {c.category.toUpperCase()}
-            </span>
-            <CampaignVisual index={i} />
-            <i />
-            <span className="work-art-caption">{c.tagline}</span>
+          <figure>
+            <Img
+              photo={pool[(i + page.path.length) % pool.length]}
+              width={800}
+            />
+            <span>{String(i + 1).padStart(2, '0')}</span>
+          </figure>
+          <div>
+            <h2>{b.title}</h2>
+            <p>{b.copy}</p>
+            {b.items && (
+              <div className="uv-chips">
+                {b.items.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
+              </div>
+            )}
           </div>
-          <div className="work-caption">
-            <h3>{c.title}</h3>
-            <span>
-              {c.category} <Icon name="arrowUpRight" />
-            </span>
-          </div>
-        </a>
-      ))}
-    </div>
-  );
-}
-function CourseCards({ limit = 8 }: { limit?: number }) {
-  return (
-    <div className="catalog-grid">
-      {courses.slice(0, limit).map((c, i) => (
-        <a
-          data-reveal
-          className="course-card"
-          href={link('academy', `courses/${c.slug}`)}
-          key={c.slug}
-        >
-          <div className={`course-art course-art-${i % 4}`} aria-hidden="true">
-            <span>
-              <Icon
-                name={
-                  (['arrowUpRight', 'microphone', 'stars', 'puzzle'] as const)[
-                    i % 4
-                  ]
-                }
-              />
-            </span>
-            <b>0{i + 1}</b>
-          </div>
-          <div className="course-caption">
-            <p className="micro">
-              {c.category} · {c.level}
-            </p>
-            <h3>{c.title}</h3>
-            <p>{c.goal}</p>
-            <div>
-              <span>
-                {c.hours} {t('h · format envisagé', 'h · planned format')}
-              </span>
-              <span aria-hidden="true">
-                <Icon name="arrowUpRight" />
-              </span>
-            </div>
-            <small>
-              {t('Module de démonstration', 'Demonstration course')}
-            </small>
-          </div>
-        </a>
+        </article>
       ))}
     </div>
   );
 }
 function ProductCards() {
   return (
-    <div className="lab-products">
-      <a
-        data-reveal
-        href={link('labs', 'products/management')}
-        className="lab-product"
-      >
-        <p className="micro">
-          {t('01 / PRODUIT EXISTANT', '01 / EXISTING PRODUCT')}
-        </p>
-        <div className="product-window" aria-hidden="true">
-          <div>
-            <i />
-            <i />
-            <i />
-          </div>
-          <aside>SM / MANAGEMENT</aside>
-          <b>
-            {t('Le travail,', 'Work,')}
-            <br />
-            {t('réuni.', 'together.')}
-          </b>
-          <span>
-            {t(
-              'CLIENTS · PROJETS · PLANNING · FINANCES',
-              'CLIENTS · PROJECTS · PLANNING · FINANCES',
-            )}
-          </span>
-        </div>
-        <h3>
-          Smartsell Management{' '}
-          <span>
-            <Icon name="arrowUpRight" />
-          </span>
-        </h3>
-        <p>
-          {t(
-            'Un produit pour relier les opérations du quotidien.',
-            'A product that connects everyday operations.',
-          )}
-        </p>
-      </a>
-      <a
-        data-reveal
-        href={link('labs', 'products/obtura')}
-        className="lab-product obtura-card"
-      >
-        <p className="micro">
-          {t('02 / VISION PRODUIT', '02 / PRODUCT VISION')}
-        </p>
-        <div className="obtura-window" aria-hidden="true">
-          <div className="obtura-orbit" />
-          <b>O.</b>
-          <span>
-            {t('LE TRAVAIL CRÉATIF, RELIÉ.', 'CREATIVE WORK, CONNECTED.')}
-          </span>
-        </div>
-        <h3>
-          Obtura{' '}
-          <span>
-            <Icon name="arrowUpRight" />
-          </span>
-        </h3>
-        <p>
-          {t(
-            'Un Business OS envisagé pour les créateurs visuels.',
-            'A Business OS envisioned for visual creators.',
-          )}
-        </p>
-      </a>
-    </div>
-  );
-}
-function SpaceCards() {
-  return (
-    <div className="spaces-grid">
-      {spaces.map((s, i) => (
-        <a
-          key={s.slug}
-          data-reveal
-          href={link('studio', `spaces/${s.slug}`)}
-          className="space-card"
-        >
-          <div className={`space-diagram diagram-${i}`} aria-hidden="true">
-            <div />
-            <b>
-              <Icon
-                name={(['eye', 'dashboard', 'microphone'] as const)[i % 3]}
-              />
-            </b>
-            <span>
-              {t('ÉTUDE DE PLATEAU', 'SET STUDY')} / 0{i + 1}
-            </span>
-          </div>
-          <h3>
-            {s.title}{' '}
-            <span>
-              <Icon name="arrowUpRight" />
-            </span>
-          </h3>
-          <p>{s.copy}</p>
-          <small>{s.use}</small>
-        </a>
-      ))}
+    <div className="sc-site-grid">
+      {websites
+        .filter((w) =>
+          ['management', 'kuma', 'obtura', 'garant'].includes(w.slug),
+        )
+        .map((w) => (
+          <SiteCard key={w.slug} site={w} />
+        ))}
     </div>
   );
 }
 function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
   const course = courses.find((c) => c.slug === page.ref);
-  const study = cases.find((c) => c.slug === page.ref);
+  const brand = brands.find((b) => b.slug === page.ref);
+  const film = films.find((f) => f.slug === page.ref);
   const article = articles.find((a) => a.slug === page.ref);
   const pack = packs.find((p) => p.slug === page.ref);
   const space = spaces.find((s) => s.slug === page.ref);
-  if (page.kind === 'enroll' && course) return <Enrollment course={course} />;
   if (page.kind === 'learn' && course) return <Learner course={course} />;
   if (page.kind === 'dashboard') return <Dashboard />;
-  if (page.kind === 'certificates') return <Dashboard certificates />;
   if (page.kind === 'booking') return <Booking />;
-  if (page.kind === 'contact') return <DraftForm site={names[id]} />;
+  if (page.kind === 'contact')
+    return id === 'agency' ? <SmartBrief /> : <DraftForm site={names[id]} />;
   if (page.kind === 'newsletter') return <Newsletter />;
-  if (page.kind === 'gallery') return <Gallery />;
   if (page.kind === 'search' || page.kind === 'articles')
     return <ArticleSearch />;
   if (page.kind === 'category') {
@@ -483,129 +393,350 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
     };
     return <ArticleSearch category={mapping[page.ref || '']} />;
   }
-  if (page.kind === 'work') return <CaseCards />;
-  if (page.kind === 'courses') return <CourseCards />;
-  if (page.kind === 'services')
+  if (page.kind === 'work')
     return (
-      <div className="service-catalog">
-        {agencyServices.map((s, i) => (
-          <a key={s.slug} href={link(id, `services/${s.slug}`)} data-reveal>
-            <span>{String(i + 1).padStart(2, '0')}</span>
-            <div>
+      <>
+        <PortfolioTabs
+          brands={brands}
+          websites={websites}
+          photos={[...shoots.fashion, ...shoots.sport, ...shoots.spaces]}
+          films={films}
+          brandHrefs={Object.fromEntries(
+            brands.map((b) => [b.slug, link('agency', `work/${b.slug}`)]),
+          )}
+          filmHrefs={Object.fromEntries(
+            films.map((f) => [f.slug, link('media', `video/${f.slug}`)]),
+          )}
+        />
+        {shootSeries.map((s) => (
+          <section key={s.slug} className="uv-series" data-reveal>
+            <div className="uv-series-head">
+              <p className="micro">{t('Série photo', 'Photo series')}</p>
               <h2>{s.title}</h2>
               <p>{s.copy}</p>
             </div>
-            <span>
-              <Icon name="arrowUpRight" />
-            </span>
-          </a>
-        ))}
-      </div>
-    );
-  if (page.kind === 'products') return <ProductCards />;
-  if (page.kind === 'spaces') return <SpaceCards />;
-  if (page.kind === 'packs')
-    return (
-      <div className="catalog-grid">
-        {packs.map((p, i) => (
-          <a
-            key={p.slug}
-            className="compact-card"
-            data-reveal
-            href={link(id, `packs/${p.slug}`)}
-          >
-            <p className="micro">
-              0{i + 1} / {p.duration} {t('H INDICATIVES', 'H INDICATIVE')}
-            </p>
-            <h2>{p.title}</h2>
-            <p>{p.copy}</p>
-            <ul>
-              {p.includes.map((s) => (
-                <li key={s}>{s}</li>
+            <SlideRail label={s.title}>
+              {s.photos.map((ph) => (
+                <figure key={ph.id} className={`uv-series-shot ${ph.ratio}`}>
+                  <Img photo={ph} width={900} />
+                </figure>
               ))}
-            </ul>
-            <p className="price-note">{t('Sur demande', 'On request')}</p>
-            <span className="text-link">
-              {t('Voir le périmètre', 'See the scope')}{' '}
-              <Icon name="arrowUpRight" />
-            </span>
-          </a>
+            </SlideRail>
+          </section>
         ))}
+      </>
+    );
+  if (page.kind === 'brand' && brand)
+    return (
+      <div className="uv-brand">
+        <div className="uv-brand-intro">
+          <p className="micro">{brand.sector}</p>
+          <div className="uv-chips">
+            {brand.deliverables.map((d) => (
+              <span key={d}>{d}</span>
+            ))}
+          </div>
+        </div>
+        <div className="uv-brand-pages">
+          {brand.pages.map((pg, i) => (
+            <figure
+              key={pg.id}
+              data-reveal
+              className={i === 0 ? 'is-cover' : ''}
+            >
+              <Img photo={pg} width={1400} eager={i === 0} />
+            </figure>
+          ))}
+        </div>
+        <h2 className="uv-brand-more">
+          {t('Autres identités', 'Other identities')}
+        </h2>
+        <div className="uv-brand-next">
+          {brands
+            .filter((b) => b.slug !== brand.slug)
+            .slice(0, 3)
+            .map((b) => (
+              <a key={b.slug} href={link(id, `work/${b.slug}`)}>
+                <Img photo={b.pages[0]} width={700} />
+                <span>
+                  {b.name} <Icon name="arrowUpRight" />
+                </span>
+              </a>
+            ))}
+        </div>
       </div>
     );
-  if (page.kind === 'course' && course)
+  if (page.kind === 'courses')
+    return (
+      <CourseCarousel
+        courses={courses}
+        hrefs={Object.fromEntries(
+          courses.map((c) => [c.slug, link('academy', `courses/${c.slug}`)]),
+        )}
+      />
+    );
+  if (page.kind === 'corporate')
     return (
       <>
-        <DemoNote>
-          {t(
-            `Programme illustratif de ${course.hours} h. L’aperçu contient trois leçons. Aucune session réelle n’est annoncée.`,
-            `Illustrative ${course.hours}-hour programme. The preview contains three lessons. No real session is announced.`,
-          )}
-        </DemoNote>
-        <div className="course-detail">
+        <CorporateOffers />
+        <section className="uv-steps4" data-reveal>
+          <h2>
+            {t(
+              'Comment nous construisons votre parcours',
+              'How we build your track',
+            )}
+          </h2>
           <div>
-            <h2>
-              {t(
-                'Le projet qui donne un sens au module.',
-                'The project that gives the course its meaning.',
-              )}
-            </h2>
-            <p>{course.project}</p>
-            <dl className="facts">
-              <div>
-                <dt>{t('Niveau', 'Level')}</dt>
-                <dd>{course.level}</dd>
-              </div>
-              <div>
-                <dt>{t('Catégorie', 'Category')}</dt>
-                <dd>{course.category}</dd>
-              </div>
-              <div>
-                <dt>{t('Tarif réel', 'Actual price')}</dt>
-                <dd>{t('À définir', 'To be defined')}</dd>
-              </div>
-            </dl>
-            <h2>{t('Le programme de l’aperçu', 'The preview programme')}</h2>
-            {course.lessons.map((l, i) => (
-              <details key={l.title} className="curriculum">
-                <summary>
-                  0{i + 1} / {l.title} <span>+</span>
-                </summary>
-                <p>{l.copy}</p>
-                <p>
-                  <strong>{t('Exercice :', 'Exercise:')} </strong>
-                  {l.exercise}
-                </p>
-              </details>
+            {corporateSteps.map(([title, copy], i) => (
+              <article key={title}>
+                <b>{String(i + 1).padStart(2, '0')}</b>
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </article>
             ))}
-            <h3>{t('Avant de commencer', 'Before you start')}</h3>
+          </div>
+        </section>
+        <section className="uv-corporate-brief">
+          <h2>
+            {t(
+              'Décrivez votre besoin de formation.',
+              'Describe your training need.',
+            )}
+          </h2>
+          <SmartBrief preset={['formation']} />
+        </section>
+      </>
+    );
+  if (page.kind === 'services')
+    return <ExpertiseBento items={expertiseItems()} />;
+  if (page.kind === 'products') return <ProductCards />;
+  if (page.kind === 'spaces') return <SpaceSlides />;
+  if (page.kind === 'videos')
+    return (
+      <div className="sc-clip-grid">
+        {films.map((f) => (
+          <ClipTile
+            key={f.slug}
+            film={f}
+            href={link('media', `video/${f.slug}`)}
+          />
+        ))}
+      </div>
+    );
+  if (page.kind === 'film' && film)
+    return (
+      <div className="uv-film">
+        <FilmPlayer film={film} />
+        <div className="uv-film-meta">
+          <div>
+            <p className="micro">
+              {film.kind} · {t('Production Smartsell', 'Smartsell production')}
+            </p>
+            <h2>{film.title}</h2>
             <p>
               {t(
-                'Prévoyez un carnet ou un document pour noter vos idées. Aucun outil payant n’est nécessaire pour parcourir cet aperçu.',
-                'Keep a notebook or a document to write down your ideas. No paid tool is needed to go through this preview.',
+                'Réalisation, tournage et montage : un extrait de la production signée par nos équipes.',
+                'Directing, shooting and editing: an excerpt from a production signed by our teams.',
               )}
             </p>
           </div>
-          <aside className="course-enroll-panel">
-            <span className="course-symbol" aria-hidden="true">
-              <Icon name="stars" />
-            </span>
-            <h3>{t('Faites le premier pas.', 'Take the first step.')}</h3>
-            <p>
-              {t(
-                'Choisissez ce module, essayez les leçons et retrouvez votre progression dans votre espace.',
-                'Choose this course, try the lessons and find your progress in your space.',
-              )}
-            </p>
-            <Action id={id} path={`enroll/${course.slug}`}>
-              {t('Explorer le parcours démo', 'Explore the demo journey')}
-            </Action>
-            <Action secondary id={id} path="events">
-              {t('Les formats à venir', 'Upcoming formats')}
-            </Action>
-          </aside>
+          <div className="im-actions">
+            <a className="site-button" href={link('studio', 'booking')}>
+              {t('Produire ma vidéo', 'Produce my video')}{' '}
+              <Icon name="arrowUpRight" />
+            </a>
+            <a
+              className="site-button secondary"
+              href={link('agency', 'contact')}
+            >
+              {t('Parler à l’agence', 'Talk to the agency')}{' '}
+              <Icon name="arrowUpRight" />
+            </a>
+          </div>
         </div>
+        <h2 className="uv-film-more">{t('À voir aussi', 'Watch next')}</h2>
+        <SlideRail label={t('À voir aussi', 'Watch next')}>
+          {films
+            .filter((f) => f.slug !== film.slug)
+            .map((f) => (
+              <ClipTile
+                key={f.slug}
+                film={f}
+                href={link('media', `video/${f.slug}`)}
+                className="md2-clip"
+              />
+            ))}
+        </SlideRail>
+      </div>
+    );
+  if (page.kind === 'podcast')
+    return (
+      <>
+        <SpaceSlides />
+        <section className="uv-studio-sec">
+          <h2>{t('Nos formules podcast', 'Our podcast packages')}</h2>
+          <FormulaCards family="podcast" />
+        </section>
+        <section className="uv-studio-sec">
+          <h2>{t('Enregistré dans nos studios', 'Recorded in our studios')}</h2>
+          <SlideRail label={t('Productions', 'Productions')}>
+            {films.slice(0, 8).map((f) => (
+              <ClipTile
+                key={f.slug}
+                film={f}
+                href={link('media', `video/${f.slug}`)}
+                className="uv-st-clip"
+              />
+            ))}
+          </SlideRail>
+        </section>
+        <StudioBand />
       </>
+    );
+  if (page.kind === 'shooting')
+    return (
+      <>
+        <section className="uv-studio-sec">
+          <h2>{t('Nos formules shooting', 'Our shoot packages')}</h2>
+          <FormulaCards family="shooting" />
+        </section>
+        <section className="uv-studio-sec">
+          <h2>
+            {t(
+              'Fonds disponibles pour votre shooting',
+              'Backdrops available for your shoot',
+            )}
+          </h2>
+          <Backdrops />
+        </section>
+        <section className="uv-studio-sec">
+          <h2>
+            {t('Conseils tenues & préparation', 'Outfit & preparation tips')}
+          </h2>
+          <ShootingAdvice />
+        </section>
+        <section className="uv-studio-sec">
+          <h2>{t('Nos dernières séances', 'Our latest sessions')}</h2>
+          <PhotoWall photos={shoots.fashion} />
+        </section>
+        <StudioBand />
+      </>
+    );
+  if (page.kind === 'packs')
+    return (
+      <>
+        <section className="uv-studio-sec">
+          <h2>Podcast</h2>
+          <FormulaCards family="podcast" />
+        </section>
+        <section className="uv-studio-sec">
+          <h2>Shooting</h2>
+          <FormulaCards family="shooting" />
+        </section>
+      </>
+    );
+  if (page.kind === 'gallery')
+    return (
+      <>
+        <PhotoWall
+          photos={[...shoots.fashion, ...shoots.sport, ...shoots.spaces]}
+        />
+        <section className="uv-studio-sec">
+          <h2>{t('Nos films', 'Our films')}</h2>
+          <div className="sc-clip-grid">
+            {films.map((f) => (
+              <ClipTile
+                key={f.slug}
+                film={f}
+                href={link('media', `video/${f.slug}`)}
+              />
+            ))}
+          </div>
+        </section>
+      </>
+    );
+  if (page.kind === 'course' && course)
+    return (
+      <div className="uv-module">
+        <div className="uv-course-facts" data-reveal>
+          {[
+            [t('Format', 'Format'), course.format],
+            [t('Niveau', 'Level'), course.level],
+            [t('Parcours', 'Track'), course.track],
+            [t('Thème', 'Topic'), course.category],
+          ].map(([k, v]) => (
+            <div key={k}>
+              <small>{k}</small>
+              <strong>{v}</strong>
+            </div>
+          ))}
+        </div>
+        <section className="uv-course-why" data-reveal>
+          <figure>
+            <Img photo={course.photo} width={1200} eager />
+          </figure>
+          <div>
+            <p className="micro">
+              {t('Pourquoi ce module ?', 'Why this course?')}
+            </p>
+            <h2>{course.why}</h2>
+            <p>
+              <strong>{t('Projet final : ', 'Final project: ')}</strong>
+              {course.project}
+            </p>
+            <div className="im-actions">
+              <a
+                className="site-button"
+                href={link('academy', `learn/${course.slug}`)}
+              >
+                {t('Commencer les leçons', 'Start the lessons')}{' '}
+                <Icon name="arrowUpRight" />
+              </a>
+              <a
+                className="site-button secondary"
+                href={link('academy', 'corporate')}
+              >
+                {t('Former mon équipe', 'Train my team')}{' '}
+                <Icon name="arrowUpRight" />
+              </a>
+            </div>
+          </div>
+        </section>
+        <section className="uv-course-program">
+          <h2>{t('Le programme', 'The programme')}</h2>
+          <SlideRail label={t('Programme du module', 'Course programme')}>
+            {course.program.map((item, i) => (
+              <article key={item} className="uv-prog-card">
+                <b>{String(i + 1).padStart(2, '0')}</b>
+                <p>{item}</p>
+              </article>
+            ))}
+          </SlideRail>
+        </section>
+        <section className="uv-course-out" data-reveal>
+          <h2>{t('À l’issue de la formation', 'At the end of the course')}</h2>
+          <div className="uv-chips big">
+            {course.outcomes.map((o) => (
+              <span key={o}>
+                <Icon name="check" /> {o}
+              </span>
+            ))}
+          </div>
+        </section>
+        <section className="uv-course-next">
+          <h2>{t('Autres modules', 'Other courses')}</h2>
+          <CourseCarousel
+            courses={courses.filter((c) => c.slug !== course.slug)}
+            hrefs={Object.fromEntries(
+              courses.map((c) => [
+                c.slug,
+                link('academy', `courses/${c.slug}`),
+              ]),
+            )}
+            filters={false}
+          />
+        </section>
+      </div>
     );
   if (page.kind === 'article' && article)
     return (
@@ -618,24 +749,9 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
             {t('Rédaction Smartsell', 'Smartsell newsroom')}{' '}
             <Icon name="arrowUpRight" />
           </a>
-          <p>{t('10 octobre 2026', '10 October 2026')}</p>
-          <p className="form-note">
-            {t(
-              'Exemple éditorial original. Guide ou opinion de démonstration.',
-              'Original editorial example. Demonstration guide or opinion.',
-            )}
-          </p>
           <ShareArticle />
         </aside>
         <article>
-          <div className="article-intro-art" aria-hidden="true">
-            <span>{article.number}</span>
-            <b>
-              IDEA
-              <br />
-              IN MOTION.
-            </b>
-          </div>
           {article.paragraphs.map((text, i) => (
             <section key={text}>
               <h2>
@@ -670,74 +786,43 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
         </article>
       </div>
     );
-  if (page.kind === 'events')
-    return (
-      <div className="event-stack">
-        {courses.map((c, i) => (
-          <a key={c.slug} href={link(id, `courses/${c.slug}`)}>
-            <span>{String(i + 1).padStart(2, '0')}</span>
-            <div>
-              <p className="micro">
-                {t(
-                  'DATE À ANNONCER / FORMAT ENVISAGÉ',
-                  'DATE TO BE ANNOUNCED / PLANNED FORMAT',
-                )}
-              </p>
-              <h2>{c.title}</h2>
-              <p>
-                {c.hours} h · {c.level}
-              </p>
-            </div>
-            <span>
-              <Icon name="arrowUpRight" />
-            </span>
-          </a>
-        ))}
-      </div>
-    );
   if (page.kind === 'faq')
     return (
       <div className="faq-list">
         {[
           [
+            t('Comment réserver une séance ?', 'How do I book a session?'),
             t(
-              'Peut-on réserver réellement sur ce site ?',
-              'Can I really book on this site?',
-            ),
-            t(
-              'Le parcours actuel est une démonstration. Il permet de préparer une session sans bloquer de créneau ni transmettre de demande.',
-              'The current journey is a demonstration. It lets you prepare a session without holding a slot or sending a request.',
+              'Choisissez une formule et un créneau dans la page Réserver : votre demande part sur notre WhatsApp et l’équipe confirme la disponibilité.',
+              'Pick a package and a slot on the Book page: your request goes to our WhatsApp and the team confirms availability.',
             ),
           ],
           [
             t('Que faut-il préparer ?', 'What should I prepare?'),
             t(
-              'Votre format, le nombre de personnes, vos références et les livrables attendus. Les besoins d’image, de son et de postproduction seront cadrés ensemble.',
-              'Your format, the number of people, your references and the expected deliverables. Image, sound and post-production needs will be scoped together.',
+              'Votre format, le nombre de personnes, vos références et les livrables attendus. Pour un shooting, prévoyez deux ou trois tenues.',
+              'Your format, the number of people, your references and the expected deliverables. For a shoot, bring two or three outfits.',
             ),
           ],
           [
+            t('L’opérateur est-il inclus ?', 'Is the operator included?'),
             t(
-              'Les équipements sont-ils confirmés ?',
-              'Is the equipment confirmed?',
-            ),
-            t(
-              'Les configurations présentées sont illustratives. L’équipe devra confirmer les équipements, les conditions et la disponibilité avant une prestation réelle.',
-              'The setups shown are illustrative. The team will confirm equipment, conditions and availability before any real service.',
+              'Oui : chaque formule inclut le matériel et un opérateur de studio.',
+              'Yes: every package includes the equipment and a studio operator.',
             ),
           ],
           [
             t('Comment connaître le tarif ?', 'How do I get a price?'),
             t(
-              'Le tarif dépend du périmètre, de la durée, de l’accompagnement et des livrables. Les packs illustrent des points de départ ; le chiffrage réel reste à établir.',
-              'The price depends on scope, duration, support and deliverables. The packs illustrate starting points; the actual quote remains to be established.',
+              'Le tarif dépend de la durée, de la formule et des livrables. Nous vous envoyons un devis dès réception de votre demande.',
+              'The price depends on duration, package and deliverables. We send you a quote as soon as we receive your request.',
             ),
           ],
           [
             t('Le montage est-il inclus ?', 'Is editing included?'),
             t(
-              'Chaque production doit préciser les livrables, les versions et la postproduction. Le récapitulatif d’un pack est une proposition à cadrer, pas un contrat.',
-              'Each production must specify deliverables, versions and post-production. A pack summary is a proposal to scope, not a contract.',
+              'Les formules Podcast + montage et Podcast + montage + Reels incluent le montage, le mixage et l’étalonnage.',
+              'The Podcast + editing and Podcast + editing + Reels packages include editing, mixing and colour grading.',
             ),
           ],
         ].map(([q, a]) => (
@@ -750,112 +835,57 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
           </details>
         ))}
         <Action id={id} path="booking">
-          {t('Essayer le parcours démo', 'Try the demo journey')}
+          {t('Réserver une séance', 'Book a session')}
         </Action>
       </div>
     );
   return (
     <>
-      {study && (
-        <>
-          <p className="concept-disclaimer">
-            {t(
-              'Étude conceptuelle de démonstration · marque fictive · aucune commande client revendiquée.',
-              'Demonstration concept study · fictional brand · no client commission claimed.',
-            )}
-          </p>
-          <div
-            className={`case-banner work-${cases.indexOf(study)}`}
-            aria-hidden="true"
-          >
-            <b>{study.mark}</b>
-            <span>{study.tagline}</span>
-          </div>
-        </>
-      )}
       {space && (
-        <div
-          className={`space-diagram space-large diagram-${spaces.indexOf(space)}`}
-          aria-hidden="true"
-        >
-          <div />
-          <b>
-            <Icon
-              name={
-                (['eye', 'dashboard', 'microphone'] as const)[
-                  spaces.indexOf(space) % 3
-                ]
-              }
-            />
-          </b>
-          <span>{t('CONFIGURATION ILLUSTRATIVE', 'ILLUSTRATIVE SETUP')}</span>
-        </div>
+        <figure className="uv-space-cover">
+          <Img
+            photo={
+              (
+                {
+                  podcast: photos.podcastNeon,
+                  photo: photos.studioPink,
+                  video: photos.videoField,
+                } as Record<string, Photo>
+              )[space.slug] ?? photos.studioWhite
+            }
+            width={1600}
+            eager
+          />
+        </figure>
       )}
-      <div className="story-blocks">
-        {page.blocks?.map((b, i) => (
-          <section data-reveal key={b.title}>
-            <span className="block-number">0{i + 1} /</span>
-            <div>
-              <h2>{b.title}</h2>
-              <p>{b.copy}</p>
-              {b.items && (
-                <ul>
-                  {b.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </section>
-        ))}
-      </div>
+      <StoryCards id={id} page={page} />
       {pack && (
-        <>
-          <DemoNote>
-            {t(
-              'Périmètre et durée illustratifs. Aucun tarif engagé ni disponibilité réelle.',
-              'Illustrative scope and duration. No committed price or real availability.',
-            )}
-          </DemoNote>
-          <Action id={id} path="booking">
-            {t('Composer une session démo', 'Put together a demo session')}
-          </Action>
-        </>
+        <a
+          className="site-button"
+          href={`${link(id, 'booking')}?pack=${pack.slug}`}
+        >
+          {t('Réserver cette formule', 'Book this package')}{' '}
+          <Icon name="arrowUpRight" />
+        </a>
       )}
       {space && (
         <Action id={id} path="booking">
-          {t('Préparer une session démo', 'Prepare a demo session')}
+          {t('Réserver ce plateau', 'Book this set')}
         </Action>
       )}
       {page.kind === 'management' && (
         <a className="site-button" href={managementUrl}>
-          {t(
-            'Ouvrir Management, le produit existant',
-            'Open Management, the existing product',
-          )}{' '}
+          {t('Ouvrir Smartsell Management', 'Open Smartsell Management')}{' '}
           <Icon name="arrowUpRight" />
         </a>
       )}
       {page.kind === 'obtura' && (
-        <Action id={id} path="contact">
-          {t('Partager un besoin de créateur', 'Share a creator’s need')}
-        </Action>
-      )}
-      {study && (
-        <nav
-          className="case-next"
-          aria-label={t('Autres explorations', 'Other explorations')}
+        <a
+          className="site-button"
+          href="https://seydoutra.github.io/obtura/#commencer"
         >
-          {cases
-            .filter((c) => c.slug !== study.slug)
-            .slice(0, 2)
-            .map((c) => (
-              <a href={link(id, `work/${c.slug}`)} key={c.slug}>
-                {t('Explorer', 'Explore')} {c.title}{' '}
-                <Icon name="arrowUpRight" />
-              </a>
-            ))}
-        </nav>
+          {t('Essayer Obtura', 'Try Obtura')} <Icon name="arrowUpRight" />
+        </a>
       )}
       {page.kind === 'story' && page.path !== 'privacy' && (
         <Action
@@ -883,6 +913,11 @@ export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
             <InnerHero
               id={id}
               page={page}
+              cover={
+                brands.find((b) => b.slug === page.ref)?.pages[0] ??
+                courses.find((c) => c.slug === page.ref)?.photo ??
+                (page.path === 'work' ? shoots.fashion[2] : undefined)
+              }
               crumbs={
                 <nav
                   className="breadcrumbs"
@@ -897,19 +932,22 @@ export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
             <section
               className={`site-section inner-content uv-body uv-body-${id}`}
             >
-              <div className="site-container">
-                <Content id={id} page={page} />
-              </div>
+              {id === 'media' ? (
+                <div className="md2 md2-inner">
+                  <MediaSide current={page.ref || page.path} />
+                  <div className="md2-main">
+                    <Content id={id} page={page} />
+                  </div>
+                </div>
+              ) : (
+                <div className="site-container">
+                  <Content id={id} page={page} />
+                </div>
+              )}
             </section>
-            {![
-              'enroll',
-              'learn',
-              'dashboard',
-              'certificates',
-              'booking',
-            ].includes(page.kind || '') && (
-              <InnerCta id={id} path={page.path} />
-            )}
+            {!['learn', 'dashboard', 'booking', 'podcast', 'shooting'].includes(
+              page.kind || '',
+            ) && <InnerCta id={id} path={page.path} />}
           </>
         )}
       </main>

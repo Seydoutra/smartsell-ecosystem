@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import '@fontsource-variable/inter/wght.css';
-import '@fontsource-variable/space-grotesk/wght.css';
+import '@fontsource-variable/montserrat/wght.css';
 import '@smartsell/brand/tokens.css';
 import '@smartsell/ui/styles.css';
 import '@smartsell/ui/sites.css';
@@ -9,6 +8,7 @@ import '@smartsell/ui/signature.css';
 import '@smartsell/ui/immersive.css';
 import '@smartsell/ui/home.css';
 import '@smartsell/ui/universe.css';
+import '@smartsell/ui/refresh.css';
 import {
   IntroCurtain,
   IntroScript,

@@ -257,7 +257,7 @@ function Scene({ id, active }: { id: VerticalId; active: number }) {
           <a
             href={href(
               'academy',
-              active === 2 ? 'dashboard' : 'courses/marketing-digital',
+              active === 2 ? 'dashboard' : 'courses/communication-digitale',
             )}
           >
             {active === 2 ? 'Ouvrir mon espace démo' : 'Découvrir ce module'}{' '}
