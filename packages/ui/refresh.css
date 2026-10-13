@@ -90,29 +90,14 @@ h2[data-kin] {
     letter-spacing: -0.02em;
   }
 }
-/* Mot surligné : un reflet parcourt le jaune en continu */
-html[data-sg] .sg-highlight.is-revealed,
-.sg-highlight.is-revealed {
-  background-image: linear-gradient(
-    100deg,
-    #f3e433 0%,
-    #f3e433 38%,
-    #fffbd6 50%,
-    #f3e433 62%,
-    #f3e433 100%
-  );
-  background-size: 250% 100%;
-  animation: hl-sheen 4.2s linear 1.2s infinite;
-}
-@keyframes hl-sheen {
-  from {
-    background-position: 100% 0;
-  }
-  to {
-    background-position: 0% 0;
-  }
-}
-html[data-motion-paused='true'] .sg-highlight {
+/* Mots mis en avant : plus de bande jaune, le texte garde le reflet animé */
+html[data-sg] .sg-highlight,
+.sg-highlight,
+html[data-sg] .sg-highlight:not(.is-revealed) {
+  background: none;
+  color: inherit;
+  padding: 0;
+  margin: 0;
   animation: none;
 }
 html[data-motion-paused='true'] [data-kin] {
@@ -2584,4 +2569,7 @@ html body :is(h1, h2, h3) {
 }
 html body h1 {
   font-weight: 800;
+}
+.sg-closing {
+  padding-block: 32px 40px;
 }

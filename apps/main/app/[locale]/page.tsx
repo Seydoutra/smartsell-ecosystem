@@ -1,11 +1,6 @@
 import { Icon } from '@smartsell/ui/icons';
 import type { Metadata } from 'next';
-import {
-  CountUp,
-  Highlight,
-  PixelMosaic,
-  ScrollLitText,
-} from '@smartsell/ui/signature';
+import { CountUp, Highlight, ScrollLitText } from '@smartsell/ui/signature';
 import {
   Carousel,
   CtaLink,
@@ -1276,28 +1271,6 @@ export default function Home() {
       {/* 17 · Clôture */}
       <section className="sg-closing">
         <div className="container">
-          <div className="sg-closing-card">
-            <PixelMosaic tone="agency" />
-            <p className="sg-mono">
-              {t(
-                'Smartsell · Votre prochaine campagne',
-                'Smartsell · Your next campaign',
-              )}
-            </p>
-            <h2>
-              {t('Prêt à faire', 'Ready to make')}
-              <br />
-              <em>{t('du bruit ?', 'some noise?')}</em>
-            </h2>
-            <div className="im-actions">
-              <CtaLink href={contact}>
-                {t('Lancer mon projet', 'Start my project')}
-              </CtaLink>
-              <CtaLink href="#brief" tone="ghost">
-                {t('Composer mon brief', 'Compose my brief')}
-              </CtaLink>
-            </div>
-          </div>
           <p className="im-credits">
             {t(
               'Photographies et vidéos d’illustration : Envato Elements et Unsplash',
