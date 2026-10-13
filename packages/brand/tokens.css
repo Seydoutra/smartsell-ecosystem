@@ -8,8 +8,8 @@
   --yellow-600: #9a8700;
   --yellow-500: #f3e433;
   --yellow-100: #fcf8cb;
-  --neutral-950: #101014;
-  --neutral-900: #202026;
+  --neutral-950: #14091b;
+  --neutral-900: #24142e;
   --neutral-700: #45454f;
   --neutral-500: #73737d;
   --neutral-100: #eeeef2;
@@ -24,8 +24,8 @@
   --action-text: var(--black);
   --border: #dadae1;
   --focus: var(--purple-700);
-  --font-heading: 'Space Grotesk Variable', Arial, sans-serif;
-  --font-body: 'Inter Variable', Arial, sans-serif;
+  --font-heading: 'Montserrat Variable', Arial, sans-serif;
+  --font-body: 'Montserrat Variable', Arial, sans-serif;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;

@@ -45,10 +45,10 @@
   --sg-curtain: #1d0c27;
 }
 .sg-tone-studio {
-  --sg-curtain: #0b0a12;
+  --sg-curtain: #110818;
 }
 .sg-tone-labs {
-  --sg-curtain: #0e0d16;
+  --sg-curtain: #130a1b;
 }
 .sg-curtain-grid i {
   animation: sg-cell-out 0.42s var(--sg-ease) both;
@@ -350,7 +350,7 @@ html[data-sg] .sg-highlight {
 
 /* ---------- Orbite ---------- */
 .sg-architecture {
-  background: #f6f2ec;
+  background: #f5eefa;
   color: #160a1e;
   padding: clamp(80px, 10vw, 140px) 0;
   overflow: hidden;
@@ -856,7 +856,7 @@ html[data-sg] .sg-highlight {
 
 /* ---------- Clôture (Stoa + Amaset) ---------- */
 .sg-closing {
-  background: #f6f2ec;
+  background: #f5eefa;
   color: #160a1e;
   padding: clamp(80px, 10vw, 140px) 0;
 }
@@ -955,13 +955,13 @@ html[data-sg] .sg-highlight {
   );
 }
 .site-hero {
-  --sg-veil: #08080bf0;
+  --sg-veil: #0e0614f0;
 }
 .hero-studio {
-  --sg-veil: #111018ee;
+  --sg-veil: #140a1cee;
 }
 .hero-labs {
-  --sg-veil: #0e0d16ee;
+  --sg-veil: #130a1bee;
 }
 .site-hero .changing-headline .typed-line {
   background: var(--sg-mark, #f3e433);
@@ -980,7 +980,7 @@ html[data-sg] .sg-highlight {
 }
 .site-academy .sg-site-manifesto,
 .site-media .sg-site-manifesto {
-  --sg-man-bg: #fbf8f4;
+  --sg-man-bg: #fcf8fd;
   --sg-man-ink: #201927;
 }
 .sg-site-manifesto .micro {
@@ -1174,10 +1174,10 @@ html[data-sg] .sg-highlight {
  * mosaïques et accents jaunes de la marque sont rétablis tels quels.
  */
 html[data-theme='light'] body {
-  background: #f6f2ec;
+  background: #efe3f7;
 }
 html[data-theme='light'] :is(.site-agency, .site-studio, .site-labs) {
-  background: #f4f1ea;
+  background: #f7f2fa;
 }
 html[data-theme='light']
   :is(
@@ -1211,6 +1211,13 @@ html[data-theme='light']
     .uv-in-studio,
     .uv-in-labs,
     .uv-md-quote,
+    .md2,
+    .uv-in-media,
+    .uv-st2-hero,
+    .sc-dark,
+    .sc-deep,
+    .sc-clients,
+    .uv-st-band,
     .uv-md-ticker,
     .uv-ac-steps,
     .uv-ac-formats,
@@ -1222,17 +1229,14 @@ html[data-theme='light']
 html[data-theme='dark']
   :is(
     .site-academy .site-header,
-    .site-media .site-header,
     .site-academy main > section:not(.uv-ac-steps, .uv-ac-formats, .uv-ac-cta),
-    .site-media main > section:not(.uv-md-quote),
     .site-academy .site-footer,
-    .site-media .site-footer,
-    .uv-body,
+    .uv-body:not(.uv-body-media),
     .im-section.im-light,
     #services .im-hscroll,
     .im-marquee-light
   ) {
-  filter: invert(1) hue-rotate(180deg);
+  filter: invert(1) hue-rotate(180deg) contrast(1.14) saturate(1.45);
 }
 html[data-theme='light']
   :is(
@@ -1266,6 +1270,13 @@ html[data-theme='light']
     .uv-in-studio,
     .uv-in-labs,
     .uv-md-quote,
+    .md2,
+    .uv-in-media,
+    .uv-st2-hero,
+    .sc-dark,
+    .sc-deep,
+    .sc-clients,
+    .uv-st-band,
     .uv-md-ticker,
     .uv-ac-steps,
     .uv-ac-formats,
@@ -1278,12 +1289,9 @@ html[data-theme='light']
 html[data-theme='dark']
   :is(
     .site-academy .site-header,
-    .site-media .site-header,
     .site-academy main > section:not(.uv-ac-steps, .uv-ac-formats, .uv-ac-cta),
-    .site-media main > section:not(.uv-md-quote),
     .site-academy .site-footer,
-    .site-media .site-footer,
-    .uv-body,
+    .uv-body:not(.uv-body-media),
     .im-section.im-light,
     #services .im-hscroll,
     .im-marquee-light
@@ -1291,8 +1299,8 @@ html[data-theme='dark']
   :is(img, video, canvas, .im-cta-yellow, .sg-highlight, .header-quote) {
   filter: invert(1) hue-rotate(180deg);
 }
-html[data-theme='dark'] :is(.site-academy, .site-media) {
-  background: #100d14;
+html[data-theme='dark'] .site-academy {
+  background: #140a1c;
 }
 html[data-theme='dark'] .sg-closing {
   background: #0f0814;

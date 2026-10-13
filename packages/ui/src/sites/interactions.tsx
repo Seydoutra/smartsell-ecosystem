@@ -59,11 +59,11 @@ function useProgress() {
 export function DemoNote({ children }: { children?: React.ReactNode }) {
   return (
     <aside className="demo-note">
-      <span aria-hidden="true">◇</span>
+      <span aria-hidden="true">
+        <Icon name="info" />
+      </span>
       <div>
-        <strong>
-          {t('Parcours de démonstration', 'Demonstration journey')}
-        </strong>
+        <strong>{t('Bon à savoir', 'Good to know')}</strong>
         <p>
           {children ||
             t(
@@ -188,8 +188,8 @@ export function Learner({ course }: { course: Course }) {
     <>
       <DemoNote>
         {t(
-          'Leçons, quiz et progression sur cet appareil. Cet aperçu ne remplace pas le module complet annoncé.',
-          'Lessons, quizzes and progress on this device. This preview does not replace the announced full course.',
+          'Trois leçons pratiques avec quiz, pour découvrir le module avant la formation. Votre progression est gardée sur cet appareil.',
+          'Three practical lessons with quizzes, to discover the course before the training. Your progress is kept on this device.',
         )}
       </DemoNote>
       <div className="learn-layout">
@@ -312,9 +312,8 @@ export function Learner({ course }: { course: Course }) {
             </button>
           )}
           {completed.length === 3 && (
-            <a className="text-button" href={href('academy', 'certificates')}>
-              {t('Voir mon récapitulatif', 'See my summary')}{' '}
-              <Icon name="arrowRight" />
+            <a className="text-button" href={href('academy', 'dashboard')}>
+              {t('Voir Mon espace', 'See My space')} <Icon name="arrowRight" />
             </a>
           )}
           {warning && <p role="status">{warning}</p>}
@@ -335,8 +334,8 @@ export function Dashboard({
     <>
       <DemoNote>
         {t(
-          'Vous utilisez un espace local de démonstration. Aucun compte réel n’est ouvert.',
-          'You are using a local demonstration space. No real account is opened.',
+          'Votre espace apprenant : modules commencés, leçons terminées et progression, gardés sur cet appareil.',
+          'Your learner space: courses started, lessons completed and progress, kept on this device.',
         )}
       </DemoNote>
       <nav
@@ -346,16 +345,12 @@ export function Dashboard({
         <a href={href('academy', 'dashboard')}>
           {t('Tableau de bord', 'Dashboard')}
         </a>
-        <a href={href('academy', 'my-courses')}>
-          {t('Mes modules', 'My courses')}
+        <a href={href('academy', 'courses')}>
+          {t('Tous les modules', 'All courses')}
         </a>
-        <a href={href('academy', 'certificates')}>
-          {t('Récapitulatifs', 'Summaries')}
+        <a href={href('academy', 'corporate')}>
+          {t('Formation entreprise', 'Company training')}
         </a>
-        <a href={href('academy', 'resources')}>
-          {t('Ressources', 'Resources')}
-        </a>
-        <a href={href('academy', 'support')}>Support</a>
       </nav>
       {!loaded ? (
         <p role="status">
@@ -461,10 +456,7 @@ export function Dashboard({
       )}
       {chosen.length > 0 && (
         <button className="text-button" onClick={() => save({})}>
-          {t(
-            'Effacer ma progression de démonstration',
-            'Clear my demo progress',
-          )}
+          {t('Effacer ma progression', 'Clear my progress')}
         </button>
       )}
       {warning && <p role="status">{warning}</p>}
@@ -513,8 +505,7 @@ export function ArticleSearch({ category }: { category?: string }) {
         </label>
       </div>
       <p role="status">
-        {result.length}{' '}
-        {t('article(s) de démonstration', 'demonstration article(s)')}
+        {result.length} {t('article(s)', 'article(s)')}
       </p>
       <div className="article-list">
         {result.map((a) => (
@@ -728,58 +719,52 @@ export function Newsletter() {
     </div>
   );
 }
-const bookingKey = 'smartsell-studio-demo-v1';
 export function Booking() {
   const [step, setStep] = useState(1);
-  const [pack, setPack] = useState(packs[0].slug);
-  const chosen = packs.find((p) => p.slug === pack)!;
+  const [pack, setPack] = useState(packs[1].slug);
+  const chosen = packs.find((p) => p.slug === pack) ?? packs[0];
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('09:00');
-  const [duration, setDuration] = useState(2);
+  const [time, setTime] = useState('10:00');
+  const [duration, setDuration] = useState(1);
   const [addons, setAddons] = useState<string[]>([]);
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
-  const [reference, setReference] = useState('');
   const [minimum, setMinimum] = useState('');
-  const [storageWarning, setStorageWarning] = useState('');
   const heading = useRef<HTMLHeadingElement>(null);
-  useEffect(() => setMinimum(new Date().toISOString().slice(0, 10)), []);
+  useEffect(() => {
+    setMinimum(new Date().toISOString().slice(0, 10));
+    const wanted = new URLSearchParams(location.search).get('pack');
+    if (wanted && packs.some((p) => p.slug === wanted)) setPack(wanted);
+  }, []);
   useEffect(() => {
     if (step > 1) heading.current?.focus();
   }, [step]);
-  const optionList = bookingOptions;
-  useEffect(() => {
-    try {
-      const saved = parseBooking(localStorage.getItem(bookingKey) || 'null');
-      if (saved) {
-        setPack(saved.pack);
-        setDate(saved.date);
-        setTime(saved.time);
-        setDuration(saved.duration);
-        setAddons(saved.addons);
-        setReference(saved.reference);
-        setStep(3);
-      }
-    } catch {}
-  }, []);
   const go = (n: number) => {
     setError('');
     setStep(n);
   };
+  const message = () =>
+    [
+      t(
+        'Bonjour Smartsell Studios, je souhaite réserver une séance.',
+        'Hello Smartsell Studios, I would like to book a session.',
+      ),
+      '',
+      `• ${t('Formule', 'Package')} : ${chosen.title}`,
+      `• ${t('Plateau', 'Set')} : ${spaces.find((s) => s.slug === chosen.space)?.title ?? ''}`,
+      `• ${t('Date', 'Date')} : ${date} · ${time} · ${duration} h`,
+      `• Options : ${addons.join(', ') || t('aucune', 'none')}`,
+      `• ${t('Nom', 'Name')} : ${name}`,
+      `• WhatsApp : ${phone}`,
+    ].join('\n');
   return (
     <div className="workflow booking-workflow">
-      <DemoNote>
-        {t(
-          'Calendrier et packs illustratifs. Aucun paiement, aucune disponibilité réelle, aucune réservation auprès de Studios.',
-          'Illustrative calendar and packs. No payment, no real availability, no booking with Studios.',
-        )}
-      </DemoNote>
       <ol className="booking-steps">
         {[
-          t('Le projet', 'The project'),
-          t('La session', 'The session'),
-          t('Le récapitulatif', 'The summary'),
+          t('La formule', 'The package'),
+          t('Le créneau', 'The slot'),
+          t('L’envoi', 'Sending'),
         ].map((text, i) => (
           <li key={text} aria-current={step === i + 1 ? 'step' : undefined}>
             <span>0{i + 1}</span>
@@ -789,49 +774,12 @@ export function Booking() {
       </ol>
       <h2 tabIndex={-1} ref={heading}>
         {step === 1
-          ? t('Quel sera votre format ?', 'What will your format be?')
+          ? t('Quelle formule vous faut-il ?', 'Which package do you need?')
           : step === 2
-            ? t('Composer votre session.', 'Put together your session.')
+            ? t('Choisissez votre créneau.', 'Choose your slot.')
             : t('Tout est dans le cadre.', 'Everything is in frame.')}
       </h2>
-      {reference ? (
-        <div role="status">
-          <h3>Simulation terminée : {reference}</h3>
-          <p>
-            {t(
-              'Aucun créneau n’a été réservé. Le récapitulatif sans coordonnées est conservé sur cet appareil.',
-              'No slot has been booked. The summary, without contact details, is kept on this device.',
-            )}
-          </p>
-          <p>
-            {chosen.title} ·{' '}
-            {new Date(date + 'T00:00:00Z').toLocaleDateString('fr-GN', {
-              timeZone: 'Africa/Conakry',
-            })}{' '}
-            · {time} · {duration} h
-          </p>
-          <p>
-            {addons.length
-              ? addons.join(' · ')
-              : t('Sans option supplémentaire', 'No extra option')}
-          </p>
-          <button
-            className="site-button secondary"
-            onClick={() => {
-              try {
-                localStorage.removeItem(bookingKey);
-              } catch {}
-              setReference('');
-              go(1);
-            }}
-          >
-            {t(
-              'Effacer cette simulation et recommencer',
-              'Clear this simulation and start again',
-            )}
-          </button>
-        </div>
-      ) : step === 1 ? (
+      {step === 1 ? (
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -840,12 +788,7 @@ export function Booking() {
           }}
         >
           <fieldset>
-            <legend>
-              {t(
-                'Choisissez un pack de démonstration',
-                'Choose a demonstration pack',
-              )}
-            </legend>
+            <legend>{t('Podcast ou shooting', 'Podcast or shoot')}</legend>
             <div className="pack-options">
               {packs.map((p) => (
                 <label
@@ -859,17 +802,14 @@ export function Booking() {
                     onChange={() => setPack(p.slug)}
                   />
                   <strong>{p.title}</strong>
-                  <span>
-                    {p.duration} h ·{' '}
-                    {spaces.find((s) => s.slug === p.space)?.title}
-                  </span>
+                  <span>{spaces.find((s) => s.slug === p.space)?.title}</span>
                   <small>{p.copy}</small>
                 </label>
               ))}
             </div>
           </fieldset>
           <button className="site-button" type="submit">
-            {t('Composer la session', 'Put the session together')}{' '}
+            {t('Choisir le créneau', 'Choose the slot')}{' '}
             <Icon name="arrowRight" />
           </button>
         </form>
@@ -878,7 +818,12 @@ export function Booking() {
           onSubmit={(e) => {
             e.preventDefault();
             const today = new Date().toISOString().slice(0, 10);
-            const problem = sessionError(date, time, duration, today);
+            const problem = sessionError(
+              date,
+              time,
+              Math.max(2, duration),
+              today,
+            );
             if (problem) {
               setError(problem);
               return;
@@ -886,10 +831,16 @@ export function Booking() {
             go(3);
           }}
         >
-          <p>{chosen.title} · tarif sur demande après cadrage.</p>
+          <p>
+            {chosen.title} ·{' '}
+            {t(
+              'opérateur et matériel inclus, tarif sur devis.',
+              'operator and gear included, price on quote.',
+            )}
+          </p>
           <div className="form-grid">
             <label>
-              {t('Date de simulation', 'Simulation date')}
+              {t('Date souhaitée', 'Preferred date')}
               <input
                 type="date"
                 required
@@ -902,30 +853,28 @@ export function Booking() {
               {t('Heure, Conakry', 'Time, Conakry')}
               <select value={time} onChange={(e) => setTime(e.target.value)}>
                 {Array.from(
-                  { length: 8 },
+                  { length: 9 },
                   (_, i) => `${String(9 + i).padStart(2, '0')}:00`,
-                ).map((t) => (
-                  <option key={t}>{t}</option>
+                ).map((h) => (
+                  <option key={h}>{h}</option>
                 ))}
               </select>
             </label>
             <label>
-              {t('Durée indicative', 'Indicative duration')}
+              {t('Durée', 'Duration')}
               <select
                 value={duration}
                 onChange={(e) => setDuration(Number(e.target.value))}
               >
-                {[2, 3, 4, 5, 6]
-                  .filter((n) => n >= chosen.duration)
-                  .map((n) => (
-                    <option key={n} value={n}>
-                      {n} h
-                    </option>
-                  ))}
+                {[1, 2, 3, 4, 6, 8].map((n) => (
+                  <option key={n} value={n}>
+                    {n} h
+                  </option>
+                ))}
               </select>
             </label>
             <label>
-              {t('Votre nom, pour l’aperçu', 'Your name, for the preview')}
+              {t('Votre nom', 'Your name')}
               <input
                 required
                 value={name}
@@ -934,24 +883,20 @@ export function Booking() {
               />
             </label>
             <label>
-              {t('Email, pour l’aperçu', 'Email, for the preview')}
+              {t('Votre WhatsApp', 'Your WhatsApp')}
               <input
-                type="email"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                maxLength={200}
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                maxLength={30}
+                placeholder="620 00 00 00"
               />
             </label>
           </div>
           <fieldset>
-            <legend>
-              {t(
-                'Options à discuter, sans tarif ajouté',
-                'Options to discuss, at no added price',
-              )}
-            </legend>
-            {optionList.map((o) => (
+            <legend>{t('Options souhaitées', 'Options wanted')}</legend>
+            {bookingOptions.map((o) => (
               <label className="check-line" key={o}>
                 <input
                   type="checkbox"
@@ -968,14 +913,9 @@ export function Booking() {
               </label>
             ))}
           </fieldset>
-          <p className="form-note">
-            {t(
-              'Vos coordonnées ne sont ni transmises ni enregistrées.',
-              'Your details are neither sent nor saved.',
-            )}
-          </p>
           <button className="text-button" type="button" onClick={() => go(1)}>
-            <Icon name="arrowLeft" /> {t('Revenir au pack', 'Back to the pack')}
+            <Icon name="arrowLeft" />{' '}
+            {t('Changer de formule', 'Change package')}
           </button>
           <button className="site-button" type="submit">
             {t('Voir le récapitulatif', 'See the summary')}{' '}
@@ -983,93 +923,71 @@ export function Booking() {
           </button>
         </form>
       ) : (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const ref = 'DEMO-' + Date.now().toString(36).toUpperCase();
-            try {
-              localStorage.setItem(
-                bookingKey,
-                JSON.stringify({
-                  reference: ref,
-                  pack,
-                  date,
-                  time,
-                  duration,
-                  addons,
-                }),
-              );
-            } catch {
-              setStorageWarning(
-                t(
-                  'Ce navigateur ne permet pas de conserver le récapitulatif.',
-                  'This browser cannot keep the summary.',
-                ),
-              );
-            }
-            setReference(ref);
-          }}
-        >
+        <div>
           <dl className="booking-summary">
             <div>
-              <dt>Pack</dt>
+              <dt>{t('Formule', 'Package')}</dt>
               <dd>{chosen.title}</dd>
             </div>
             <div>
-              <dt>{t('Espace envisagé', 'Planned space')}</dt>
+              <dt>{t('Plateau', 'Set')}</dt>
               <dd>{spaces.find((s) => s.slug === chosen.space)?.title}</dd>
             </div>
             <div>
-              <dt>{t('Session simulée', 'Simulated session')}</dt>
+              <dt>{t('Créneau', 'Slot')}</dt>
               <dd>
-                {date} · {time} · {duration} h · Africa/Conakry
+                {date} · {time} · {duration} h · Conakry
               </dd>
             </div>
             <div>
               <dt>Options</dt>
-              <dd>{addons.join(' · ') || 'Aucune'}</dd>
+              <dd>{addons.join(' · ') || t('Aucune', 'None')}</dd>
             </div>
             <div>
-              <dt>
-                {t('Coordonnées dans l’aperçu', 'Details in the preview')}
-              </dt>
+              <dt>{t('Contact', 'Contact')}</dt>
               <dd>
-                {name} · {email}
+                {name} · {phone}
               </dd>
             </div>
             <div>
               <dt>{t('Tarif', 'Price')}</dt>
               <dd>
                 {t(
-                  'Sur demande. Aucun montant facturé.',
-                  'On request. Nothing is charged.',
+                  'Devis envoyé avec la confirmation du créneau.',
+                  'Quote sent with the slot confirmation.',
                 )}
               </dd>
             </div>
           </dl>
-          <label className="check-line">
-            <input type="checkbox" required />{' '}
-            {t(
-              'Je comprends qu’aucun créneau réel ne sera réservé.',
-              'I understand that no real slot will be booked.',
-            )}
-          </label>
           <button className="text-button" type="button" onClick={() => go(2)}>
             <Icon name="arrowLeft" />{' '}
-            {t('Modifier la session', 'Edit the session')}
+            {t('Modifier le créneau', 'Edit the slot')}
           </button>
-          <button className="site-button" type="submit">
-            {t('Terminer la simulation', 'Finish the simulation')}{' '}
-            <Icon name="check" />
-          </button>
-        </form>
+          <a
+            className="site-button"
+            href={`https://wa.me/224620619064?text=${encodeURIComponent(message())}`}
+            target="_blank"
+            rel="noopener"
+          >
+            {t(
+              'Envoyer ma demande sur WhatsApp',
+              'Send my request on WhatsApp',
+            )}{' '}
+            <Icon name="arrowUpRight" />
+          </a>
+          <p className="form-note">
+            {t(
+              'WhatsApp s’ouvre avec votre demande déjà rédigée. Notre équipe confirme la disponibilité et vous envoie le devis.',
+              'WhatsApp opens with your request already written. Our team confirms availability and sends you the quote.',
+            )}
+          </p>
+        </div>
       )}
       {error && (
         <p role="alert" className="form-error">
           {error}
         </p>
       )}
-      {storageWarning && <p role="status">{storageWarning}</p>}
     </div>
   );
 }

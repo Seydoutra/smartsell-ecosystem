@@ -198,7 +198,7 @@
   color: #fff;
 }
 .im-marquee-light {
-  background: #f6f2ec;
+  background: #f5eefa;
   color: #160a1e;
 }
 .im-marquee-track {
@@ -307,7 +307,7 @@
 /* ---------- Défilement horizontal ---------- */
 .im-hscroll {
   height: var(--run, 300vh);
-  background: #f6f2ec;
+  background: #f5eefa;
   color: #160a1e;
   --p: 0;
 }
@@ -806,7 +806,7 @@
   color: #fff;
 }
 .im-light {
-  background: #f6f2ec;
+  background: #f5eefa;
   color: #160a1e;
 }
 .im-head {

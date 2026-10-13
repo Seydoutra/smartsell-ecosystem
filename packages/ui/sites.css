@@ -4,7 +4,7 @@
 }
 .vertical-site {
   --site-ink: #19171e;
-  --site-paper: #f7f5f1;
+  --site-paper: #f9f5fb;
   --site-accent: #f3e433;
   background: var(--site-paper);
   color: var(--site-ink);
@@ -616,7 +616,7 @@
   color: #692b84;
 }
 .hero-studio {
-  background: #111018;
+  background: #140a1c;
 }
 .studio-art {
   background: radial-gradient(ellipse at 60% 50%, #451b6280, transparent 70%);
@@ -718,7 +718,7 @@
   }
 }
 .hero-labs {
-  background: #0e0d16;
+  background: #130a1b;
 }
 .labs-art {
   background: radial-gradient(circle, #692b8440, transparent 70%);
@@ -1198,9 +1198,9 @@
 }
 .site-studio,
 .site-labs {
-  background: #111018;
+  background: #140a1c;
   color: #f5f1f7;
-  --site-paper: #111018;
+  --site-paper: #140a1c;
   --site-ink: #f5f1f7;
 }
 .site-studio .site-section-title .micro,

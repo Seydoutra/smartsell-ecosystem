@@ -26,14 +26,14 @@ test('Every vertical menu reaches a generated page in its own site', () => {
       assert.ok(urlFor(id, 'fr', page.path).startsWith(`/fr/${id}/`));
   }
   assert.equal(cases.length, 6);
-  assert.equal(courses.length, 8);
+  assert.equal(courses.length, 13);
   assert.equal(articles.length, 20);
   assert.equal(packs.length, 6);
 });
-test('Every course has a reachable enrollment and lesson path, with a valid quiz answer', () => {
+test('Every course has a reachable detail and lesson path, with a valid quiz answer', () => {
   const paths = new Set(getSitePages('academy').map((p) => p.path));
   for (const course of courses) {
-    for (const prefix of ['courses', 'enroll', 'learn'])
+    for (const prefix of ['courses', 'learn'])
       assert.ok(paths.has(`${prefix}/${course.slug}`));
     assert.equal(course.lessons.length, 3);
     for (const lesson of course.lessons)
@@ -44,8 +44,10 @@ test('Restored local progress rejects corrupt data and cannot manufacture comple
   assert.deepEqual(parseProgress('broken'), {});
   assert.deepEqual(parseProgress('[]'), {});
   assert.deepEqual(
-    parseProgress('{"marketing-digital":[0,0,1,9,-1,"2"],"unknown":[0,1,2]}'),
-    { 'marketing-digital': [0, 1] },
+    parseProgress(
+      '{"communication-digitale":[0,0,1,9,-1,"2"],"unknown":[0,1,2]}',
+    ),
+    { 'communication-digitale': [0, 1] },
   );
 });
 test('A simulated studio session rejects dates and times outside its schedule', () => {
@@ -58,7 +60,7 @@ test('A simulated studio session rejects dates and times outside its schedule', 
 test('Restored booking excludes personal fields and invalid packs', () => {
   const data = {
     reference: 'DEMO-123',
-    pack: 'photo',
+    pack: 'podcast-brut',
     date: '2026-11-01',
     time: '09:00',
     duration: 2,
@@ -68,7 +70,7 @@ test('Restored booking excludes personal fields and invalid packs', () => {
   };
   assert.deepEqual(parseBooking(JSON.stringify(data)), {
     reference: 'DEMO-123',
-    pack: 'photo',
+    pack: 'podcast-brut',
     date: '2026-11-01',
     time: '09:00',
     duration: 2,

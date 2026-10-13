@@ -6,7 +6,9 @@
   "exports": {
     ".": "./src/index.ts",
     "./sites": "./src/sites.ts",
-    "./photos": "./src/photos.ts"
+    "./photos": "./src/photos.ts",
+    "./academy": "./src/academy.ts",
+    "./portfolio": "./src/portfolio.ts"
   },
   "dependencies": {
     "@smartsell/types": "workspace:*",

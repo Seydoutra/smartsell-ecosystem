@@ -19,6 +19,7 @@ import {
   t,
 } from '@smartsell/routing';
 import { PreviewFrame } from './experience';
+import { KineticTitles } from './kinetic';
 
 /*
  * Signature Smartsell : une grammaire de mouvement commune à la maison mère
@@ -87,7 +88,7 @@ export function IntroCurtain({
 
 /** Script en tête : n'affiche le rideau qu'une fois par site et par session. */
 export function IntroScript({ site }: { site: string }) {
-  const native = site === 'academy' || site === 'media' ? 'light' : 'dark';
+  const native = site === 'academy' ? 'light' : 'dark';
   const code = `var d=document.documentElement;d.dataset.sg='1';d.dataset.native='${native}';try{var th=localStorage.getItem('smartsell-theme');if(th==='light'||th==='dark')d.dataset.theme=th}catch(e){}try{var k='sg-intro-${site}';if(sessionStorage.getItem(k)||sessionStorage.getItem('smartsell-motion-paused')==='true'){d.dataset.intro='skip'}else{sessionStorage.setItem(k,'1')}if(sessionStorage.getItem('sg-leaving')){d.dataset.intro='arrive';sessionStorage.removeItem('sg-leaving')}}catch(e){}`;
   return <script dangerouslySetInnerHTML={{ __html: code }} />;
 }
@@ -197,11 +198,14 @@ export function SiteTransitions() {
     };
   }, []);
   return (
-    <div className="sg-exit" aria-hidden="true">
-      {cells.map((i) => (
-        <i key={i} style={{ '--d': `${order[i] / 2}ms` } as CSSProperties} />
-      ))}
-    </div>
+    <>
+      <KineticTitles />
+      <div className="sg-exit" aria-hidden="true">
+        {cells.map((i) => (
+          <i key={i} style={{ '--d': `${order[i] / 2}ms` } as CSSProperties} />
+        ))}
+      </div>
+    </>
   );
 }
 

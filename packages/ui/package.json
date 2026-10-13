@@ -18,7 +18,10 @@
     "./home": "./src/home.tsx",
     "./home.css": "./home.css",
     "./universe.css": "./universe.css",
-    "./icons": "./src/icons.tsx"
+    "./icons": "./src/icons.tsx",
+    "./kinetic": "./src/kinetic.tsx",
+    "./showcase": "./src/showcase.tsx",
+    "./refresh.css": "./refresh.css"
   },
   "peerDependencies": {
     "react": "^19"

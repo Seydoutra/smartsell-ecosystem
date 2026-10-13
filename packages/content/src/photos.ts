@@ -14,7 +14,7 @@ export interface Photo {
   file?: string;
 }
 
-const local = (
+export const local = (
   file: string,
   alt: string,
   ratio: Photo['ratio'] = 'landscape',
@@ -393,7 +393,12 @@ export const videos = {
   podcast: { src: 'video-podcast', poster: 'podcast-studio' },
   phone: { src: 'video-phone', poster: 'social-hearts' },
 } as const;
-export type VideoClip = (typeof videos)[keyof typeof videos];
+export type VideoClip = { readonly src: string; readonly poster: string };
+/** Extraits des films réalisés par Smartsell (dossier media/clips). */
+export const clip = (name: string): VideoClip => ({
+  src: `clips/${name}`,
+  poster: `clips/${name}`,
+});
 export function videoUrl(v: VideoClip) {
   return {
     src: withBasePath(`/media/${v.src}.mp4`),

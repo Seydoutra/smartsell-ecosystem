@@ -1,7 +1,6 @@
 import { withBasePath, locale, t } from '@smartsell/routing';
 import type { Metadata } from 'next';
-import '@fontsource-variable/inter/wght.css';
-import '@fontsource-variable/space-grotesk/wght.css';
+import '@fontsource-variable/montserrat/wght.css';
 import '@smartsell/brand/tokens.css';
 import '@smartsell/ui/styles.css';
 import './globals.css';
@@ -9,6 +8,7 @@ import '@smartsell/ui/experience.css';
 import '@smartsell/ui/signature.css';
 import '@smartsell/ui/immersive.css';
 import '@smartsell/ui/home.css';
+import '@smartsell/ui/refresh.css';
 import { MotionLayer } from '@smartsell/ui/motion';
 import {
   IntroCurtain,
