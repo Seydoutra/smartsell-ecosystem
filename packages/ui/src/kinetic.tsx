@@ -27,7 +27,7 @@ export function KineticTitles() {
   useEffect(() => {
     let index = 0;
     const mark = (el: HTMLElement) => {
-      if (el.dataset.kin || el.closest('[data-kin-off], .sg-highlight')) return;
+      if (el.dataset.kin || el.closest('[data-kin-off]')) return;
       const style = getComputedStyle(el);
       if (
         style.backgroundClip === 'text' ||

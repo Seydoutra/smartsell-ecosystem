@@ -276,9 +276,11 @@ export function FilmPlayer({ film }: { film: Film }) {
 /* ------------------------------------------------------------------ */
 export function BrandCard({ brand, href }: { brand: Brand; href: string }) {
   const [page, setPage] = useState(0);
+  const [awake, setAwake] = useState(false);
   const timer = useRef(0);
   const start = () => {
     if (still()) return;
+    setAwake(true);
     clearInterval(timer.current);
     timer.current = window.setInterval(
       () => setPage((n) => (n + 1) % brand.pages.length),
@@ -300,7 +302,7 @@ export function BrandCard({ brand, href }: { brand: Brand; href: string }) {
       onBlur={stop}
     >
       <div className="sc-brand-pages">
-        {brand.pages.map((pg, i) => (
+        {(awake ? brand.pages : brand.pages.slice(0, 1)).map((pg, i) => (
           <img
             key={pg.id}
             src={photoUrl(pg, 900)}
