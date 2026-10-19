@@ -1,0 +1,537 @@
+/* Mouvement de la page d'accueil V2 : la structure reste, la page respire. */
+.house-v2 {
+  --hm-ease: cubic-bezier(0.2, 0.75, 0.15, 1);
+  --hm-agency: #f3e433;
+  --hm-academy: #c79bea;
+  --hm-media: #7fe0b8;
+  --hm-studio: #ff9f6b;
+}
+
+/* Barre de progression de lecture */
+.hm-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  height: 3px;
+  background: linear-gradient(90deg, #f3e433, #c79bea);
+  transform-origin: left;
+  transform: scaleX(var(--hm-progress, 0));
+  pointer-events: none;
+}
+
+/* ---------- Héros ---------- */
+.house-v2 .house-hero {
+  min-height: min(100svh, 900px);
+  display: flex;
+  flex-direction: column;
+  background: #0d0712;
+}
+.house-v2 .house-hero > .house-hero-bottom {
+  margin-top: auto;
+}
+.hm-stage {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+.hm-scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.12);
+  transition:
+    opacity 1.2s ease,
+    transform 6s linear;
+}
+.hm-scene.is-on {
+  opacity: 0.55;
+  transform: scale(1);
+}
+.hm-scene video,
+.hm-scene img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.1) contrast(1.05);
+}
+.hm-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      #0d0712 0%,
+      #0d0712e6 38%,
+      #0d071280 70%,
+      #0d071240 100%
+    ),
+    linear-gradient(0deg, #0d0712 0%, transparent 35%);
+}
+.hm-stage .house-hero-grid {
+  z-index: 1;
+  animation: hm-grid 18s linear infinite;
+}
+@keyframes hm-grid {
+  to {
+    background-position:
+      0 85px,
+      85px 0;
+  }
+}
+.hm-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--hx, 70%) var(--hy, 40%),
+    #8a3fb544,
+    transparent 60%
+  );
+  transition: background 0.2s;
+}
+
+/* Les quatre verbes */
+.house-v2 .house-hero h1.hm-words {
+  position: relative;
+}
+.hm-word {
+  position: relative;
+  display: inline-flex !important;
+  align-items: flex-start;
+  gap: 10px;
+  width: max-content;
+  color: transparent !important;
+  -webkit-text-stroke: 1.5px #ffffff59;
+  cursor: default;
+  transition:
+    color 0.6s var(--hm-ease),
+    -webkit-text-stroke-color 0.6s;
+}
+.hm-word.is-on {
+  color: var(--hm-c) !important;
+  -webkit-text-stroke-color: transparent;
+}
+.hm-word.hm-agency {
+  --hm-c: var(--hm-agency);
+}
+.hm-word.hm-academy {
+  --hm-c: var(--hm-academy);
+}
+.hm-word.hm-media {
+  --hm-c: var(--hm-media);
+}
+.hm-word.hm-studio {
+  --hm-c: var(--hm-studio);
+}
+.hm-word::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.02em;
+  height: 0.06em;
+  border-radius: 1em;
+  background: var(--hm-c);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.7s var(--hm-ease);
+}
+.hm-word.is-on::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.hm-word small {
+  position: absolute;
+  right: 0;
+  top: 0.1em;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  -webkit-text-stroke: 0;
+  color: var(--hm-c);
+  opacity: 0;
+  transform: translateY(-80%);
+  transition:
+    opacity 0.5s,
+    transform 0.5s var(--hm-ease);
+}
+.hm-word.is-on small {
+  opacity: 1;
+  transform: translateY(-120%);
+}
+/* Neutralise l'ancienne règle « .house-hero h1 span » sur les lettres */
+.house-v2 .house-hero h1 .hm-letters {
+  display: inline-flex;
+  color: inherit;
+}
+.house-v2 .house-hero h1 .hm-letters > span {
+  display: inline-block;
+  color: inherit;
+}
+.house-v2 .house-hero h1 .hm-word small {
+  display: block;
+}
+.hm-on .hm-words:not(.is-ready) .hm-letters > span {
+  opacity: 0;
+}
+.hm-words.is-ready .hm-letters > span {
+  animation: hm-letter 0.9s var(--hm-ease) both;
+  animation-delay: calc(var(--w) * 140ms + var(--l) * 32ms);
+}
+@keyframes hm-letter {
+  from {
+    opacity: 0;
+    transform: translateY(70%) rotate(6deg);
+    filter: blur(6px);
+  }
+}
+.house-v2 .house-hero-top,
+.house-v2 .house-name,
+.house-v2 .house-hero-bottom,
+.house-v2 .house-hero-note {
+  animation: hm-fade 1s var(--hm-ease) both;
+}
+.house-v2 .house-name {
+  animation-delay: 0.1s;
+}
+.house-v2 .house-hero-bottom {
+  animation-delay: 0.7s;
+}
+.house-v2 .house-hero-note {
+  animation-delay: 0.9s;
+}
+@keyframes hm-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+.house-hero-note a svg {
+  animation: hm-bob 1.8s ease-in-out infinite;
+}
+@keyframes hm-bob {
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+/* ---------- Apparitions au défilement ---------- */
+.hm-on [data-hm] {
+  opacity: 0;
+  transform: translateY(46px);
+  transition:
+    opacity 0.9s ease,
+    transform 1s var(--hm-ease);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+.hm-on [data-hm].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Cartes univers ---------- */
+.house-v2 .house-card-grid {
+  perspective: 1400px;
+}
+.house-v2 .house-universe {
+  position: relative;
+  transform-style: preserve-3d;
+  transition:
+    opacity 0.9s ease,
+    transform 0.5s var(--hm-ease),
+    border-color 0.3s,
+    box-shadow 0.4s;
+  transition-delay: calc(var(--i, 0) * 110ms), 0s, 0s, 0s;
+}
+.hm-on .house-v2 .house-universe.is-in,
+.house-v2 .house-universe.is-in {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+.house-v2 .house-universe:hover {
+  translate: none;
+  box-shadow: 0 40px 80px -40px #000;
+}
+.house-v2 .house-universe::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    #ffffff26,
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.house-v2 .house-universe:hover::after {
+  opacity: 1;
+}
+.house-v2 .house-card-picture {
+  height: 300px;
+}
+.house-v2 .house-card-picture img {
+  transform: scale(1.08);
+  transition: transform 1.4s var(--hm-ease);
+}
+.house-v2 .house-universe.is-in .house-card-picture img {
+  transform: scale(1);
+}
+.house-v2 .house-universe:hover .house-card-picture img {
+  transform: scale(1.06);
+}
+.hm-card-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+.house-universe:hover .hm-card-video,
+.house-universe:focus-visible .hm-card-video {
+  opacity: 1;
+}
+.house-v2 .house-card-arrow {
+  transition:
+    transform 0.5s var(--hm-ease),
+    background 0.3s,
+    color 0.3s;
+}
+.house-v2 .house-universe:hover .house-card-arrow {
+  transform: rotate(45deg) scale(1.1);
+  background: #f3e433;
+  color: #1a0a22;
+  border-color: #f3e433;
+}
+.house-v2 .house-card-copy > span svg {
+  transition: transform 0.4s var(--hm-ease);
+}
+.house-v2 .house-universe:hover .house-card-copy > span svg {
+  transform: translateX(6px);
+}
+.house-v2 .house-card-copy h3 {
+  transition: letter-spacing 0.5s var(--hm-ease);
+}
+.house-v2 .house-universe:hover .house-card-copy h3 {
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Réalisations ---------- */
+.house-v2 .house-work > div {
+  clip-path: inset(18% 0 18% 0 round 9px);
+  transition: clip-path 1.2s var(--hm-ease);
+  transition-delay: calc(var(--i, 0) * 120ms + 150ms);
+}
+.house-v2 .house-work.is-in > div,
+html:not(.hm-on) .house-v2 .house-work > div {
+  clip-path: inset(0 0 0 0 round 9px);
+}
+.house-v2 .house-work img {
+  height: calc(100% + 40px);
+  margin-top: -20px;
+  translate: 0 var(--py, 0);
+  transition: transform 0.9s var(--hm-ease);
+}
+.house-v2 .house-work > div > span {
+  transition: transform 0.5s var(--hm-ease);
+}
+.house-v2 .house-work:hover > div > span {
+  transform: rotate(45deg) scale(1.15);
+}
+
+/* ---------- Clients ---------- */
+.hm-marquee {
+  margin-top: 40px;
+  display: grid;
+  gap: 14px;
+}
+.hm-marquee-row {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+}
+.hm-marquee-row > div {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: hm-slide 40s linear infinite;
+}
+.hm-marquee-row.is-reverse > div {
+  animation-direction: reverse;
+  animation-duration: 52s;
+}
+.hm-marquee-row span {
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: 1px solid #ffffff1f;
+  color: #d9cde1;
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+.hm-marquee-row span:hover {
+  background: #f3e433;
+  color: #1a0a22;
+}
+.hm-marquee:hover .hm-marquee-row > div {
+  animation-play-state: paused;
+}
+@keyframes hm-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Appel final ---------- */
+.house-v2 .house-closing {
+  background: linear-gradient(120deg, #692b84, #8a3fb5, #4a1a66, #692b84);
+  background-size: 300% 300%;
+  animation: hm-gradient 14s ease-in-out infinite;
+}
+@keyframes hm-gradient {
+  50% {
+    background-position: 100% 50%;
+  }
+}
+.hm-star {
+  position: absolute;
+  right: 6%;
+  top: 50%;
+  width: min(380px, 40vw);
+  height: auto;
+  translate: 0 -50%;
+  fill: #f3e43340;
+  animation: house-star-turn 40s linear infinite;
+  pointer-events: none;
+}
+.hm-star rect {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hm-ray 3s ease-in-out infinite;
+  animation-delay: calc(var(--s) * 0.25s);
+}
+@keyframes hm-ray {
+  50% {
+    opacity: 0.35;
+  }
+}
+.hm-star circle {
+  fill: #f3e43380;
+  animation: hm-pulse 3s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes hm-pulse {
+  50% {
+    transform: scale(1.5);
+  }
+}
+
+/* Boutons magnétiques */
+.house-v2 .im-cta {
+  transition:
+    translate 0.25s var(--hm-ease),
+    background 0.3s,
+    color 0.3s;
+}
+
+@media (max-width: 760px) {
+  .house-v2 .house-hero h1 .hm-word small {
+    display: none;
+  }
+  .house-v2 .house-card-picture {
+    height: 220px;
+  }
+  .hm-star {
+    opacity: 0.5;
+    right: -20%;
+  }
+}
+
+/* Mouvement réduit ou en pause : tout reste en place, lisible. */
+@media (prefers-reduced-motion: reduce) {
+  .hm-on [data-hm],
+  .house-v2 .house-work > div {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+  .hm-words .hm-letters > span,
+  .house-v2 .house-hero-top,
+  .house-v2 .house-name,
+  .house-v2 .house-hero-bottom,
+  .house-v2 .house-hero-note,
+  .hm-marquee-row > div,
+  .hm-star,
+  .hm-star *,
+  .house-v2 .house-closing,
+  .hm-stage .house-hero-grid {
+    animation: none !important;
+  }
+  .hm-on .hm-words:not(.is-ready) .hm-letters > span {
+    opacity: 1;
+  }
+}
+html[data-motion-paused='true']
+  :is(
+    .hm-marquee-row > div,
+    .hm-star,
+    .hm-star *,
+    .house-closing,
+    .house-hero-grid
+  ) {
+  animation-play-state: paused !important;
+}
+
+/* Univers en cours, sous le nom Smartsell */
+.hm-now {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: -6px 0 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hm-c);
+}
+.hm-now.hm-agency {
+  --hm-c: var(--hm-agency);
+}
+.hm-now.hm-academy {
+  --hm-c: var(--hm-academy);
+}
+.hm-now.hm-media {
+  --hm-c: var(--hm-media);
+}
+.hm-now.hm-studio {
+  --hm-c: var(--hm-studio);
+}
+.hm-now i {
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: background 0.4s;
+}
+.hm-now span {
+  animation: hm-fade 0.6s var(--hm-ease) both;
+}
