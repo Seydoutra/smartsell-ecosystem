@@ -3,7 +3,7 @@ import { LangSwitch, ThemeToggle } from './signature';
 import { Icon } from './icons';
 import { useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
-import { verticals, searchEntries } from '@smartsell/content';
+import { verticals, primaryVerticals, searchEntries } from '@smartsell/content';
 import {
   withBasePath,
   routingConfig,
@@ -19,10 +19,15 @@ function closeOnEscape(event: KeyboardEvent<HTMLDialogElement>) {
     event.currentTarget.close();
   }
 }
-export function GlobalNavigation({ active }: { active?: VerticalId }) {
+export function GlobalNavigation({
+  active,
+  page,
+}: {
+  active?: VerticalId;
+  page?: string;
+}) {
   const menu = useRef<HTMLDialogElement>(null),
-    search = useRef<HTMLDialogElement>(null),
-    disclosure = useRef<HTMLDetailsElement>(null);
+    search = useRef<HTMLDialogElement>(null);
   const [query, setQuery] = useState('');
   const normalized = query
     .normalize('NFD')
@@ -41,20 +46,25 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
       <a className="skip-link" href="#main">
         {t('Aller au contenu', 'Skip to content')}
       </a>
-      <header className="site-header">
+      <header className="site-header house-header">
         <div className="container header-inner">
           <a
             className="home-link"
             href={withBasePath(`/${locale}/`)}
             aria-label={t('Smartsell, accueil', 'Smartsell, home')}
           >
-            <Brand variant="yellow" />
+            <span className="house-brand-dark">
+              <Brand variant="yellow" />
+            </span>
+            <span className="house-brand-light">
+              <Brand variant="purple" />
+            </span>
           </a>
           <nav
             className="desktop-universes"
             aria-label={t('Navigation globale', 'Main navigation')}
           >
-            {verticals.map((v) => (
+            {primaryVerticals.map((v) => (
               <a
                 aria-current={active === v.id ? 'page' : undefined}
                 key={v.id}
@@ -63,17 +73,27 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
                 {v.name}
               </a>
             ))}
+            <a
+              href={withBasePath(`/${locale}/about/`)}
+              aria-current={page === 'about' ? 'page' : undefined}
+            >
+              {t('À propos', 'About')}
+            </a>
+            <a
+              href={withBasePath(`/${locale}/contact/`)}
+              aria-current={page === 'contact' ? 'page' : undefined}
+            >
+              Contact
+            </a>
           </nav>
           <div className="header-actions">
             <ThemeToggle />
             <a
-              className="header-quote"
-              href={urlFor('agency', locale, 'contact', routingConfig)}
+              className="house-products-link"
+              href={withBasePath(`/${locale}/products/`)}
+              aria-current={page === 'products' ? 'page' : undefined}
             >
-              {t('Demander un devis', 'Get a quote')}{' '}
-              <span aria-hidden="true">
-                <Icon name="arrowUpRight" />
-              </span>
+              {t('Produits', 'Products')}
             </a>
             <button
               className="search-trigger"
@@ -101,49 +121,6 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
           </div>
         </div>
       </header>
-      <div className="local-bar">
-        <div className="container local-inner">
-          <span>
-            {active
-              ? `SMARTSELL ${verticals.find((v) => v.id === active)?.name.toUpperCase()}`
-              : t(
-                  'AGENCE DE COMMUNICATION & MARKETING DIGITAL',
-                  'COMMUNICATION & DIGITAL MARKETING AGENCY',
-                )}
-          </span>
-          <details
-            ref={disclosure}
-            className="ecosystem-disclosure"
-            onKeyDown={(event) => {
-              if (event.key === 'Escape' && disclosure.current) {
-                disclosure.current.open = false;
-                disclosure.current.querySelector('summary')?.focus();
-              }
-            }}
-          >
-            <summary>
-              {t('Tout l’écosystème', 'The whole ecosystem')}{' '}
-              <span aria-hidden="true">+</span>
-            </summary>
-            <nav
-              aria-label={t('Explorer les univers', 'Explore the universes')}
-              className="mega-menu"
-            >
-              {verticals.map((v) => (
-                <a key={v.id} href={urlFor(v.id, locale, '', routingConfig)}>
-                  <small>
-                    {v.number} / {v.verb}
-                  </small>
-                  <strong>{v.name}</strong>
-                  <span>
-                    {v.journey} <Icon name="arrowUpRight" />
-                  </span>
-                </a>
-              ))}
-            </nav>
-          </details>
-        </div>
-      </div>
       <dialog
         ref={menu}
         className="site-dialog menu-dialog"
@@ -171,7 +148,7 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
               <Icon name="arrowUpRight" />
             </span>
           </a>
-          {verticals.map((v) => (
+          {primaryVerticals.map((v) => (
             <a
               key={v.id}
               href={urlFor(v.id, locale, '', routingConfig)}
@@ -188,7 +165,27 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
               </span>
             </a>
           ))}
+          <a
+            href={withBasePath(`/${locale}/about/`)}
+            onClick={() => menu.current?.close()}
+          >
+            {t('À propos', 'About')} <Icon name="arrowUpRight" />
+          </a>
+          <a
+            href={withBasePath(`/${locale}/contact/`)}
+            onClick={() => menu.current?.close()}
+          >
+            Contact <Icon name="arrowUpRight" />
+          </a>
         </nav>
+        <div className="house-menu-secondary">
+          <a href={withBasePath(`/${locale}/products/`)}>
+            {t('Produits', 'Products')} ↗
+          </a>
+          <a href={withBasePath(`/${locale}/explore/`)}>
+            {t('Explorer en détail', 'Explore in detail')} ↗
+          </a>
+        </div>
         <button
           className="button button--primary"
           type="button"
@@ -204,8 +201,8 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
         </button>
         <p>
           {t(
-            'Une maison. Cinq façons d’avancer.',
-            'One house. Five ways forward.',
+            'Une maison. Quatre façons d’avancer.',
+            'One house. Four ways forward.',
           )}
         </p>
       </dialog>
@@ -265,8 +262,8 @@ export function GlobalNavigation({ active }: { active?: VerticalId }) {
         {results.length === 0 && (
           <p>
             {t(
-              'Aucun résultat. Essayez un autre mot ou explorez les cinq univers.',
-              'No results. Try another word or explore the five universes.',
+              'Aucun résultat. Essayez un autre mot ou explorez les quatre univers.',
+              'No results. Try another word or explore the four universes.',
             )}
           </p>
         )}

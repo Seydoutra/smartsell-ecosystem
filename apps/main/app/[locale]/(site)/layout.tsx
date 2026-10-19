@@ -1,3 +1,4 @@
+import './home-v2.css';
 import { Footer } from '@smartsell/ui';
 import { MainNavigation } from '../../../components/main-navigation';
 export default function SiteLayout({

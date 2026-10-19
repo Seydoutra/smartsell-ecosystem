@@ -7,6 +7,7 @@ export function MainNavigation() {
   return (
     <GlobalNavigation
       active={segment && isVertical(segment) ? segment : undefined}
+      page={segment}
     />
   );
 }

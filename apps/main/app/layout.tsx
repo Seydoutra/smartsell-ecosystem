@@ -10,11 +10,7 @@ import '@smartsell/ui/immersive.css';
 import '@smartsell/ui/home.css';
 import '@smartsell/ui/refresh.css';
 import { MotionLayer } from '@smartsell/ui/motion';
-import {
-  IntroCurtain,
-  IntroScript,
-  SiteTransitions,
-} from '@smartsell/ui/signature';
+import { IntroScript, SiteTransitions } from '@smartsell/ui/signature';
 import {
   siteUrl,
   title,
@@ -57,10 +53,6 @@ export default function RootLayout({
     <html lang={locale} suppressHydrationWarning>
       <body id="top">
         <IntroScript site="main" />
-        <IntroCurtain
-          name="Smartsell"
-          tagline={t('Une maison. Cinq sites.', 'One house. Five sites.')}
-        />
         {children}
         <SiteTransitions />
         <MotionLayer />

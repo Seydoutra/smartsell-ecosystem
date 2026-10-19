@@ -106,6 +106,9 @@ export const verticals: readonly Vertical[] = [
     theme: 'purple',
   },
 ];
+/** Public entry points; Labs remains available through Products and existing URLs. */
+export const primaryVerticals = verticals.filter((v) => v.id !== 'labs');
+
 export const products = [
   {
     name: 'Smartsell Management',
@@ -162,13 +165,52 @@ export const searchEntries: readonly SearchEntry[] = [
     url: p.url,
     type: t('Produit', 'Product'),
   })),
+  ...[
+    {
+      path: 'about',
+      title: t('À propos de Smartsell', 'About Smartsell'),
+      summary: t(
+        'Une maison, quatre univers et une même méthode.',
+        'One house, four universes and a shared method.',
+      ),
+    },
+    {
+      path: 'contact',
+      title: t('Parler à Smartsell', 'Talk to Smartsell'),
+      summary: t(
+        'Préparer un projet et contacter l’équipe.',
+        'Prepare a project and contact our team.',
+      ),
+    },
+    {
+      path: 'products',
+      title: t('Produits Smartsell', 'Smartsell products'),
+      summary: t(
+        'Management, Kuma, Obtura et Garant.',
+        'Management, Kuma, Obtura and Garant.',
+      ),
+    },
+    {
+      path: 'explore',
+      title: t('Explorer Smartsell en détail', 'Explore Smartsell in detail'),
+      summary: t(
+        'Les parcours, métiers, réalisations, formations et crédits.',
+        'Journeys, fields, work, courses and credits.',
+      ),
+    },
+  ].map((p) => ({
+    title: p.title,
+    summary: p.summary,
+    url: withBasePath(`/${locale}/${p.path}/`),
+    type: t('La maison', 'The house'),
+  })),
   {
     title: t('La maison Smartsell', 'The Smartsell house'),
     summary: t(
       'Agence de communication et de marketing digital : stratégie, réseaux sociaux, publicité, production, web et formation.',
       'Communication and digital marketing agency: strategy, social media, advertising, production, web and training.',
     ),
-    url: withBasePath(`/${locale}/#manifeste`),
+    url: withBasePath(`/${locale}/about/#conviction`),
     type: t('La maison', 'The house'),
   },
 ];

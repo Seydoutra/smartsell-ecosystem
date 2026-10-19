@@ -1,6 +1,6 @@
 import { Icon } from './icons';
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
-import { verticals } from '@smartsell/content';
+import { primaryVerticals } from '@smartsell/content';
 import {
   urlFor,
   withBasePath,
@@ -62,9 +62,9 @@ export function SectionHeading({
 }
 export function Footer() {
   return (
-    <footer className="footer">
-      <div className="container footer-grid">
-        <div className="footer-brand">
+    <footer className="house-footer">
+      <div className="container house-footer-grid">
+        <div>
           <a
             href={withBasePath(`/${locale}/`)}
             aria-label={t('Smartsell, accueil', 'Smartsell, home')}
@@ -72,18 +72,9 @@ export function Footer() {
             <Brand variant="white" />
           </a>
           <p>
-            {t('Avec vous,', 'With you,')}
-            <br />
-            {t('de bout en bout.', 'from start to finish.')}
+            {t('Une maison. Quatre univers.', 'One house. Four universes.')}
           </p>
-          <span>
-            {t('Conakry, Guinée.', 'Conakry, Guinea.')}
-            <br />
-            {t(
-              'Agence de communication & marketing digital.',
-              'Communication & digital marketing agency.',
-            )}
-          </span>
+          <small>{t('Conakry, Guinée.', 'Conakry, Guinea.')}</small>
         </div>
         <nav
           aria-label={t(
@@ -91,43 +82,41 @@ export function Footer() {
             'Universes in the footer',
           )}
         >
-          <p className="eyebrow">{t('L’écosystème', 'The ecosystem')}</p>
-          {verticals.map((v) => (
+          <p>{t('LES UNIVERS', 'THE UNIVERSES')}</p>
+          {primaryVerticals.map((v) => (
             <a key={v.id} href={urlFor(v.id, locale, '', routingConfig)}>
-              {v.name}
-              <span aria-hidden="true">
-                <Icon name="arrowUpRight" />
-              </span>
+              {v.name} ↗
             </a>
           ))}
         </nav>
         <nav aria-label={t('La maison', 'The house')}>
-          <p className="eyebrow">{t('La maison', 'The house')}</p>
-          <a href={withBasePath(`/${locale}/#services`)}>
-            {t('Nos expertises', 'Our expertise')}
+          <p>SMARTSELL</p>
+          <a href={withBasePath(`/${locale}/about/`)}>
+            {t('À propos', 'About')}
           </a>
-          <a href={withBasePath(`/${locale}/#methode`)}>
-            {t('Notre méthode', 'Our method')}
+          <a href={withBasePath(`/${locale}/contact/`)}>Contact</a>
+          <a href={withBasePath(`/${locale}/products/`)}>
+            {t('Produits', 'Products')} ↗
           </a>
-          <a href={withBasePath(`/${locale}/#manifeste`)}>
-            {t('Notre conviction', 'Our conviction')}
-          </a>
-          <a href={withBasePath(`/${locale}/#ecosystem`)}>
-            {t('Nos cinq univers', 'Our five universes')}
+          <a href={urlFor('agency', locale, 'careers', routingConfig)}>
+            {t('Rejoindre le collectif', 'Join the collective')}
           </a>
         </nav>
       </div>
-      <div className="container footer-bottom">
+      <div className="container house-footer-bottom">
         <span>© {new Date().getUTCFullYear()} Smartsell</span>
-        <span>
-          {t(
-            'Créer. Apprendre. Comprendre. Produire. Innover.',
-            'Create. Learn. Understand. Produce. Innovate.',
-          )}
-        </span>
-        <a href="#top">
-          {t('Retour en haut', 'Back to top')} <Icon name="arrowUp" />
-        </a>
+        <nav aria-label={t('Liens complémentaires', 'Additional links')}>
+          <a href={withBasePath(`/${locale}/explore/`)}>
+            {t('Explorer en détail', 'Explore in detail')}
+          </a>
+          <a href={urlFor('agency', locale, 'privacy', routingConfig)}>
+            {t('Confidentialité', 'Privacy')}
+          </a>
+          <a href={withBasePath(`/${locale}/explore/#credits`)}>
+            {t('Crédits', 'Credits')}
+          </a>
+          <a href="#top">{t('Retour en haut', 'Back to top')} ↑</a>
+        </nav>
       </div>
     </footer>
   );

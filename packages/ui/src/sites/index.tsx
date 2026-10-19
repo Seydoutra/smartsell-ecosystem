@@ -1,6 +1,6 @@
 import { Icon } from '../icons';
 import type { VerticalId } from '@smartsell/types';
-import { verticals } from '@smartsell/content';
+import { primaryVerticals } from '@smartsell/content';
 import {
   courses,
   articles,
@@ -119,7 +119,7 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
             </span>
           </a>
           <nav aria-label={t('Les sites Smartsell', 'The Smartsell sites')}>
-            {verticals.map((v) => (
+            {primaryVerticals.map((v) => (
               <a
                 key={v.id}
                 href={link(v.id)}
@@ -129,6 +129,9 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
               </a>
             ))}
           </nav>
+          <a className="global-products-link" href={link('main', 'products')}>
+            {t('Produits', 'Products')} ↗
+          </a>
           <span className="global-location">CONAKRY · GN</span>
         </div>
       </div>
@@ -251,15 +254,18 @@ function Footer({ id }: { id: VerticalId }) {
           )}
         >
           <span className="micro">
-            {t('UNE MAISON. CINQ SITES.', 'ONE HOUSE. FIVE SITES.')}
+            {t('UNE MAISON. QUATRE UNIVERS.', 'ONE HOUSE. FOUR UNIVERSES.')}
           </span>
-          {verticals
+          {primaryVerticals
             .filter((v) => v.id !== id)
             .map((v) => (
               <a key={v.id} href={link(v.id)}>
                 {v.name} <Icon name="arrowUpRight" />
               </a>
             ))}
+          <a href={link('main', 'products')}>
+            {t('Produits', 'Products')} <Icon name="arrowUpRight" />
+          </a>
         </nav>
       </div>
       <div className="site-container footer-bottom">
