@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Img, CtaLink } from '@smartsell/ui/immersive';
 import { Icon } from '@smartsell/ui/icons';
-import { photos } from '@smartsell/content/photos';
+import { clip, photos, videos } from '@smartsell/content/photos';
 import { brands, clients, websites, films } from '@smartsell/content/portfolio';
 import {
   locale,
@@ -12,6 +12,13 @@ import {
 } from '@smartsell/routing';
 import { absoluteUrl } from '@smartsell/seo';
 import { LegacyHomeLinks } from '../../../components/legacy-home-links';
+import {
+  HeroMotion,
+  HouseMotion,
+  HoverVideo,
+  Starburst,
+} from '../../../components/house-motion';
+import './house-motion.css';
 
 export const metadata: Metadata = {
   title: {
@@ -34,6 +41,7 @@ const cards = [
     number: '01',
     tone: 'agency',
     photo: photos.agencyGlass,
+    clip: clip('ghost'),
     copy: t(
       'Construire des marques et des expériences digitales.',
       'Build brands and digital experiences.',
@@ -58,6 +66,7 @@ const cards = [
     number: '03',
     tone: 'media',
     photo: photos.mediaPresenter,
+    clip: clip('la-patronne'),
     copy: t(
       'Comprendre le digital, la tech et l’innovation.',
       'Understand digital, technology and innovation.',
@@ -70,6 +79,7 @@ const cards = [
     number: '04',
     tone: 'studio',
     photo: photos.podcastWhite,
+    clip: videos.podcast,
     copy: t('Créer. Produire. Enregistrer.', 'Create. Produce. Record.'),
     label: t('Préparer ma séance', 'Plan my session'),
     href: go('studio', 'booking'),
@@ -108,8 +118,8 @@ export default function Home() {
   return (
     <main id="main" data-kin-off className="house-v2">
       <LegacyHomeLinks />
+      <HouseMotion />
       <section className="house-hero" aria-labelledby="house-title">
-        <div className="house-hero-grid" aria-hidden="true" />
         <div className="house-hero-top">
           <p className="house-label">
             {t(
@@ -122,12 +132,37 @@ export default function Home() {
           </span>
         </div>
         <p className="house-name">SMARTSELL</p>
-        <h1 id="house-title">
-          <span>CREATE.</span>
-          <span>LEARN.</span>
-          <span>INFORM.</span>
-          <span>PRODUCE.</span>
-        </h1>
+        <HeroMotion
+          scenes={[
+            {
+              word: 'CREATE.',
+              universe: 'Agency',
+              tone: 'agency',
+              photo: photos.agencyGlass,
+              clip: clip('ghost'),
+            },
+            {
+              word: 'LEARN.',
+              universe: 'Academy',
+              tone: 'academy',
+              photo: photos.academyRoom,
+            },
+            {
+              word: 'INFORM.',
+              universe: 'Media',
+              tone: 'media',
+              photo: photos.mediaPresenter,
+              clip: clip('la-patronne'),
+            },
+            {
+              word: 'PRODUCE.',
+              universe: 'Studios',
+              tone: 'studio',
+              photo: photos.podcastWhite,
+              clip: videos.podcast,
+            },
+          ]}
+        />
         <div className="house-hero-bottom">
           <p>
             {t(
@@ -163,7 +198,7 @@ export default function Home() {
         aria-labelledby="univers-title"
       >
         <span id="ecosystem" className="house-anchor" />
-        <header className="house-section-head">
+        <header className="house-section-head" data-hm>
           <p className="house-label">
             01 / {t('QUATRE UNIVERS', 'FOUR UNIVERSES')}
           </p>
@@ -178,14 +213,17 @@ export default function Home() {
           </p>
         </header>
         <div className="house-card-grid">
-          {cards.map((card) => (
+          {cards.map((card, i) => (
             <a
+              data-hm
+              style={{ '--i': i } as React.CSSProperties}
               className={`house-universe house-universe-${card.tone}`}
               href={card.href}
               key={card.name}
             >
               <div className="house-card-picture">
                 <Img photo={card.photo} width={900} />
+                {card.clip && <HoverVideo clip={card.clip} />}
                 <span className="house-card-number">
                   {card.number} / SMARTSELL
                 </span>
@@ -206,7 +244,7 @@ export default function Home() {
       </section>
       <section className="house-selected" aria-labelledby="selected-title">
         <div className="house-wrap">
-          <header className="house-section-head">
+          <header className="house-section-head" data-hm>
             <p className="house-label">
               02 / {t('UNE SÉLECTION DE RÉALISATIONS', 'SELECTED WORK')}
             </p>
@@ -219,8 +257,14 @@ export default function Home() {
             </a>
           </header>
           <div className="house-work-grid">
-            {selected.map((project) => (
-              <a href={project.href} key={project.title} className="house-work">
+            {selected.map((project, i) => (
+              <a
+                href={project.href}
+                key={project.title}
+                className="house-work"
+                data-hm
+                style={{ '--i': i } as React.CSSProperties}
+              >
                 <div>
                   <Img photo={project.photo} width={700} />
                   <span aria-hidden="true">
@@ -238,24 +282,38 @@ export default function Home() {
         <p className="house-label">
           03 / {t('ILS NOUS FONT CONFIANCE', 'THEY TRUST US')}
         </p>
-        <h2 id="proof-title">
+        <h2 id="proof-title" data-hm>
           {t(
             'Des marques qui avancent avec nous.',
             'Brands moving forward with us.',
           )}
         </h2>
-        <ul>
-          {clients.slice(0, 6).map((name) => (
+        <ul className="sr-only">
+          {clients.map((name) => (
             <li key={name}>{name}</li>
           ))}
         </ul>
+        <div className="hm-marquee" aria-hidden="true">
+          {[0, 1].map((row) => (
+            <div
+              key={row}
+              className={`hm-marquee-row ${row ? 'is-reverse' : ''}`}
+            >
+              <div>
+                {[...clients, ...clients].map((name, i) => (
+                  <span key={i}>{name}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
       <section className="house-closing" aria-labelledby="next-title">
         <div className="house-wrap">
           <p className="house-label">
             04 / {t('LE PROCHAIN PAS', 'THE NEXT STEP')}
           </p>
-          <h2 id="next-title">
+          <h2 id="next-title" data-hm>
             {t(
               'Votre prochain pas\ncommence ici.',
               'Your next step\nstarts here.',
@@ -265,9 +323,7 @@ export default function Home() {
             {t('Parler à Smartsell', 'Talk to Smartsell')}
           </CtaLink>
         </div>
-        <span className="house-closing-star" aria-hidden="true">
-          ✳
-        </span>
+        <Starburst />
       </section>
       <script
         type="application/ld+json"
