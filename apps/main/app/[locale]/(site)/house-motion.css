@@ -535,3 +535,14 @@ html[data-motion-paused='true']
 .hm-now span {
   animation: hm-fade 0.6s var(--hm-ease) both;
 }
+
+/* Les verbes français sont plus longs : le titre s'ajuste. */
+.house-v2 .house-hero h1.hm-words:lang(fr) {
+  font-size: clamp(40px, 6.6vw, 108px);
+  gap: 0 44px;
+}
+@media (max-width: 760px) {
+  .house-v2 .house-hero h1.hm-words:lang(fr) {
+    font-size: clamp(38px, 12vw, 64px);
+  }
+}

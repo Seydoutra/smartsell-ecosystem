@@ -135,27 +135,27 @@ export default function Home() {
         <HeroMotion
           scenes={[
             {
-              word: 'CREATE.',
+              word: t('CRÉER.', 'CREATE.'),
               universe: 'Agency',
               tone: 'agency',
               photo: photos.agencyGlass,
               clip: clip('ghost'),
             },
             {
-              word: 'LEARN.',
+              word: t('APPRENDRE.', 'LEARN.'),
               universe: 'Academy',
               tone: 'academy',
               photo: photos.academyRoom,
             },
             {
-              word: 'INFORM.',
+              word: t('INFORMER.', 'INFORM.'),
               universe: 'Media',
               tone: 'media',
               photo: photos.mediaPresenter,
               clip: clip('la-patronne'),
             },
             {
-              word: 'PRODUCE.',
+              word: t('PRODUIRE.', 'PRODUCE.'),
               universe: 'Studios',
               tone: 'studio',
               photo: photos.podcastWhite,
