@@ -28,10 +28,13 @@ for (const file of htmlFiles) {
       .relative(root, file)
       .replaceAll(path.sep, '/')
       .replace(/index\.html$/, '');
-  for (const element of html.matchAll(/<[^>]+\b(?:href|src)="[^"]+"[^>]*>/g)) {
+  // Include the runtime admin fetch target, which is not a link or image.
+  for (const element of html.matchAll(
+    /<[^>]+\b(?:href|src|data-admin-content-url)="[^"]+"[^>]*>/g,
+  )) {
     if (/\brel="(?:preconnect|dns-prefetch)"/.test(element[0])) continue;
     const value = element[0]
-      .match(/\b(?:href|src)="([^"]+)"/)[1]
+      .match(/\b(?:href|src|data-admin-content-url)="([^"]+)"/)[1]
       .replaceAll('&amp;', '&');
     if (/^(?:https?:|mailto:|tel:|data:|\/\/)/.test(value)) continue;
     const url = new URL(value, 'https://local.invalid' + pagePath);

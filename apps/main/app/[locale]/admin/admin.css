@@ -698,3 +698,62 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.adm-error {
+  padding: 24px;
+}
+.adm-error-panel {
+  width: min(100%, 620px);
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid #ffffff20;
+  border-radius: 22px;
+  background: #1a0a22;
+}
+.adm-error-kicker {
+  color: #f3e433;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+.adm-error-panel h1 {
+  margin: 24px 0;
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.15;
+}
+.adm-error-panel > p:not(.adm-error-kicker) {
+  color: #c4b3d3;
+  line-height: 1.7;
+  margin-block: 12px;
+}
+.adm-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+}
+.adm-error-actions button,
+.adm-error-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 12px 18px;
+  font: inherit;
+  font-size: 14px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+.adm-error-actions button {
+  border: 0;
+  color: #1a0a22;
+  background: #f3e433;
+  cursor: pointer;
+}
+.adm-error-actions a {
+  border: 1px solid #ffffff40;
+  color: #f7f2fa;
+}
+.adm-error-actions :is(a, button):focus-visible {
+  outline: 2px solid #f3e433;
+  outline-offset: 4px;
+}

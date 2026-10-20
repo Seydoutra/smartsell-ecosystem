@@ -1,11 +1,5 @@
 import type { Metadata } from 'next';
-import {
-  locale,
-  t,
-  withBasePath,
-  urlFor,
-  routingConfig,
-} from '@smartsell/routing';
+import { locale, t, basePath, urlFor, routingConfig } from '@smartsell/routing';
 import { AdminApp } from '../../../components/admin/admin-app';
 import './admin.css';
 
@@ -17,7 +11,7 @@ export const metadata: Metadata = {
 export default function AdminPage() {
   return (
     <AdminApp
-      base={withBasePath('')}
+      base={basePath}
       siteHref={urlFor('main', locale, '', routingConfig)}
     />
   );

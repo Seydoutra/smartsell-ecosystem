@@ -75,6 +75,8 @@ export function AdminApp({
   const [confirm, setConfirm] = useState<number | null>(null);
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
+  const [loadAttempt, setLoadAttempt] = useState(0);
+  const contentUrl = `${base}/admin/content.json`;
 
   const imageUrl = (ref: string, small = true) => {
     if (ref.startsWith('blob:')) return ref;
@@ -87,9 +89,15 @@ export function AdminApp({
     src.startsWith('blob:') ? src : `${base}/media/${src}.mp4`;
 
   useEffect(() => {
-    fetch(`${base}/admin/content.json`)
-      .then((r) => r.json())
+    const controller = new AbortController();
+    setError('');
+    fetch(contentUrl, { signal: controller.signal })
+      .then((r) => {
+        if (!r.ok) throw new Error(`Content request failed: ${r.status}`);
+        return r.json();
+      })
       .then((json: { data: Data }) => {
+        if (controller.signal.aborted) return;
         const clean: Data = {};
         for (const m of modules) {
           clean[m.id] = {};
@@ -109,15 +117,17 @@ export function AdminApp({
           setData(clean);
         }
       })
-      .catch(() =>
+      .catch(() => {
+        if (controller.signal.aborted) return;
         setError(
           t(
             'Impossible de lire les contenus du site.',
             'Could not read the site content.',
           ),
-        ),
-      );
-  }, [base]);
+        );
+      });
+    return () => controller.abort();
+  }, [contentUrl, loadAttempt]);
 
   const save = (next: Data, entry: string) => {
     setData(next);
@@ -151,12 +161,46 @@ export function AdminApp({
     return { images: [...images], clips: [...clips] };
   }, [source]);
 
-  if (error) return <div className="adm-error">{error}</div>;
+  if (error)
+    return (
+      <main id="main" className="adm-error" data-kin-off>
+        <section className="adm-error-panel" aria-labelledby="admin-load-error">
+          <p className="adm-error-kicker">SMARTSELL / ADMINISTRATION</p>
+          <h1 id="admin-load-error">
+            {t(
+              'L’administration n’a pas pu se charger.',
+              'The admin could not load.',
+            )}
+          </h1>
+          <p role="alert">{error}</p>
+          <p>
+            {t(
+              'Vous pouvez réessayer ou revenir au site.',
+              'You can try again or return to the site.',
+            )}
+          </p>
+          <div className="adm-error-actions">
+            <button
+              type="button"
+              onClick={() => setLoadAttempt((attempt) => attempt + 1)}
+            >
+              {t('Réessayer', 'Try again')}
+            </button>
+            <a href={siteHref}>{t('Retour au site', 'Back to the site')}</a>
+          </div>
+        </section>
+      </main>
+    );
   if (!data || !source)
     return (
-      <div className="adm-loading">
+      <main
+        id="main"
+        className="adm-loading"
+        aria-busy="true"
+        data-admin-content-url={contentUrl}
+      >
         {t('Chargement de l’administration…', 'Loading the admin…')}
-      </div>
+      </main>
     );
 
   const module = modules.find((m) => m.id === view.module);
