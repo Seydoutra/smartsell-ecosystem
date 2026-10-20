@@ -1,3 +1,4 @@
+import { applyPublished } from './publishing';
 import type { VerticalId } from '@smartsell/types';
 export type Block = { title: string; copy: string; items?: string[] };
 export type SitePageData = {
@@ -1002,3 +1003,8 @@ export function getSitePages(id: VerticalId): SitePageData[] {
     ...common,
   ];
 }
+
+applyPublished(agencyServices, 'agency', 'services');
+applyPublished(articles, 'media', 'articles');
+applyPublished(spaces, 'studio', 'spaces');
+applyPublished(packs, 'studio', 'packs');

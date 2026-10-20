@@ -2,13 +2,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { t } from '@smartsell/routing';
 import { Icon } from '@smartsell/ui/icons';
+import { AdminAccess } from './access';
+import { Insights } from './insights';
+import { publicationErrors } from './model';
+import { platform, platformConfigured, checked } from '@smartsell/ui/platform';
 import { modules, type Collection, type Field, type Module } from './schema';
 
 /*
- * Espace d'administration (maquette) : lit les contenus réels du site,
- * permet d'ajouter, modifier, dupliquer, réordonner et supprimer. Les
- * changements restent dans ce navigateur tant que l'enregistrement n'est
- * pas branché ; ils peuvent être exportés en JSON.
+ * Administration : contenus Supabase, sauvegarde avec contrôle de version,
+ * approbation de la publication et statistiques. La vitrine statique est
+ * reconstruite par GitHub Pages à partir des collections approuvées.
  */
 
 type Bi = { fr: unknown; en: unknown };
@@ -55,13 +58,7 @@ const text = (v: unknown, lang: 'fr' | 'en' = 'fr'): string => {
   return x == null ? '' : String(x);
 };
 
-export function AdminApp({
-  base,
-  siteHref,
-}: {
-  base: string;
-  siteHref: string;
-}) {
+function AdminEditor({ base, siteHref }: { base: string; siteHref: string }) {
   const [source, setSource] = useState<Data | null>(null);
   const [data, setData] = useState<Data | null>(null);
   const [log, setLog] = useState<LogEntry[]>([]);
@@ -76,17 +73,22 @@ export function AdminApp({
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
   const [loadAttempt, setLoadAttempt] = useState(0);
+  const [revisions, setRevisions] = useState<Record<string, number>>({});
+  const [cloudBusy, setCloudBusy] = useState(false);
+  const [cloudNotice, setCloudNotice] = useState('');
   const contentUrl = `${base}/admin/content.json`;
 
   const imageUrl = (ref: string, small = true) => {
-    if (ref.startsWith('blob:')) return ref;
+    if (ref.startsWith('blob:') || ref.startsWith('https://')) return ref;
     if (ref.startsWith('unsplash:'))
       return `https://images.unsplash.com/${ref.slice(9)}?auto=format&fit=crop&w=${small ? 400 : 1200}&q=70`;
     const file = ref.replace(/^local:/, '');
     return `${base}/media/${file}${small ? '-sm' : ''}.jpg`;
   };
   const videoUrl = (src: string) =>
-    src.startsWith('blob:') ? src : `${base}/media/${src}.mp4`;
+    src.startsWith('blob:') || src.startsWith('https://')
+      ? src
+      : `${base}/media/${src}.mp4`;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -96,7 +98,7 @@ export function AdminApp({
         if (!r.ok) throw new Error(`Content request failed: ${r.status}`);
         return r.json();
       })
-      .then((json: { data: Data }) => {
+      .then(async (json: { data: Data }) => {
         if (controller.signal.aborted) return;
         const clean: Data = {};
         for (const m of modules) {
@@ -108,13 +110,33 @@ export function AdminApp({
               ),
             );
         }
-        setSource(clean);
-        try {
-          const draft = localStorage.getItem(DRAFT);
-          setData(draft ? JSON.parse(draft) : clean);
-          setLog(JSON.parse(localStorage.getItem(LOG) || '[]'));
-        } catch {
-          setData(clean);
+        if (platformConfigured) {
+          const rows = await checked(
+            await platform()
+              .from('content_collections')
+              .select('segment,collection,items,revision'),
+          );
+          if (controller.signal.aborted) return;
+          if (!rows?.length) throw new Error('No content has been initialised');
+          const nextRevisions: Record<string, number> = {};
+          for (const row of rows) {
+            if (clean[row.segment]?.[row.collection])
+              clean[row.segment][row.collection] = row.items as Item[];
+            nextRevisions[`${row.segment}/${row.collection}`] = row.revision;
+          }
+          setRevisions(nextRevisions);
+          setSource(clean);
+          setData(structuredClone(clean));
+          setLog([]);
+        } else {
+          setSource(clean);
+          try {
+            const draft = localStorage.getItem(DRAFT);
+            setData(draft ? JSON.parse(draft) : clean);
+            setLog(JSON.parse(localStorage.getItem(LOG) || '[]'));
+          } catch {
+            setData(clean);
+          }
         }
       })
       .catch(() => {
@@ -136,6 +158,7 @@ export function AdminApp({
       ...log,
     ].slice(0, 40);
     setLog(nextLog);
+    if (platformConfigured) return;
     try {
       localStorage.setItem(DRAFT, JSON.stringify(next));
       localStorage.setItem(LOG, JSON.stringify(nextLog));
@@ -216,6 +239,90 @@ export function AdminApp({
     );
   };
 
+  const saveCloud = async () => {
+    if (!platformConfigured || !data || !source) return;
+    setCloudBusy(true);
+    setCloudNotice('');
+    const saved = structuredClone(source);
+    const nextRevisions = { ...revisions };
+    let count = 0;
+    try {
+      for (const m of modules)
+        for (const c of m.collections) {
+          if (
+            JSON.stringify(data[m.id][c.id]) ===
+            JSON.stringify(source[m.id][c.id])
+          )
+            continue;
+          const key = `${m.id}/${c.id}`;
+          const revision = await checked(
+            await platform().rpc('ecosystem_save_collection', {
+              scope: m.id,
+              name: c.id,
+              content: data[m.id][c.id],
+              expected_revision: nextRevisions[key],
+            }),
+          );
+          nextRevisions[key] = Number(revision);
+          saved[m.id][c.id] = structuredClone(data[m.id][c.id]);
+          count++;
+        }
+      setCloudNotice(
+        t(
+          `${count} collection(s) enregistrée(s) dans Supabase.`,
+          `${count} collection(s) saved in Supabase.`,
+        ),
+      );
+    } catch {
+      setCloudNotice(
+        t(
+          `Enregistrement interrompu après ${count} collection(s). Un autre membre a peut-être modifié le contenu. Exportez votre travail avant de recharger.`,
+          `Save interrupted after ${count} collection(s). Another member may have changed the content. Export your work before reloading.`,
+        ),
+      );
+    } finally {
+      setSource(saved);
+      setRevisions(nextRevisions);
+      setCloudBusy(false);
+    }
+  };
+
+  const preparePublication = async () => {
+    const errors = publicationErrors(data);
+    if (errors.length) {
+      setCloudNotice(errors.slice(0, 5).join(' · '));
+      return;
+    }
+    if (
+      !window.confirm(
+        t(
+          'Approuver les contenus enregistrés dans Supabase pour le prochain déploiement du site ?',
+          'Approve saved Supabase content for the next site deployment?',
+        ),
+      )
+    )
+      return;
+    setCloudBusy(true);
+    setCloudNotice('');
+    try {
+      await checked(await platform().rpc('ecosystem_publish_content'));
+      setCloudNotice(
+        t(
+          'Publication approuvée. Lancez ensuite le déploiement dans GitHub Actions pour mettre le site à jour.',
+          'Publication approved. Run the GitHub Actions deployment to update the public site.',
+        ),
+      );
+    } catch {
+      setCloudNotice(
+        t(
+          'La publication n’a pas pu être préparée. Réessayez.',
+          'Unable to prepare publication. Try again.',
+        ),
+      );
+    } finally {
+      setCloudBusy(false);
+    }
+  };
   const exportJson = () => {
     const blob = new Blob([JSON.stringify({ data }, null, 2)], {
       type: 'application/json',
@@ -255,7 +362,7 @@ export function AdminApp({
   };
 
   return (
-    <div className="adm" data-kin-off="">
+    <div className={`adm ${cloudBusy ? 'adm-saving' : ''}`} data-kin-off="">
       <aside className="adm-side">
         <a className="adm-logo" href={siteHref}>
           <img src={`${base}/brand/icon-yellow.png`} alt="" />
@@ -306,22 +413,51 @@ export function AdminApp({
         </a>
       </aside>
 
-      <main className="adm-main">
+      <main className="adm-main" aria-busy={cloudBusy}>
         <div className="adm-banner" role="note">
           <Icon name="info" />
           <span>
             {t(
-              'Maquette : vos modifications sont gardées dans ce navigateur et ne sont pas encore publiées sur le site. Elles seront enregistrées en ligne une fois le stockage branché.',
-              'Mock-up: your changes are kept in this browser and are not published to the site yet. They will be saved online once storage is connected.',
+              'Les modifications se préparent ici, puis s’enregistrent dans Supabase. Enregistrer et mettre en ligne le site sont deux étapes distinctes.',
+              'Prepare changes here, then save them to Supabase. Saving and deploying the public site are separate steps.',
             )}
           </span>
           <div>
+            {platformConfigured && (
+              <button
+                type="button"
+                disabled={!changed || cloudBusy}
+                onClick={saveCloud}
+              >
+                {cloudBusy
+                  ? t('Enregistrement…', 'Saving…')
+                  : t('Enregistrer dans Supabase', 'Save to Supabase')}
+              </button>
+            )}
+            {platformConfigured && (
+              <button
+                type="button"
+                disabled={changed || cloudBusy}
+                onClick={preparePublication}
+              >
+                {t('Approuver la publication', 'Approve publication')}
+              </button>
+            )}
+            {platformConfigured && (
+              <a
+                href="https://github.com/Seydoutra/smartsell-ecosystem/actions/workflows/pages.yml"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t('Déployer sur GitHub', 'Deploy on GitHub')} ↗
+              </a>
+            )}
             <button type="button" onClick={exportJson}>
               <Icon name="download" /> {t('Exporter (JSON)', 'Export (JSON)')}
             </button>
             <button
               type="button"
-              disabled={!changed}
+              disabled={!changed || cloudBusy}
               onClick={() => {
                 if (
                   window.confirm(
@@ -346,13 +482,19 @@ export function AdminApp({
           </div>
         </div>
 
+        {cloudNotice && (
+          <p className="adm-cloud-notice" role="status">
+            {cloudNotice}
+          </p>
+        )}
         {!module || !collection ? (
           <section className="adm-dash">
+            {platformConfigured && <Insights />}
             <h1>{t('Tableau de bord', 'Dashboard')}</h1>
             <p className="adm-lead">
               {t(
-                'Cinq modules, un par site. Choisissez une collection pour ajouter, modifier ou supprimer des contenus.',
-                'Five modules, one per site. Pick a collection to add, edit or delete content.',
+                'Quatre univers et les produits en complément. Choisissez une collection pour gérer vos contenus.',
+                'Four universes, with products alongside. Pick a collection to manage your content.',
               )}
             </p>
             <div className="adm-cards">
@@ -995,29 +1137,73 @@ function MediaPicker({
             <Icon name="cross" />
           </button>
         </header>
-        <label className="adm-upload">
-          <Icon name="download" />
-          <span>
-            {t(
-              'Importer un fichier depuis l’ordinateur',
-              'Upload a file from your computer',
-            )}
-            <small>
-              {t(
-                'Aperçu local : le fichier sera envoyé au stockage une fois branché.',
-                'Local preview: the file will be sent to storage once connected.',
-              )}
-            </small>
-          </span>
-          <input
-            type="file"
-            accept={kind === 'image' ? 'image/*' : 'video/mp4'}
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) onPick(URL.createObjectURL(f));
+        {platformConfigured ? (
+          <form
+            className="adm-upload"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const url = String(
+                new FormData(e.currentTarget).get('mediaUrl'),
+              ).trim();
+              try {
+                const parsed = new URL(url);
+                if (
+                  parsed.protocol !== 'https:' ||
+                  parsed.username ||
+                  parsed.password
+                )
+                  return;
+                onPick(parsed.href);
+              } catch {
+                /* Native URL input reports malformed values. */
+              }
             }}
-          />
-        </label>
+          >
+            <label>
+              {t('Lien HTTPS du média', 'HTTPS media link')}
+              <input
+                name="mediaUrl"
+                type="url"
+                pattern="https://.*"
+                required
+                placeholder="https://…"
+              />
+            </label>
+            <p>
+              {t(
+                'Utilisez un média déjà hébergé ou choisissez dans la bibliothèque. L’envoi de nouveaux fichiers dans le stockage sera connecté séparément.',
+                'Use an already hosted asset or choose from the library. Uploads to storage will be connected separately.',
+              )}
+            </p>
+            <button type="submit">
+              {t('Utiliser ce média', 'Use this asset')}
+            </button>
+          </form>
+        ) : (
+          <label className="adm-upload">
+            <Icon name="download" />
+            <span>
+              {t(
+                'Importer un fichier depuis l’ordinateur',
+                'Upload a file from your computer',
+              )}
+              <small>
+                {t(
+                  'Aperçu local : le fichier sera envoyé au stockage une fois branché.',
+                  'Local preview: the file will be sent to storage once connected.',
+                )}
+              </small>
+            </span>
+            <input
+              type="file"
+              accept={kind === 'image' ? 'image/*' : 'video/mp4'}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) onPick(URL.createObjectURL(f));
+              }}
+            />
+          </label>
+        )}
         <div className="adm-library">
           {list.map((ref) => (
             <button key={ref} type="button" onClick={() => onPick(ref)}>
@@ -1040,6 +1226,16 @@ function MediaPicker({
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+export function AdminApp(props: { base: string; siteHref: string }) {
+  return (
+    <div data-admin-content-url={`${props.base}/admin/content.json`}>
+      <AdminAccess>
+        <AdminEditor {...props} />
+      </AdminAccess>
     </div>
   );
 }

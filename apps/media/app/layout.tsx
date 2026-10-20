@@ -1,3 +1,5 @@
+import { AnalyticsConsent } from '@smartsell/ui/platform';
+import '@smartsell/ui/platform.css';
 import type { Metadata } from 'next';
 import '@fontsource-variable/montserrat/wght.css';
 import '@smartsell/brand/tokens.css';
@@ -33,6 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           tone="media"
         />
         {children}
+        <AnalyticsConsent />
         <SiteTransitions />
       </body>
     </html>

@@ -12,3 +12,6 @@ dist/
 
 .npmrc
 apps/main/public/admin/content.json
+
+# Supabase CLI local state
+supabase/.temp/

@@ -1,3 +1,5 @@
+import { AnalyticsConsent } from '@smartsell/ui/platform';
+import '@smartsell/ui/platform.css';
 import { withBasePath, locale, t } from '@smartsell/routing';
 import type { Metadata } from 'next';
 import '@fontsource-variable/montserrat/wght.css';
@@ -54,6 +56,7 @@ export default function RootLayout({
       <body id="top">
         <IntroScript site="main" />
         {children}
+        <AnalyticsConsent />
         <SiteTransitions />
         <MotionLayer />
       </body>

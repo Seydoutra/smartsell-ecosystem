@@ -1,45 +1,121 @@
-# Espace d'administration Smartsell
+# Administration et comptes Smartsell
 
-## Structure du site
+La vitrine reste hébergée sur GitHub Pages. Supabase fournit les comptes,
+les données privées, les contenus enregistrés et les statistiques. Management
+conserve son application et sa base séparées.
 
-Une maison mère et cinq sites autonomes, chacun en français et en anglais :
+## État de cette intégration
 
-| Site    | Pages publiques                                                           | Contenus administrables                                                |
-| ------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| Maison  | Accueil, design system                                                    | Reprend les contenus des cinq modules (clients, solutions, portfolio…) |
-| Agency  | Portfolio, brandbooks, expertises (16), histoire, collectif, contact      | Expertises, identités de marque, sites web, clients, séries photo      |
-| Academy | Modules (13), détail et leçons, Entreprises, Mon espace                   | Modules (avec programme et leçons à quiz), offres entreprises          |
-| Media   | Vidéos (18), pages vidéo, articles (20), rubriques, recherche, newsletter | Vidéos, articles                                                       |
-| Studios | Podcast, Shooting, plateaux, formules, réservation, galerie, FAQ, contact | Plateaux, formules                                                     |
-| Labs    | Produits, recherche, IA & automatisation, contact                         | Produits (captures, avantages par cible)                               |
+Le code et la migration sont préparés dans cette branche. L’activation distante
+n’est pas acquise tant que la migration, le catalogue, les clés publiques et les
+réglages Auth n’ont pas été appliqués et vérifiés dans le projet choisi.
 
-Les contenus vivent aujourd'hui dans `packages/content/src` :
-`sites.fr.ts` / `sites.en.ts` (pages, expertises, articles, plateaux, formules),
-`academy.ts` (modules, offres), `portfolio.ts` (clients, produits, brandbooks,
-sites, photos, films) et `photos.ts` (médias).
+Projet identifié dans le navigateur : `sryetyminwftkrpjkdcl`, organisation
+`contact.mirsgn@gmail.com's Org` (Free). Le connecteur Supabase de cette session
+utilise un autre compte et n’a pas accès à ce projet : ne pas appliquer ces
+migrations à `cpr-site` ou à `mirs-management-staging`.
 
-## L'admin (maquette)
+## Activation
 
-- Adresse : `/fr/admin/` et `/en/admin/` (non indexée).
-- Au build, `scripts/export-content.ts` exporte les contenus des deux langues
-  dans `admin/content.json` ; l'admin les lit et les présente en cinq modules.
-- Schéma modulaire : `apps/main/components/admin/schema.ts`. Ajouter une
-  collection ou un champ revient à ajouter une entrée dans ce fichier.
-- Actions : ajouter, modifier (FR et EN côte à côte), dupliquer, réordonner,
-  supprimer avec confirmation, choisir des images et vidéos dans la
-  médiathèque, exporter le JSON, réinitialiser.
-- Les modifications restent dans le navigateur (`localStorage`) : rien n'est
-  publié tant que le stockage n'est pas branché.
+1. Exécuter `supabase/migrations/20261020115600_ecosystem_accounts_learning_insights.sql`
+   dans le projet choisi, puis `supabase/seed.sql`. La seconde étape conserve les
+   collections déjà présentes si elle est relancée. Le catalogue source reste
+   versionné dans le dépôt. Avant de passer à un déploiement par le CLI,
+   réconcilier son historique de migrations avec cette application manuelle.
+2. Dans Authentication, conserver la confirmation des adresses e-mail et
+   configurer un SMTP transactionnel. Le SMTP fourni par défaut par Supabase
+   n’envoie qu’aux membres de l’organisation ; il ne convient pas aux inscriptions
+   publiques. Ne pas désactiver la confirmation pour contourner cette limite.
+3. Définir l’URL du site sur
+   `https://seydoutra.github.io/smartsell-ecosystem/fr/academy/dashboard/`.
+   Autoriser précisément les quatre retours FR/EN Academy dashboard et Admin.
+   Ajouter séparément une URL locale uniquement pour les vérifications locales.
+4. Renseigner uniquement l’URL du projet et une clé **publishable** active dans
+   `packages/ui/src/platform/config.json`. Aucune clé secrète ou service_role
+   dans ce fichier, dans GitHub ou dans le navigateur.
+5. Le propriétaire crée son compte avec `contact.smartsell@gmail.com` dans
+   Academy et confirme son e-mail. La correspondance exacte avec cette adresse
+   confirmée lui attribue le rôle propriétaire. Aucun autre nouvel inscrit ne
+   devient administrateur. Un compte existant confirmé est pris en charge par
+   la migration, sans modification de ses identifiants.
+6. Tester les parcours ci-dessous avant de déployer la branche sur `main`.
 
-## Brancher l'enregistrement
+## Administration
 
-Deux options, au choix :
+Accès `/fr/admin/` et `/en/admin/`, réservé actuellement au propriétaire global.
+La base prévoit aussi des droits par univers ; leur interface de délégation
+à l’équipe n’est pas encore ouverte.
 
-1. **Base de données (Supabase)** : connexion par identifiant, envoi de
-   fichiers vers le stockage, contenus lus par le site ou republiés par un
-   build automatique.
-2. **Fichiers GitHub** : l'admin enregistre `content.json` dans le dépôt, et
-   chaque enregistrement relance la publication (2 à 3 minutes).
+Les contenus s’éditent en français et en anglais. **Enregistrer dans Supabase**
+conserve les collections modifiées avec un contrôle de révision et un historique.
+Une modification concurrente provoque un conflit explicite. Exporter les
+modifications avant de recharger en cas de conflit ; l’application ne les écrase
+pas silencieusement. Les brouillons des sessions connectées ne sont pas stockés
+dans le localStorage générique de l’ancienne maquette.
 
-Dans les deux cas, le site lira ses contenus depuis la même structure que
-`content.json`, ce qui évite de réécrire l'interface.
+**Approuver la publication** prépare un instantané public des collections
+sauvegardées. **Déployer sur GitHub** ouvre le workflow Pages : lancer
+`Run workflow` sur `main`. Le build lit les collections approuvées ; une erreur
+de lecture ou de validation arrête le nouveau déploiement et conserve le site
+précédent. Une sauvegarde Supabase ne signifie donc pas que la vitrine GitHub
+Pages a déjà été reconstruite.
+
+Les images et vidéos existantes restent réutilisables. Un aperçu `blob:` issu
+d’un fichier local n’est pas un média durable et est refusé à la publication.
+L’envoi de nouveaux fichiers dans Storage reste à connecter séparément.
+
+## Academy
+
+Les apprenants disposent d’une inscription, d’une connexion, d’une récupération
+de mot de passe, d’un profil, de leurs modules et d’une progression synchronisée.
+Les inscriptions aux aperçus et les validations de leçons passent par des
+commandes SQL qui vérifient l’identité et l’inscription. Les quiz sont vérifiés
+par le serveur ; une validation répétée ne crée pas de doublon.
+
+Les 13 formations et leurs contenus existants sont conservés. Les trois leçons
+actuelles de chaque module restent des **aperçus gratuits**. Elles ne constituent
+pas les formations accompagnées intégrales et ne délivrent pas de certificat.
+Les contenus pédagogiques d’un module déjà suivi nécessitent une nouvelle
+version de cours pour être changés, afin de préserver la progression existante.
+Les programmes payants, cohortes, paiements et certificats ne sont pas activés.
+
+Les demandes envoyées depuis l’espace apprenant sont réellement enregistrées.
+L’équipe peut suivre leur état ; l’apprenant retrouve ses propres demandes.
+Les clics vers WhatsApp restent des clics, pas des messages reçus.
+
+## Statistiques et parcours
+
+Le dashboard expose pour chaque univers les pages vues consenties, sessions
+observées, clics de contact, demandes reçues et collections administrées.
+Academy ajoute les apprenants inscrits, inscriptions et leçons terminées sur
+la période choisie. Les agrégats sont calculés par la base, sans échantillonnage
+client des premières lignes.
+
+Le suivi de navigation est facultatif et désactivé avant consentement.
+L’identifiant de session est aléatoire et expire après 30 minutes d’inactivité.
+Aucun e-mail, téléphone, paramètre d’URL, fragment, texte saisi ou enregistrement
+d’écran n’est transmis dans les visites. Le dashboard affiche les 30 dernières
+sessions de la période et les 100 dernières actions/demandes, avec leur limite
+explicitement indiquée. La mesure publique reste approximative, plafonnée à
+100 événements par session sur 30 minutes et 10 000 par jour.
+
+Les événements de navigation de plus de 90 jours sont purgés lors de chaque
+nouvelle collecte. Prévoir également une purge quotidienne avec Supabase Cron
+avant l’ouverture publique pour respecter la durée annoncée même en cas
+d’absence de trafic. Les données pédagogiques nécessaires au service sont
+séparées des statistiques facultatives.
+
+## Vérifications
+
+`pnpm test` exécute les tests de navigation existants et une vraie base PostgreSQL
+éphémère (PGlite) avec rôles et RLS : séparation de deux apprenants, absence
+d’élévation par métadonnées, révocation immédiate, cloisonnement Media/Academy,
+inscriptions et progression idempotentes, conflits de révision, publication et
+agrégats des visites. Cette base locale ne remplace pas la vérification du
+serveur Auth Supabase et de l’envoi d’e-mails.
+
+Vérifier à distance : création et confirmation de deux comptes apprenants,
+connexion/déconnexion, récupération d’accès, reprise de progression sur un autre
+navigateur, refus d’accès à l’administration, compte propriétaire, sauvegarde et
+publication, collecte refusée/acceptée et données visibles dans les statistiques.
+Aucune donnée de démonstration ne doit être injectée dans les statistiques réelles.

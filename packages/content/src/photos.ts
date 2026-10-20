@@ -12,6 +12,8 @@ export interface Photo {
   ratio: 'landscape' | 'portrait';
   /** Fichier local optimisé (Envato Elements), servi depuis /media. */
   file?: string;
+  /** Public HTTPS media URL approved by the content editor. */
+  url?: string;
 }
 
 export const local = (
@@ -381,6 +383,7 @@ export const photos = {
 export type PhotoKey = keyof typeof photos;
 
 export function photoUrl(p: Photo, width = 1200): string {
+  if (p.url?.startsWith('https://')) return p.url;
   if (p.file)
     return withBasePath(`/media/${p.file}${width <= 900 ? '-sm' : ''}.jpg`);
   return `https://images.unsplash.com/${p.id}?auto=format&fit=crop&w=${width}&q=75`;

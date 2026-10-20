@@ -505,7 +505,7 @@ export const modules: Module[] = [
   },
   {
     id: 'labs',
-    name: 'Labs',
+    name: t('Produits', 'Products'),
     tagline: t('Produits et solutions', 'Products and solutions'),
     collections: [
       {

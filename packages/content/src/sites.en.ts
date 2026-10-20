@@ -1,3 +1,4 @@
+import { applyPublished } from './publishing';
 import type { VerticalId } from '@smartsell/types';
 import type { Block, SitePageData } from './sites.fr';
 // English edition of the site registry. Slugs and paths stay identical to
@@ -979,3 +980,8 @@ export function getSitePages(id: VerticalId): SitePageData[] {
     ...common,
   ];
 }
+
+applyPublished(agencyServices, 'agency', 'services');
+applyPublished(articles, 'media', 'articles');
+applyPublished(spaces, 'studio', 'spaces');
+applyPublished(packs, 'studio', 'packs');

@@ -21,15 +21,18 @@
     "./icons": "./src/icons.tsx",
     "./kinetic": "./src/kinetic.tsx",
     "./showcase": "./src/showcase.tsx",
-    "./refresh.css": "./refresh.css"
+    "./refresh.css": "./refresh.css",
+    "./platform": "./src/platform/index.ts",
+    "./platform.css": "./src/platform/platform.css"
   },
   "peerDependencies": {
     "react": "^19"
   },
   "dependencies": {
-    "@smartsell/types": "workspace:*",
     "@smartsell/content": "workspace:*",
-    "@smartsell/routing": "workspace:*"
+    "@smartsell/routing": "workspace:*",
+    "@smartsell/types": "workspace:*",
+    "@supabase/supabase-js": "2.118.0"
   },
   "devDependencies": {
     "@types/react": "^19"
