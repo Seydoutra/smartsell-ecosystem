@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { assetUrl, t } from '@smartsell/routing';
-const still = () => assetUrl('/media/film-course-mariama.png');
+import { withBasePath, t } from '@smartsell/routing';
+const still = () => withBasePath('/media/film-course-mariama.png');
 const steps = [
   'Écrire',
   'Bibles',

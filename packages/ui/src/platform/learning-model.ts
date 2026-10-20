@@ -84,7 +84,13 @@ export function resumeLesson(
 ) {
   if (requested && /^[1-9][0-9]*$/.test(requested)) {
     const index = Number(requested) - 1;
-    if (Number.isSafeInteger(index) && index < course.lessons.length)
+    if (
+      Number.isSafeInteger(index) &&
+      index < course.lessons.length &&
+      (!course.full ||
+        courseProgress(course, progress).finished ||
+        index <= courseProgress(course, progress).next)
+    )
       return index;
   }
   return courseProgress(course, progress).next;

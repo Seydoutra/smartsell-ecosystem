@@ -7,6 +7,7 @@ import { useLearning, LearningError } from './use-learning';
 import { courseProgress, resumeLesson } from './learning-model';
 import { FilmWorkshop } from './film-workshop';
 import { productionChecklist } from './film-model';
+import { GuidedLesson } from './guided-lesson';
 
 type Block = {
   type: string;
@@ -313,6 +314,9 @@ export function FullCourseLearner({ course }: { course: Course }) {
   const { user, progress, loading, error, reload } = useLearning();
   const [current, setCurrent] = useState(0);
   const [tab, setTab] = useState('lesson');
+  const [guidePositions, setGuidePositions] = useState<Record<number, number>>(
+    {},
+  );
   const [module, setModule] = useState<Module | null>(null);
   const [contentError, setContentError] = useState('');
   const [retry, setRetry] = useState(0);
@@ -390,7 +394,7 @@ export function FullCourseLearner({ course }: { course: Course }) {
   }, [notes, savedNotes]);
   const state = courseProgress(course, progress);
   const go = (index: number) => {
-    if (saving) return;
+    if (saving || (!state.finished && index > state.next)) return;
     if (
       notes !== savedNotes &&
       !window.confirm(
@@ -499,12 +503,23 @@ export function FullCourseLearner({ course }: { course: Course }) {
             <button
               key={i}
               aria-current={current === i ? 'step' : undefined}
+              disabled={!state.finished && i > state.next}
+              title={
+                !state.finished && i > state.next
+                  ? t(
+                      'Terminez le module précédent pour ouvrir celui-ci.',
+                      'Complete the previous module to unlock this one.',
+                    )
+                  : undefined
+              }
               onClick={() => go(i)}
             >
               <span>
-                {progress[course.slug]?.includes(i)
-                  ? '✓'
-                  : String(i + 1).padStart(2, '0')}
+                {!state.finished && i > state.next
+                  ? '🔒'
+                  : progress[course.slug]?.includes(i)
+                    ? '✓'
+                    : String(i + 1).padStart(2, '0')}
               </span>
               {lesson.title}
             </button>
@@ -527,7 +542,7 @@ export function FullCourseLearner({ course }: { course: Course }) {
             aria-label={t('Sections du module', 'Module sections')}
           >
             {[
-              ['lesson', t('Comprendre', 'Learn')],
+              ['lesson', t('Avec votre guide', 'With your guide')],
               ['workshop', t('Expérimenter', 'Experiment')],
               ['quiz', 'Quiz'],
               ['resources', t('Carnet & ressources', 'Notebook & resources')],
@@ -551,21 +566,32 @@ export function FullCourseLearner({ course }: { course: Course }) {
           ) : (
             <div key={current} className="film-content">
               {tab === 'lesson' ? (
-                <>
-                  <p className="film-editor-note">
-                    {t(
-                      'Repères du parcours : les durées de plans et restrictions de mise en scène sont des choix pédagogiques prudents. Testez les capacités de votre outil et de sa version. Les règles sur les visages, voix et usages sont celles de ce parcours Smartsell.',
-                      'Course guidance: shot lengths and staging limits are conservative workshop choices. Test the capabilities of your tool and version. Face, voice and usage rules belong to this Smartsell course.',
-                    )}
-                  </p>
-                  <FilmLessonBlocks blocks={module.blocks} />
-                  <button
-                    className="film-next"
-                    onClick={() => setTab('workshop')}
-                  >
-                    {t('Passer à l’atelier', 'Open workshop')} →
-                  </button>
-                </>
+                <GuidedLesson
+                  key={current}
+                  course={course.slug}
+                  index={current}
+                  initialPosition={guidePositions[current] || 0}
+                  onPosition={(position) =>
+                    setGuidePositions((previous) => ({
+                      ...previous,
+                      [current]: position,
+                    }))
+                  }
+                  blocks={module.blocks}
+                  questions={module.questions}
+                  renderMaterial={(blocks) => (
+                    <FilmLessonBlocks blocks={blocks} />
+                  )}
+                  workshop={
+                    <FilmWorkshop
+                      index={current}
+                      checklist={
+                        current === 10 ? productionChecklist(module.blocks) : []
+                      }
+                    />
+                  }
+                  onQuiz={() => setTab('quiz')}
+                />
               ) : tab === 'workshop' ? (
                 <>
                   <FilmWorkshop
@@ -672,6 +698,21 @@ export function FullCourseLearner({ course }: { course: Course }) {
                     </button>
                   </div>
                   <p role="status">{notice}</p>
+                  <p className="film-editor-note">
+                    {t(
+                      'Repères du parcours : les durées de plans et restrictions de mise en scène sont des choix pédagogiques prudents. Testez les capacités de votre outil et de sa version. Les règles sur les visages, voix et usages sont celles de ce parcours Smartsell.',
+                      'Course guidance: shot lengths and staging limits are conservative workshop choices. Test the capabilities of your tool and version. Face, voice and usage rules belong to this Smartsell course.',
+                    )}
+                  </p>
+                  <details>
+                    <summary>
+                      {t(
+                        'Support complet de ce module',
+                        'Full module reference',
+                      )}
+                    </summary>
+                    <FilmLessonBlocks blocks={module.blocks} />
+                  </details>
                   <details>
                     <summary>
                       {t(
@@ -703,8 +744,18 @@ export function FullCourseLearner({ course }: { course: Course }) {
                 </section>
               ) : (
                 current < 10 && (
-                  <button className="film-next" onClick={() => go(current + 1)}>
-                    {t('Module suivant', 'Next module')} →
+                  <button
+                    className="film-next"
+                    disabled={!progress[course.slug]?.includes(current)}
+                    onClick={() => go(current + 1)}
+                  >
+                    {progress[course.slug]?.includes(current)
+                      ? t('Module suivant', 'Next module')
+                      : t(
+                          'Validez le quiz pour débloquer la suite',
+                          'Pass the quiz to unlock the next module',
+                        )}{' '}
+                    →
                   </button>
                 )
               )}
