@@ -17,8 +17,11 @@ Le compte propriétaire n’est pas encore créé/confirmé. Son rôle est rése
 enregistré et un premier e-mail a été reçu selon le test utilisateur. Les codes
 e-mail sont réglés à 6 chiffres et 600 secondes. La confirmation d'inscription
 utilise maintenant un formulaire de code ; son modèle d’e-mail sans lien est
-enregistré dans Supabase. Le parcours réel avec un code reçu doit encore être
-validé avant activation publique complète.
+enregistré dans Supabase. Un renvoi réel a reçu une réponse Auth 200 ;
+l’utilisateur a confirmé la réception du code et l’ouverture de son espace
+apprenant après sa saisie. La création/confirmation du propriétaire et les
+contrôles de récupération et d’isolation avec deux sessions réelles restent à
+effectuer ; ils ne sont pas couverts par cette seule vérification.
 
 Projet identifié dans le navigateur : `sryetyminwftkrpjkdcl`, organisation
 `contact.mirsgn@gmail.com's Org` (Free). Le connecteur Supabase de cette session
