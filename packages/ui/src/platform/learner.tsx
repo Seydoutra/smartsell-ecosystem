@@ -1,78 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { courses, type Course } from '@smartsell/content/academy';
+import { useEffect, useRef, useState } from 'react';
+import type { Course } from '@smartsell/content/academy';
 import { locale, routingConfig, t, urlFor } from '@smartsell/routing';
 import { platform, checked } from './client';
-import { AccountBoundary, useAccount } from './auth';
-import { AccountRequests } from './requests';
+import { AccountBoundary } from './auth';
+import { useLearning, LearningError } from './use-learning';
+import { courseProgress, resumeLesson } from './learning-model';
+export { Dashboard } from './learning-dashboard';
 const href = (path: string) => urlFor('academy', locale, path, routingConfig);
-type Progress = Record<string, number[]>;
-function useLearning() {
-  const { user } = useAccount();
-  const [progress, setProgress] = useState<Progress>({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [retry, setRetry] = useState(0);
-  useEffect(() => {
-    if (!user) return;
-    let active = true;
-    setLoading(true);
-    setError('');
-    Promise.all([
-      platform()
-        .from('academy_enrollments')
-        .select('course_slug')
-        .eq('user_id', user.id),
-      platform()
-        .from('academy_progress')
-        .select('course_slug,lesson_index')
-        .eq('user_id', user.id),
-    ])
-      .then(async ([enrollments, lessons]) => {
-        const e = await checked(enrollments);
-        const l = await checked(lessons);
-        if (!active) return;
-        const next: Progress = Object.fromEntries(
-          (e || []).map((row) => [row.course_slug, []]),
-        );
-        for (const row of l || [])
-          next[row.course_slug]?.push(row.lesson_index);
-        setProgress(next);
-      })
-      .catch(() => {
-        if (active)
-          setError(
-            t(
-              'Impossible de lire votre progression. Réessayez.',
-              'Unable to load your progress. Try again.',
-            ),
-          );
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, [user?.id, retry]);
-  return {
-    user,
-    progress,
-    loading,
-    error,
-    reload: () => setRetry((n) => n + 1),
-  };
-}
-function LearningError({ error, retry }: { error: string; retry: () => void }) {
-  return error ? (
-    <div className="ss-learner-error" role="alert">
-      <p>{error}</p>
-      <button className="text-button" onClick={retry}>
-        {t('Réessayer', 'Try again')}
-      </button>
-    </div>
-  ) : null;
-}
 function EnrollmentCard({
   course,
   onEnrolled,
@@ -139,6 +74,25 @@ function LearnerSpace({ course }: { course: Course }) {
   const [message, setMessage] = useState('');
   const completed = progress[course.slug] || [];
   const content = course.lessons[current];
+  const initialized = useRef('');
+  useEffect(() => {
+    if (
+      loading ||
+      error ||
+      !(course.slug in progress) ||
+      initialized.current === course.slug
+    )
+      return;
+    setCurrent(
+      resumeLesson(
+        course,
+        progress,
+        new URLSearchParams(window.location.search).get('lesson'),
+      ),
+    );
+    initialized.current = course.slug;
+  }, [loading, error, course, progress]);
+  const state = courseProgress(course, progress);
   if (loading)
     return (
       <p role="status">
@@ -161,11 +115,11 @@ function LearnerSpace({ course }: { course: Course }) {
           <p className="micro">{t('VOTRE PARCOURS', 'YOUR JOURNEY')}</p>
           <progress
             max={course.lessons.length}
-            value={completed.length}
+            value={state.done}
             aria-label={t('Progression du module', 'Course progress')}
           />
           <p>
-            {completed.length} / {course.lessons.length}{' '}
+            {state.done} / {course.lessons.length}{' '}
             {t('leçons terminées', 'lessons completed')}
           </p>
           {course.lessons.map((lesson, index) => (
@@ -292,173 +246,6 @@ export function Learner({ course }: { course: Course }) {
   return (
     <AccountBoundary>
       <LearnerSpace course={course} />
-    </AccountBoundary>
-  );
-}
-function LearningDashboard() {
-  const { user, progress, loading, error, reload } = useLearning();
-  const [name, setName] = useState('');
-  const [notice, setNotice] = useState('');
-  const [busy, setBusy] = useState(false);
-  useEffect(() => {
-    if (!user) return;
-    let active = true;
-    platform()
-      .from('profiles')
-      .select('display_name')
-      .eq('id', user.id)
-      .single()
-      .then(({ data, error }) => {
-        if (active && !error) setName(data?.display_name || '');
-      });
-    return () => {
-      active = false;
-    };
-  }, [user?.id]);
-  const chosen = courses.filter((c) => c.slug in progress);
-  const finished = chosen.filter(
-    (c) => progress[c.slug].length === c.lessons.length,
-  );
-  return (
-    <>
-      <nav
-        className="dashboard-links"
-        aria-label={t('Espace apprenant', 'Learner space')}
-      >
-        <a href={href('dashboard')}>
-          {t('Mon tableau de bord', 'My dashboard')}
-        </a>
-        <a href={href('courses')}>
-          {t('Explorer les modules', 'Browse courses')}
-        </a>
-        <a href={href('corporate')}>
-          {t('Formation entreprise', 'Company training')}
-        </a>
-      </nav>
-      <p>
-        {t(
-          'Les leçons de découverte sont gratuites. Les formations accompagnées se réservent auprès de Smartsell.',
-          'Introductory lessons are free. Contact Smartsell to book instructor-led training.',
-        )}
-      </p>
-      <LearningError error={error} retry={reload} />
-      {loading ? (
-        <p role="status">{t('Chargement…', 'Loading…')}</p>
-      ) : (
-        !error && (
-          <>
-            <div className="dashboard-stats">
-              <div>
-                <strong>{chosen.length}</strong>
-                <span>{t('modules inscrits', 'enrolled courses')}</span>
-              </div>
-              <div>
-                <strong>
-                  {chosen.reduce(
-                    (total, c) => total + progress[c.slug].length,
-                    0,
-                  )}
-                </strong>
-                <span>{t('leçons terminées', 'lessons completed')}</span>
-              </div>
-              <div>
-                <strong>{finished.length}</strong>
-                <span>{t('aperçus terminés', 'previews completed')}</span>
-              </div>
-            </div>
-            <h2>{t('Votre prochain pas.', 'Your next step.')}</h2>
-            {chosen.length === 0 ? (
-              <div className="empty-state">
-                <p>
-                  {t(
-                    'Votre espace est prêt. Choisissez votre premier module.',
-                    'Your space is ready. Choose your first course.',
-                  )}
-                </p>
-                <a className="site-button" href={href('courses')}>
-                  {t('Choisir un module', 'Choose a course')} →
-                </a>
-              </div>
-            ) : (
-              <div className="catalog-grid">
-                {chosen.map((c) => (
-                  <article className="compact-card" key={c.slug}>
-                    <p className="micro">{c.category}</p>
-                    <h3>{c.title}</h3>
-                    <progress
-                      max={c.lessons.length}
-                      value={progress[c.slug].length}
-                      aria-label={c.title}
-                    />
-                    <p>
-                      {progress[c.slug].length} / {c.lessons.length}{' '}
-                      {t('leçons terminées', 'lessons completed')}
-                    </p>
-                    <a className="text-link" href={href(`learn/${c.slug}`)}>
-                      {t('Reprendre le module', 'Resume course')} →
-                    </a>
-                  </article>
-                ))}
-              </div>
-            )}
-          </>
-        )
-      )}
-      <AccountRequests />
-      <section>
-        <h2>{t('Votre profil', 'Your profile')}</h2>
-        <form
-          className="ss-learner-profile"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            if (!user) return;
-            setBusy(true);
-            setNotice('');
-            try {
-              await checked(
-                await platform()
-                  .from('profiles')
-                  .update({ display_name: name.trim() })
-                  .eq('id', user.id)
-                  .select('id')
-                  .single(),
-              );
-              setNotice(t('Profil enregistré.', 'Profile saved.'));
-            } catch {
-              setNotice(
-                t(
-                  'Le profil n’a pas pu être enregistré.',
-                  'Unable to save profile.',
-                ),
-              );
-            } finally {
-              setBusy(false);
-            }
-          }}
-        >
-          <label>
-            {t('Votre nom', 'Your name')}
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              maxLength={100}
-              required
-              autoComplete="name"
-            />
-          </label>
-          <button className="site-button secondary" disabled={busy}>
-            {t('Enregistrer mon profil', 'Save profile')}
-          </button>
-        </form>
-        <p role="status">{notice}</p>
-      </section>
-    </>
-  );
-}
-export function Dashboard() {
-  return (
-    <AccountBoundary>
-      <LearningDashboard />
     </AccountBoundary>
   );
 }

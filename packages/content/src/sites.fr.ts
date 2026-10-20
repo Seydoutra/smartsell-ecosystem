@@ -735,6 +735,18 @@ export function getSitePages(id: VerticalId): SitePageData[] {
         'Retrouvez vos modules, vos leçons terminées et votre progression.',
         'dashboard',
       ),
+      p(
+        'attestation',
+        'Mon attestation de participation.',
+        'Votre document Smartsell Academy et son QR code de vérification.',
+        'attestation-document',
+      ),
+      p(
+        'verify',
+        'Vérifier une attestation.',
+        'Consultez le registre officiel des attestations de participation Smartsell Academy.',
+        'attestation-verify',
+      ),
       ...common,
     ];
   if (id === 'media')

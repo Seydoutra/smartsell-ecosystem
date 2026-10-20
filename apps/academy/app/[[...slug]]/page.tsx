@@ -19,6 +19,14 @@ export async function generateMetadata({
   return {
     title: p?.title,
     description: p?.intro,
+    robots: [
+      'dashboard',
+      'learn',
+      'attestation-document',
+      'attestation-verify',
+    ].includes(p?.kind || '')
+      ? { index: false, follow: false }
+      : undefined,
     alternates: {
       canonical: urlFor(id, locale, slug.join('/'), routingConfig),
     },
