@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process';
+execSync('tsx scripts/prepare-publication.ts', { stdio: 'inherit' });
 // Contenus des deux langues pour l'espace d'administration.
 for (const locale of ['fr', 'en'])
   execSync('tsx scripts/export-content.ts', {

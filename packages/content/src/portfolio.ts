@@ -1,3 +1,4 @@
+import { applyPublished } from './publishing';
 /*
  * Travaux réels de Smartsell : clients, solutions développées par Labs,
  * identités de marque, sites web, séances photo et films.
@@ -740,3 +741,10 @@ export const films: Film[] = [
   film('drews', 'Drews', kinds.fashion),
   film('reel-studio', t('Reel studio', 'Studio reel'), kinds.brand),
 ];
+
+applyPublished(clients, 'agency', 'clients');
+applyPublished(products, 'labs', 'products');
+applyPublished(brands, 'agency', 'brands');
+applyPublished(websites, 'agency', 'websites');
+applyPublished(shootSeries, 'agency', 'series');
+applyPublished(films, 'media', 'films');

@@ -1,3 +1,4 @@
+import { applyPublished } from './publishing';
 /*
  * Catalogue Smartsell Academy : formations réellement dispensées, tirées du
  * catalogue Marketing Digital & Croissance 2025/2026, du programme
@@ -1471,6 +1472,8 @@ export const courses: Course[] = [
   },
 ];
 
+applyPublished(courses, 'academy', 'courses');
+
 export const courseCategories = [...new Set(courses.map((c) => c.category))];
 
 /** Offres entreprises : parcours issus du catalogue, adaptables. */
@@ -1559,3 +1562,5 @@ export const corporateSteps = [
     ),
   ],
 ];
+
+applyPublished(corporateOffers, 'academy', 'offers');

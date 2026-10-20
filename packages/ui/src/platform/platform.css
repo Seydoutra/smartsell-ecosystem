@@ -1,0 +1,176 @@
+.ss-account {
+  max-width: 620px;
+  margin: 3rem auto;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border: 1px solid #655482;
+  border-radius: 26px;
+  background: #191224;
+  color: #f9f7ff;
+  box-shadow: 0 28px 90px #0c061e33;
+}
+.ss-account .micro {
+  color: #eee83c;
+  letter-spacing: 0.14em;
+}
+.ss-account h2 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+.ss-account p {
+  line-height: 1.65;
+  color: #cfc6df;
+}
+.ss-account form,
+.ss-account > label {
+  display: grid;
+  gap: 1rem;
+}
+.ss-account label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+.ss-account input:not([type='checkbox']) {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #655482;
+  border-radius: 10px;
+  background: #231a31;
+  color: white;
+  font: inherit;
+}
+.ss-account .check-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  line-height: 1.5;
+}
+.ss-account input.ss-confirmation-code {
+  font-size: 1.8rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.28em;
+  text-align: center;
+}
+.ss-account #confirmation-help {
+  font-size: 0.8rem;
+  color: #cfc6df;
+}
+.ss-account button,
+.ss-account-bar button,
+.ss-consent button {
+  cursor: pointer;
+  font: inherit;
+}
+.ss-account button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.ss-account .site-button {
+  background: #eee83c;
+  color: #1a1324;
+  border: 0;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+}
+.ss-account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.ss-account-actions button,
+.ss-account-bar button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.ss-account-bar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem 1.5rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.ss-consent {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 10000;
+  max-width: min(460px, calc(100vw - 2rem));
+  border: 1px solid #766385;
+  border-radius: 18px;
+  padding: 1.2rem;
+  background: #1a1227;
+  color: #f7f4fd;
+  box-shadow: 0 16px 65px #0005;
+  font:
+    14px/1.5 Montserrat Variable,
+    sans-serif;
+}
+.ss-consent p {
+  margin: 0 0 0.75rem;
+}
+.ss-consent div {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.ss-consent button {
+  border: 1px solid #80718f;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  background: transparent;
+  color: inherit;
+}
+.ss-consent button:first-child {
+  background: #eee83c;
+  color: #1a1227;
+}
+.ss-privacy {
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  z-index: 9999;
+  border: 1px solid #766385;
+  border-radius: 30px;
+  background: #1a1227;
+  color: #fff;
+  padding: 0.4rem 0.7rem;
+  font:
+    11px Montserrat Variable,
+    sans-serif;
+  cursor: pointer;
+}
+.ss-learner-error {
+  border-left: 3px solid #eee83c;
+  padding: 1rem;
+}
+.ss-lesson-state {
+  padding: 1rem;
+  background: var(--surface, #eee9f5);
+  border-radius: 12px;
+}
+.ss-learner-profile {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: end;
+}
+.ss-learner-profile label {
+  display: grid;
+  gap: 0.3rem;
+}
+.ss-learner-profile input {
+  font: inherit;
+  padding: 0.7rem;
+  border: 1px solid #83778e;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+}

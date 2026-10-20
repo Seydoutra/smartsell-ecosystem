@@ -757,3 +757,259 @@
   outline: 2px solid #f3e433;
   outline-offset: 4px;
 }
+
+.adm-insights {
+  margin-bottom: 3rem;
+}
+.adm-insights h2 {
+  font-size: clamp(1.7rem, 3vw, 2.7rem);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+  max-width: 650px;
+  margin: 0.5rem 0;
+}
+.adm-insights-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.adm-insights-head p {
+  color: #b4a8c4;
+  font-size: 0.85rem;
+  max-width: 600px;
+}
+.adm-kicker {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: #e8e638;
+}
+.adm-period {
+  display: flex;
+  align-items: end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.adm-period label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+}
+.adm-period input,
+.adm-period button,
+.adm-insights select {
+  background: #20172d;
+  color: #f8f5ff;
+  border: 1px solid #645276;
+  border-radius: 8px;
+  padding: 0.65rem;
+  font: inherit;
+  color-scheme: dark;
+}
+.adm-insights-tabs {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin: 1.7rem 0;
+}
+.adm-insights-tabs button {
+  font: inherit;
+  font-size: 0.8rem;
+  color: #c6bad8;
+  border: 1px solid #4c3e5e;
+  border-radius: 30px;
+  padding: 0.7rem 1rem;
+  background: transparent;
+  cursor: pointer;
+}
+.adm-insights-tabs .is-on {
+  background: #ece83a;
+  color: #21152b;
+  border-color: #ece83a;
+}
+.adm-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+.adm-metrics article {
+  border: 1px solid #49395b;
+  border-radius: 18px;
+  padding: 1.2rem;
+  background: linear-gradient(145deg, #2a1d39, #1b1425);
+}
+.adm-metrics strong {
+  display: block;
+  font-size: 2.8rem;
+  letter-spacing: -0.07em;
+  line-height: 1.1;
+}
+.adm-metrics article > span {
+  font-size: 0.7rem;
+  color: #bdadcf;
+}
+.adm-metrics dl {
+  margin-top: 1.3rem;
+  font-size: 0.72rem;
+}
+.adm-metrics dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid #ffffff13;
+}
+.adm-metrics dt {
+  color: #b4a8c4;
+}
+.adm-metrics dd {
+  margin: 0;
+}
+.adm-academy-metrics,
+.adm-chart {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  border: 1px solid #49395b;
+  border-radius: 18px;
+}
+.adm-academy-metrics h3,
+.adm-chart h3 {
+  font-size: 1rem;
+}
+.adm-academy-metrics > div {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.adm-academy-metrics p {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #c2b3d1;
+}
+.adm-academy-metrics strong {
+  font-size: 2rem;
+  color: #eee83c;
+}
+.adm-bars {
+  display: flex;
+  gap: 0.7rem;
+  align-items: end;
+  min-height: 180px;
+  overflow-x: auto;
+}
+.adm-bars > div {
+  display: grid;
+  text-align: center;
+  gap: 0.5rem;
+  min-width: 40px;
+}
+.adm-bars i {
+  display: block;
+  background: linear-gradient(#e9e239, #755090);
+  border-radius: 6px 6px 0 0;
+}
+.adm-bars small,
+.adm-bars span {
+  font-size: 0.65rem;
+}
+.adm-measure-note {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: #a99aba;
+  margin: 1.2rem 0;
+}
+.adm-journey,
+.adm-request {
+  border: 1px solid #49395b;
+  border-radius: 12px;
+  margin: 0.8rem 0;
+  padding: 1rem;
+  overflow-wrap: anywhere;
+}
+.adm-journey summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.adm-journey li {
+  display: flex;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #ffffff16;
+  font-size: 0.75rem;
+  flex-wrap: wrap;
+}
+.adm-journey code {
+  color: #e8e638;
+}
+.adm-request p {
+  white-space: pre-wrap;
+}
+.adm-request label {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.8rem;
+}
+.adm-activity-list article {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+  border-bottom: 1px solid #49395b;
+  font-size: 0.8rem;
+}
+.adm-activity-list time,
+.adm-activity-list small {
+  color: #b4a8c4;
+}
+.adm-cloud-notice {
+  padding: 1rem;
+  background: #3b2b4f;
+  border-left: 3px solid #e8e638;
+}
+.adm-saving .adm-main > *:not(.adm-banner):not(.adm-cloud-notice) {
+  pointer-events: none;
+  opacity: 0.65;
+}
+.adm-saving .adm-side {
+  pointer-events: none;
+}
+.adm-saving .adm-banner button:not(:first-child) {
+  pointer-events: none;
+  opacity: 0.6;
+}
+.ss-account-bar {
+  background: #181220;
+  color: #dfd2ed;
+}
+.adm-main button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+@media (max-width: 1150px) {
+  .adm-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 580px) {
+  .adm-metrics {
+    grid-template-columns: 1fr;
+  }
+  .adm-insights-tabs {
+    gap: 0.5rem;
+  }
+  .adm-insights-tabs button {
+    flex: 1 1 40%;
+  }
+  .adm-period input {
+    max-width: 140px;
+  }
+  .adm-insights-head h2 {
+    font-size: 1.9rem;
+  }
+  .adm-academy-metrics > div {
+    gap: 1rem;
+  }
+}
