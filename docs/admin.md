@@ -13,9 +13,12 @@ publique est configurée. Les lectures anonymes du catalogue réussissent ; les
 profils, rôles, inscriptions et visites privées refusent l’accès anonyme.
 
 Le compte propriétaire n’est pas encore créé/confirmé. Son rôle est réservé à
-`contact.smartsell@gmail.com`, sans confirmation forcée. Un SMTP transactionnel
-reste nécessaire avant de valider les inscriptions publiques et les parcours
-Auth de bout en bout. La préparation du code ne vaut pas validation de ces parcours.
+`contact.smartsell@gmail.com`, sans confirmation forcée. Le SMTP Hostinger est
+enregistré et un premier e-mail a été reçu selon le test utilisateur. Les codes
+e-mail sont réglés à 6 chiffres et 600 secondes. La confirmation d'inscription
+utilise maintenant un formulaire de code ; son modèle d’e-mail sans lien est
+enregistré dans Supabase. Le parcours réel avec un code reçu doit encore être
+validé avant activation publique complète.
 
 Projet identifié dans le navigateur : `sryetyminwftkrpjkdcl`, organisation
 `contact.mirsgn@gmail.com's Org` (Free). Le connecteur Supabase de cette session
@@ -62,13 +65,35 @@ jamais dans le dépôt ou dans une conversation. Vérifier les enregistrements D
 SPF/DKIM et DMARC avec le fournisseur ; ne pas remplacer un SPF existant sans
 préserver ses expéditeurs autorisés.
 
-Conserver Confirm email activé et le lien `{{ .ConfirmationURL }}` dans le
-modèle de confirmation. Après activation, tester un vrai compte puis un lien de
-récupération, y compris le retour vers Academy. Vérifier les spams et les logs
-Auth en cas d’échec. Le SMTP intégré à Supabase ne convient pas au public : il
-est réservé aux adresses de l’équipe du projet et fortement limité.
+Configuration enregistrée : `smtp.hostinger.com`, port `465`, expéditeur et
+identifiant `contact@smartsell.pro`, nom `Smartsell`. Le secret reste uniquement
+dans Supabase.
+
+Conserver **Confirm email** activé. Dans Sign In / Providers → Email, régler
+**Email OTP length** à `6` et **Email OTP expiration** à `600` secondes. Dans
+Emails → Confirm sign up, appliquer `supabase/templates/confirmation.html`,
+avec l’objet « Votre code de confirmation Smartsell ». Ce modèle affiche
+`{{ .Token }}` et ne contient aucun lien de redirection. Ne pas modifier le
+modèle de récupération de mot de passe pour ce changement.
+
+L’inscription affiche directement la saisie du code. Le site appelle
+`verifyOtp({ email, token, type: 'email' })` et n’ouvre l’espace personnel
+qu’après réception d’une session Supabase. Un renvoi via `resend({ type:
+'signup', email })` permet aux inscrits dont l’ancien lien ne fonctionne plus
+de demander un nouveau code sans recréer leur compte. Le bouton attend une
+minute entre deux demandes ; les limites serveur restent applicables. Seuls
+l’e-mail et les délais sont mémorisés temporairement dans sessionStorage,
+jamais le code ni le mot de passe.
+
+Tester un vrai code reçu, un code expiré, le renvoi et la reprise après
+actualisation. Tester séparément un lien de récupération, y compris le retour
+vers Academy. Vérifier les spams et les logs Auth en cas d’échec. Le SMTP
+intégré à Supabase ne convient pas au public : il est réservé aux adresses de
+l’équipe du projet et fortement limité.
 
 Documentation : https://supabase.com/docs/guides/auth/auth-smtp
+
+Codes : https://supabase.com/docs/guides/auth/auth-email-templates
 
 ## Administration
 

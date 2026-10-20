@@ -46,6 +46,16 @@
   gap: 0.6rem;
   line-height: 1.5;
 }
+.ss-account input.ss-confirmation-code {
+  font-size: 1.8rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.28em;
+  text-align: center;
+}
+.ss-account #confirmation-help {
+  font-size: 0.8rem;
+  color: #cfc6df;
+}
 .ss-account button,
 .ss-account-bar button,
 .ss-consent button {

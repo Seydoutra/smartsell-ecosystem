@@ -3,6 +3,13 @@ import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { t } from '@smartsell/routing';
 import { platform, platformConfigured } from './client';
+import {
+  confirmEmail,
+  forgetConfirmation,
+  pendingConfirmation,
+  rememberConfirmation,
+  resendConfirmation,
+} from './email-confirmation';
 
 export function useAccount() {
   const [user, setUser] = useState<User | null>(null);
@@ -50,39 +57,124 @@ export function useAccount() {
 }
 
 export function AccountForm({ staff = false }: { staff?: boolean }) {
-  const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login');
+  const [mode, setMode] = useState<'login' | 'signup' | 'forgot' | 'verify'>(
+    'login',
+  );
+  const [email, setEmail] = useState('');
+  const [resendAfter, setResendAfter] = useState(0);
+  const [resendWait, setResendWait] = useState(0);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  useEffect(() => {
+    try {
+      const pending = pendingConfirmation(window.sessionStorage);
+      if (pending) {
+        setEmail(pending.email);
+        setResendAfter(pending.resendAfter);
+        setMode('verify');
+      }
+    } catch {
+      /* Storage is optional; never store passwords or codes. */
+    }
+  }, []);
+  useEffect(() => {
+    if (mode !== 'verify') return;
+    const update = () =>
+      setResendWait(Math.max(0, Math.ceil((resendAfter - Date.now()) / 1000)));
+    update();
+    const timer = window.setInterval(update, 1000);
+    return () => window.clearInterval(timer);
+  }, [mode, resendAfter]);
+  function changeMode(next: typeof mode) {
+    setMode(next);
+    setError('');
+    setMessage('');
+    try {
+      forgetConfirmation(window.sessionStorage);
+    } catch {
+      /* Optional. */
+    }
+  }
+  function awaitConfirmation(address: string) {
+    setEmail(address);
+    setMode('verify');
+    setResendAfter(Date.now() + 60_000);
+    setResendWait(60);
+    try {
+      rememberConfirmation(window.sessionStorage, address);
+    } catch {
+      /* Optional. */
+    }
+  }
+  async function resend() {
+    if (busy || Date.now() < resendAfter) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setError(
+        t('Renseignez votre adresse e-mail.', 'Enter your email address.'),
+      );
+      return;
+    }
+    setBusy(true);
+    setError('');
+    setMessage('');
+    // The server also enforces its own rate limits.
+    setResendAfter(Date.now() + 60_000);
+    setResendWait(60);
+    try {
+      await resendConfirmation(platform().auth, email);
+      awaitConfirmation(email.trim());
+      setMessage(
+        t(
+          'Un nouveau code a été envoyé. Utilisez le plus récent.',
+          'A new code was sent. Use the latest one.',
+        ),
+      );
+    } catch {
+      setError(
+        t(
+          'Renvoi indisponible. Réessayez dans une minute. Si votre adresse est déjà confirmée, revenez vous connecter.',
+          'Unable to resend. Try again in a minute. If your email is already confirmed, return to sign in.',
+        ),
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setError('');
     setMessage('');
     const values = new FormData(event.currentTarget);
-    const email = String(values.get('email')).trim();
+    const address = String(values.get('email')).trim();
     const password = String(values.get('password') || '');
     const redirectTo = window.location.origin + window.location.pathname;
     try {
       const auth = platform().auth;
-      if (mode === 'signup') {
+      if (mode === 'verify') {
+        await confirmEmail(
+          auth,
+          address,
+          String(values.get('code') || '').trim(),
+        );
+        try {
+          forgetConfirmation(window.sessionStorage);
+        } catch {
+          /* Optional. */
+        }
+      } else if (mode === 'signup') {
         const { error } = await auth.signUp({
-          email,
+          email: address,
           password,
           options: {
-            emailRedirectTo: redirectTo,
             data: { display_name: String(values.get('name')).trim() },
           },
         });
         if (error) throw error;
-        setMessage(
-          t(
-            'Consultez votre e-mail pour confirmer votre compte, puis revenez vous connecter.',
-            'Check your email to confirm your account, then sign in.',
-          ),
-        );
+        awaitConfirmation(address);
       } else if (mode === 'forgot') {
-        const { error } = await auth.resetPasswordForEmail(email, {
+        const { error } = await auth.resetPasswordForEmail(address, {
           redirectTo,
         });
         if (error) throw error;
@@ -93,16 +185,39 @@ export function AccountForm({ staff = false }: { staff?: boolean }) {
           ),
         );
       } else {
-        const { error } = await auth.signInWithPassword({ email, password });
+        const { error } = await auth.signInWithPassword({
+          email: address,
+          password,
+        });
         if (error) throw error;
       }
-    } catch {
-      setError(
-        t(
-          'Connexion impossible. Vérifiez vos informations, votre confirmation e-mail ou réessayez plus tard.',
-          'Unable to connect. Check your details and email confirmation, or try again later.',
-        ),
-      );
+    } catch (failure) {
+      if (
+        mode === 'login' &&
+        failure &&
+        typeof failure === 'object' &&
+        'code' in failure &&
+        failure.code === 'email_not_confirmed'
+      ) {
+        setMode('verify');
+        setMessage(
+          t(
+            'Votre adresse attend une confirmation. Saisissez votre code ou demandez-en un nouveau.',
+            'Your email needs confirmation. Enter your code or request a new one.',
+          ),
+        );
+      } else
+        setError(
+          mode === 'verify'
+            ? t(
+                'Code incorrect ou expiré. Vérifiez les 6 chiffres ou demandez un nouveau code.',
+                'Incorrect or expired code. Check the 6 digits or request a new code.',
+              )
+            : t(
+                'Connexion impossible. Vérifiez vos informations, votre confirmation e-mail ou réessayez plus tard.',
+                'Unable to connect. Check your details and email confirmation, or try again later.',
+              ),
+        );
     } finally {
       setBusy(false);
     }
@@ -115,30 +230,37 @@ export function AccountForm({ staff = false }: { staff?: boolean }) {
     >
       <p className="micro">SMARTSELL / {staff ? 'ÉQUIPE' : 'ACADEMY'}</p>
       <h2 id="account-title">
-        {mode === 'signup'
-          ? t(
-              'Votre prochain chapitre commence ici.',
-              'Your next chapter starts here.',
-            )
-          : mode === 'forgot'
-            ? t('Retrouver votre compte', 'Recover your account')
-            : staff
-              ? t('Votre espace de pilotage.', 'Your control room.')
-              : t(
-                  'Retrouvez votre espace apprenant.',
-                  'Your learner space awaits.',
-                )}
+        {mode === 'verify'
+          ? t('Confirmez votre adresse e-mail.', 'Confirm your email address.')
+          : mode === 'signup'
+            ? t(
+                'Votre prochain chapitre commence ici.',
+                'Your next chapter starts here.',
+              )
+            : mode === 'forgot'
+              ? t('Retrouver votre compte', 'Recover your account')
+              : staff
+                ? t('Votre espace de pilotage.', 'Your control room.')
+                : t(
+                    'Retrouvez votre espace apprenant.',
+                    'Your learner space awaits.',
+                  )}
       </h2>
       <p>
-        {staff
+        {mode === 'verify'
           ? t(
-              'Accès réservé aux membres autorisés de l’équipe.',
-              'Access restricted to authorised team members.',
+              'Saisissez le code à 6 chiffres reçu par e-mail. Il expire après 10 minutes. La confirmation se fait ici, sans lien à ouvrir.',
+              'Enter the 6-digit code sent to your email. It expires after 10 minutes. Confirm here, without opening a link.',
             )
-          : t(
-              'Un compte personnel pour retrouver vos modules et votre progression sur tous vos appareils.',
-              'One personal account for your courses and progress on all your devices.',
-            )}
+          : staff
+            ? t(
+                'Accès réservé aux membres autorisés de l’équipe.',
+                'Access restricted to authorised team members.',
+              )
+            : t(
+                'Un compte personnel pour retrouver vos modules et votre progression sur tous vos appareils.',
+                'One personal account for your courses and progress on all your devices.',
+              )}
       </p>
       {!platformConfigured ? (
         <p role="status">
@@ -162,10 +284,37 @@ export function AccountForm({ staff = false }: { staff?: boolean }) {
               type="email"
               autoComplete="email"
               maxLength={254}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               required
             />
           </label>
-          {mode !== 'forgot' && (
+          {mode === 'verify' && (
+            <label>
+              {t('Code de confirmation', 'Confirmation code')}
+              <input
+                className="ss-confirmation-code"
+                name="code"
+                type="text"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                pattern="[0-9]{6}"
+                minLength={6}
+                maxLength={6}
+                placeholder="000000"
+                autoFocus
+                required
+                aria-describedby="confirmation-help"
+              />
+              <span id="confirmation-help">
+                {t(
+                  '6 chiffres, y compris les zéros au début.',
+                  '6 digits, including any leading zeros.',
+                )}
+              </span>
+            </label>
+          )}
+          {mode !== 'forgot' && mode !== 'verify' && (
             <label>
               {t('Mot de passe', 'Password')}
               <input
@@ -191,42 +340,76 @@ export function AccountForm({ staff = false }: { staff?: boolean }) {
           )}
           <button className="site-button" disabled={busy}>
             {busy
-              ? t('Connexion…', 'Connecting…')
-              : mode === 'signup'
-                ? t('Créer mon compte', 'Create my account')
-                : mode === 'forgot'
-                  ? t('Envoyer le lien', 'Send link')
-                  : t('Se connecter', 'Sign in')}
+              ? mode === 'verify'
+                ? t('Vérification…', 'Verifying…')
+                : t('Connexion…', 'Connecting…')
+              : mode === 'verify'
+                ? t('Confirmer mon adresse', 'Confirm my email')
+                : mode === 'signup'
+                  ? t('Créer mon compte', 'Create my account')
+                  : mode === 'forgot'
+                    ? t('Envoyer le lien', 'Send link')
+                    : t('Se connecter', 'Sign in')}
           </button>
         </form>
       )}
       <div className="ss-account-actions">
-        {!staff && (
-          <button
-            type="button"
-            onClick={() => {
-              setMode(mode === 'signup' ? 'login' : 'signup');
-              setError('');
-              setMessage('');
-            }}
-          >
-            {mode === 'signup'
-              ? t('J’ai déjà un compte', 'I already have an account')
-              : t('Créer un compte', 'Create an account')}
-          </button>
+        {mode === 'verify' ? (
+          <>
+            <button
+              type="button"
+              disabled={busy || resendWait > 0}
+              onClick={resend}
+            >
+              {resendWait > 0
+                ? t(`Renvoyer dans ${resendWait} s`, `Resend in ${resendWait}s`)
+                : t('Renvoyer le code', 'Resend code')}
+            </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => changeMode('login')}
+            >
+              {t('Retour à la connexion', 'Back to sign in')}
+            </button>
+          </>
+        ) : (
+          <>
+            {!staff && (
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => {
+                  changeMode(mode === 'signup' ? 'login' : 'signup');
+                }}
+              >
+                {mode === 'signup'
+                  ? t('J’ai déjà un compte', 'I already have an account')
+                  : t('Créer un compte', 'Create an account')}
+              </button>
+            )}
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => {
+                changeMode(mode === 'forgot' ? 'login' : 'forgot');
+              }}
+            >
+              {mode === 'forgot'
+                ? t('Retour à la connexion', 'Back to sign in')
+                : t('Mot de passe oublié ?', 'Forgot password?')}
+            </button>
+            {mode === 'login' && (
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => changeMode('verify')}
+              >
+                {t('Confirmer mon adresse e-mail', 'Confirm my email address')}
+              </button>
+            )}
+          </>
         )}
-        <button
-          type="button"
-          onClick={() => {
-            setMode(mode === 'forgot' ? 'login' : 'forgot');
-            setError('');
-            setMessage('');
-          }}
-        >
-          {mode === 'forgot'
-            ? t('Retour à la connexion', 'Back to sign in')
-            : t('Mot de passe oublié ?', 'Forgot password?')}
-        </button>
       </div>
       {error && <p role="alert">{error}</p>}
       {message && <p role="status">{message}</p>}
