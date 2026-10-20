@@ -694,7 +694,9 @@ export function getSitePages(id: VerticalId): SitePageData[] {
         p(
           `learn/${c.slug}`,
           c.title,
-          'Three practical lessons with quizzes. Your progress shows up in My space.',
+          c.full
+            ? 'Eleven modules, 120 questions and a production workshop. Lessons in French.'
+            : 'Three practical lessons with quizzes. Your progress shows up in My space.',
           'learn',
           [],
           c.slug,

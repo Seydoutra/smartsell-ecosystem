@@ -88,7 +88,10 @@ function CourseCard({
       </a>
       <div className="ss-course-copy">
         <p className="ss-course-meta">
-          {course.level} <span>·</span> {t('Aperçu gratuit', 'Free preview')}
+          {course.level} <span>·</span>{' '}
+          {course.full
+            ? t('Formation complète gratuite', 'Free full course')
+            : t('Aperçu gratuit', 'Free preview')}
         </p>
         <h3>
           <a
@@ -134,7 +137,9 @@ function CourseCard({
             <div className="ss-course-progress">
               <span>
                 {course.lessons.length}{' '}
-                {t('leçons de découverte', 'introductory lessons')}
+                {course.full
+                  ? t('modules complets', 'full modules')
+                  : t('leçons de découverte', 'introductory lessons')}
               </span>
             </div>
             <a
@@ -458,7 +463,7 @@ function LearningDashboard() {
               <div>
                 <Icon name="verified" />
                 <strong>{summary.completed}</strong>
-                <span>{t('aperçus terminés', 'previews completed')}</span>
+                <span>{t('parcours terminés', 'pathways completed')}</span>
               </div>
               <div className="ss-learning-overall">
                 <strong>{summary.percent}%</strong>
@@ -511,8 +516,8 @@ function LearningDashboard() {
                 <h3>
                   {summary.enrolled.length
                     ? t(
-                        'Tous vos aperçus sont terminés.',
-                        'All your previews are complete.',
+                        'Tous vos parcours sont terminés.',
+                        'All your pathways are complete.',
                       )
                     : t(
                         'Votre parcours vous attend.',

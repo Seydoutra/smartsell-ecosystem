@@ -26,7 +26,8 @@ test('Every vertical menu reaches a generated page in its own site', () => {
       assert.ok(urlFor(id, 'fr', page.path).startsWith(`/fr/${id}/`));
   }
   assert.equal(cases.length, 6);
-  assert.equal(courses.length, 13);
+  assert.equal(courses.filter((c) => !c.full).length, 13);
+  assert.equal(courses.filter((c) => c.full).length, 1);
   assert.equal(articles.length, 20);
   assert.equal(packs.length, 6);
 });
@@ -35,9 +36,19 @@ test('Every course has a reachable detail and lesson path, with a valid quiz ans
   for (const course of courses) {
     for (const prefix of ['courses', 'learn'])
       assert.ok(paths.has(`${prefix}/${course.slug}`));
-    assert.equal(course.lessons.length, 3);
-    for (const lesson of course.lessons)
-      assert.ok(lesson.options[lesson.answer]);
+    if (course.full) {
+      assert.equal(course.lessons.length, 11);
+      assert.ok(
+        course.lessons.every(
+          (lesson) => lesson.copy === '' && lesson.options.length === 0,
+        ),
+        'public outline cannot carry private lessons or quiz answers',
+      );
+    } else {
+      assert.equal(course.lessons.length, 3);
+      for (const lesson of course.lessons)
+        assert.ok(lesson.options[lesson.answer]);
+    }
   }
 });
 test('Restored local progress rejects corrupt data and cannot manufacture completed lessons', () => {

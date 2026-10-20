@@ -6,6 +6,7 @@ import { applyPublished } from './publishing';
  * parcours IA créative du pôle production multimédia.
  */
 import { t } from '@smartsell/routing';
+import { fullFilmCourse } from './full-film-course';
 import { photos, type Photo } from './photos';
 
 export type Lesson = {
@@ -18,6 +19,8 @@ export type Lesson = {
 };
 export type Course = {
   slug: string;
+  full?: boolean;
+  enrollment?: 'free' | 'invitation';
   title: string;
   category: string;
   track: string;
@@ -1473,6 +1476,7 @@ export const courses: Course[] = [
 ];
 
 applyPublished(courses, 'academy', 'courses');
+courses.push(fullFilmCourse);
 
 export const courseCategories = [...new Set(courses.map((c) => c.category))];
 

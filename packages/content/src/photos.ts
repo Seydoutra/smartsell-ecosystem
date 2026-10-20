@@ -12,6 +12,7 @@ export interface Photo {
   ratio: 'landscape' | 'portrait';
   /** Fichier local optimisé (Envato Elements), servi depuis /media. */
   file?: string;
+  asset?: string;
   /** Public HTTPS media URL approved by the content editor. */
   url?: string;
 }
@@ -383,6 +384,7 @@ export const photos = {
 export type PhotoKey = keyof typeof photos;
 
 export function photoUrl(p: Photo, width = 1200): string {
+  if (p.asset) return withBasePath(p.asset);
   if (p.url?.startsWith('https://')) return p.url;
   if (p.file)
     return withBasePath(`/media/${p.file}${width <= 900 ? '-sm' : ''}.jpg`);

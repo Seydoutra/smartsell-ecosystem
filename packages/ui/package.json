@@ -24,7 +24,8 @@
     "./refresh.css": "./refresh.css",
     "./platform": "./src/platform/index.ts",
     "./platform.css": "./src/platform/platform.css",
-    "./learning.css": "./src/platform/learning.css"
+    "./learning.css": "./src/platform/learning.css",
+    "./film-course.css": "./src/platform/film-course.css"
   },
   "peerDependencies": {
     "react": "^19"

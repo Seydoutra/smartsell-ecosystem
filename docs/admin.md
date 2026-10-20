@@ -146,7 +146,7 @@ commandes SQL qui vérifient l’identité et l’inscription. Les quiz sont vé
 par le serveur ; une validation répétée ne crée pas de doublon.
 
 Les 13 formations et leurs contenus existants sont conservés. Les trois leçons
-actuelles de chaque module restent des **aperçus gratuits**. Elles ne constituent
+actuelles de ces treize modules restent des **aperçus gratuits**. Elles ne constituent
 pas les formations accompagnées intégrales et ne délivrent pas de certificat.
 Les contenus pédagogiques d’un module déjà suivi nécessitent une nouvelle
 version de cours pour être changés, afin de préserver la progression existante.
@@ -234,3 +234,57 @@ connexion/déconnexion, récupération d’accès, reprise de progression sur un
 navigateur, refus d’accès à l’administration, compte propriétaire, sauvegarde et
 publication, collecte refusée/acceptée et données visibles dans les statistiques.
 Aucune donnée de démonstration ne doit être injectée dans les statistiques réelles.
+
+## Première formation complète intégrée
+
+« Faire un court-métrage avec l’IA », niveau 2, est une nouvelle formation séparée
+(`court-metrage-ia-complet`). L’ancien aperçu `court-metrage-ia` est conservé.
+Le propriétaire a choisi l’accès gratuit complet pour les comptes confirmés.
+Le programme comporte 11 modules, 120 questions et les prompts du manuscrit ;
+la somme des durées conseillées est de 12 h 30. Les contenus sont en français,
+y compris quand la navigation est en anglais. Les bases du niveau 1 sont requises.
+
+L’importeur `scripts/import-film-course.py` lit le Word sans exécuter son contenu.
+Il contrôle les 11 modules, la numérotation et les 120 corrigés. Son résultat privé
+et le SQL d’import doivent rester **hors du dépôt public**. Le site et les exports
+administratifs ne contiennent que le programme public de la formation complète.
+Les aperçus gardent leur circuit d’édition et publication existant.
+
+Après la migration des attestations, appliquer
+`20261020181210_immersive_full_courses.sql`, puis le SQL privé produit par :
+
+```sh
+python3 scripts/import-film-course.py /chemin/cours.docx /dossier-prive/cours.json --sql-output /dossier-prive/cours.sql --free
+```
+
+L’import configure le cours et sa politique d’attestation. Il n’inscrit aucun
+apprenant et ne crée aucune progression ou attestation. Un cours déjà suivi est
+immuable ; une modification de son manuscrit exige une nouvelle version de cours.
+Le catalogue public conserve `access=invitation` comme type d’accès intégral ;
+`private.academy_full_courses.self_enroll=true` autorise explicitement son inscription
+gratuite. Le catalogue des aperçus ne peut pas archiver ou remplacer ce cours.
+
+L’accès au manuscrit passe par `ecosystem_read_course_module`, qui exige une
+inscription avec accès intégral et un compte confirmé. Les réponses attendues et
+explications sont retirées de cette lecture. `ecosystem_submit_course_quiz` vérifie
+toutes les réponses côté serveur et retourne les corrigés après l’envoi. Les dix
+premiers modules exigent 10/10 ; l’examen final conserve le seuil source de 14/20.
+Les modules précédents doivent être validés. L’ancienne validation à une question
+ne peut pas valider un module complet. Les nouvelles tentatives sont possibles.
+
+Le carnet est enregistré dans `academy_workbooks` avec RLS limitée au propriétaire
+des notes. L’apprenant peut en exporter le texte. Les prompts personnalisés et les
+simulations des ateliers sont temporaires ; leur manipulation ne valide pas le
+cours. Le projet de huit plans et son pack doivent toujours être relus par un pair.
+L’attestation remise concerne la participation et le parcours de connaissances ;
+elle ne prétend pas certifier une évaluation humaine du film final.
+
+L’accueil de l’administration contient un formulaire propriétaire pour accorder
+un accès intégral à un compte confirmé. Il n’encaisse aucun paiement et ne valide
+aucune leçon. Le libre accès de cette première formation rend cette opération
+facultative pour les apprenants.
+
+Le 20 octobre 2026, les migrations et le manuscrit ont été appliqués dans le projet
+MIRS prévu. Le contrôle SQL relève 11 modules, 120 questions, libre inscription
+activée, seuil final 14 et attestation activée, sans document émis. Les lectures
+anonymes privées et les commandes de validation anonymes sont refusées.

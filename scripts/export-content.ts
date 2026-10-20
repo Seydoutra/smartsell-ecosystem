@@ -34,7 +34,9 @@ const snapshot = {
     series: shootSeries.map((s) => ({ ...s, photos: s.photos.map(img) })),
   },
   academy: {
-    courses: courses.map((c) => ({ ...c, photo: img(c.photo) })),
+    courses: courses
+      .filter((c) => !c.full)
+      .map((c) => ({ ...c, photo: img(c.photo) })),
     offers: corporateOffers.map((o) => ({ ...o, photo: img(o.photo) })),
   },
   media: {

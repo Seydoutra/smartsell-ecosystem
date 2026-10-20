@@ -131,8 +131,8 @@ export function MyAttestations() {
           </h3>
           <p>
             {t(
-              'Vous retrouverez ici les attestations de vos formations complètes validées. Les cours actuellement proposés en découverte restent des aperçus.',
-              'Attestations for completed full courses will appear here. The current introductory courses remain previews.',
+              'Vous retrouverez ici les attestations de vos formations complètes validées. Les modules de découverte restent des aperçus et ne délivrent pas d’attestation.',
+              'Attestations for completed full courses will appear here. Introductory previews do not award attestations.',
             )}
           </p>
           <a className="text-link" href={href('courses')}>

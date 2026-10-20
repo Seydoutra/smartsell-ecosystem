@@ -6,6 +6,7 @@ import { platform, checked } from './client';
 import { AccountBoundary } from './auth';
 import { useLearning, LearningError } from './use-learning';
 import { courseProgress, resumeLesson } from './learning-model';
+import { FullCourseLearner } from './full-course';
 export { Dashboard } from './learning-dashboard';
 const href = (path: string) => urlFor('academy', locale, path, routingConfig);
 function EnrollmentCard({
@@ -245,7 +246,11 @@ function LearnerSpace({ course }: { course: Course }) {
 export function Learner({ course }: { course: Course }) {
   return (
     <AccountBoundary>
-      <LearnerSpace course={course} />
+      {course.full ? (
+        <FullCourseLearner course={course} />
+      ) : (
+        <LearnerSpace course={course} />
+      )}
     </AccountBoundary>
   );
 }
