@@ -6,9 +6,16 @@ conserve son application et sa base séparées.
 
 ## État de cette intégration
 
-Le code et la migration sont préparés dans cette branche. L’activation distante
-n’est pas acquise tant que la migration, le catalogue, les clés publiques et les
-réglages Auth n’ont pas été appliqués et vérifiés dans le projet choisi.
+Le 20 octobre 2026, la migration des comptes et droits, le catalogue initial
+(12 collections publiées, 13 formations), la rétention quotidienne et les quatre
+retours Auth FR/EN ont été appliqués dans le projet choisi. La clé publishable
+publique est configurée. Les lectures anonymes du catalogue réussissent ; les
+profils, rôles, inscriptions et visites privées refusent l’accès anonyme.
+
+Le compte propriétaire n’est pas encore créé/confirmé. Son rôle est réservé à
+`contact.smartsell@gmail.com`, sans confirmation forcée. Un SMTP transactionnel
+reste nécessaire avant de valider les inscriptions publiques et les parcours
+Auth de bout en bout. La préparation du code ne vaut pas validation de ces parcours.
 
 Projet identifié dans le navigateur : `sryetyminwftkrpjkdcl`, organisation
 `contact.mirsgn@gmail.com's Org` (Free). Le connecteur Supabase de cette session
@@ -18,7 +25,8 @@ migrations à `cpr-site` ou à `mirs-management-staging`.
 ## Activation
 
 1. Exécuter `supabase/migrations/20261020115600_ecosystem_accounts_learning_insights.sql`
-   dans le projet choisi, puis `supabase/seed.sql`. La seconde étape conserve les
+   dans le projet choisi, puis `supabase/seed.sql`, puis la migration
+   `20261020123308_daily_telemetry_retention.sql`. La seconde étape conserve les
    collections déjà présentes si elle est relancée. Le catalogue source reste
    versionné dans le dépôt. Avant de passer à un déploiement par le CLI,
    réconcilier son historique de migrations avec cette application manuelle.
@@ -39,6 +47,28 @@ migrations à `cpr-site` ou à `mirs-management-staging`.
    devient administrateur. Un compte existant confirmé est pris en charge par
    la migration, sans modification de ses identifiants.
 6. Tester les parcours ci-dessous avant de déployer la branche sur `main`.
+
+## E-mails de confirmation
+
+Ouvrir Authentication → Emails → SMTP Settings dans le projet
+`sryetyminwftkrpjkdcl`. Utiliser le service SMTP transactionnel du fournisseur
+de messagerie si celui-ci l’autorise, ou un service dédié compatible Supabase.
+Une boîte professionnelle et un domaine seuls ne fournissent pas ces réglages.
+
+Renseigner l’adresse d’expédition complète et vérifiée, le nom `Smartsell`,
+l’hôte SMTP, le port recommandé par le fournisseur (souvent 587 ou 465),
+l’identifiant SMTP et son secret. Saisir le secret directement dans Supabase,
+jamais dans le dépôt ou dans une conversation. Vérifier les enregistrements DNS
+SPF/DKIM et DMARC avec le fournisseur ; ne pas remplacer un SPF existant sans
+préserver ses expéditeurs autorisés.
+
+Conserver Confirm email activé et le lien `{{ .ConfirmationURL }}` dans le
+modèle de confirmation. Après activation, tester un vrai compte puis un lien de
+récupération, y compris le retour vers Academy. Vérifier les spams et les logs
+Auth en cas d’échec. Le SMTP intégré à Supabase ne convient pas au public : il
+est réservé aux adresses de l’équipe du projet et fortement limité.
+
+Documentation : https://supabase.com/docs/guides/auth/auth-smtp
 
 ## Administration
 
@@ -100,10 +130,11 @@ explicitement indiquée. La mesure publique reste approximative, plafonnée à
 100 événements par session sur 30 minutes et 10 000 par jour.
 
 Les événements de navigation de plus de 90 jours sont purgés lors de chaque
-nouvelle collecte. Prévoir également une purge quotidienne avec Supabase Cron
-avant l’ouverture publique pour respecter la durée annoncée même en cas
-d’absence de trafic. Les données pédagogiques nécessaires au service sont
-séparées des statistiques facultatives.
+nouvelle collecte et par la tâche Supabase Cron `smartsell-telemetry-retention`,
+tous les jours à 03 h 17 UTC, même en l’absence de trafic. Elle ne concerne que
+les visites expirées, leurs compteurs et ses propres journaux de plus de 7 jours.
+Les données pédagogiques nécessaires au service sont séparées des statistiques
+facultatives.
 
 ## Vérifications
 
