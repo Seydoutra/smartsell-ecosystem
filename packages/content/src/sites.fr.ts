@@ -709,7 +709,7 @@ export function getSitePages(id: VerticalId): SitePageData[] {
       p(
         'courses',
         'Nos modules de formation.',
-        'Treize formations pratiques, du fondamental à l’expert : stratégie, rédaction, design, réseaux sociaux, vidéo, IA et IA créative.',
+        'Des formations pratiques, du fondamental à l’expert : stratégie, rédaction, design, réseaux sociaux, vidéo, IA et IA créative.',
         'courses',
       ),
       ...courses.flatMap((c) => [
@@ -717,7 +717,9 @@ export function getSitePages(id: VerticalId): SitePageData[] {
         p(
           `learn/${c.slug}`,
           c.title,
-          'Trois leçons pratiques avec quiz. Votre progression s’affiche dans Mon espace.',
+          c.full
+            ? 'Onze modules, 120 questions et un atelier de production. Cours en français.'
+            : 'Trois leçons pratiques avec quiz. Votre progression s’affiche dans Mon espace.',
           'learn',
           [],
           c.slug,
@@ -734,6 +736,18 @@ export function getSitePages(id: VerticalId): SitePageData[] {
         'Mon espace.',
         'Retrouvez vos modules, vos leçons terminées et votre progression.',
         'dashboard',
+      ),
+      p(
+        'attestation',
+        'Mon attestation de participation.',
+        'Votre document Smartsell Academy et son QR code de vérification.',
+        'attestation-document',
+      ),
+      p(
+        'verify',
+        'Vérifier une attestation.',
+        'Consultez le registre officiel des attestations de participation Smartsell Academy.',
+        'attestation-verify',
       ),
       ...common,
     ];

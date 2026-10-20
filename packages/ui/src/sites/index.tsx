@@ -63,6 +63,10 @@ import {
 import { Img } from '../immersive';
 import { photos, type Photo } from '@smartsell/content/photos';
 import {
+  AttestationDocument,
+  AttestationVerification,
+} from '../platform/attestations';
+import {
   ArticleSearch,
   Booking,
   Dashboard,
@@ -378,6 +382,8 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
   const space = spaces.find((s) => s.slug === page.ref);
   if (page.kind === 'learn' && course) return <Learner course={course} />;
   if (page.kind === 'dashboard') return <Dashboard />;
+  if (page.kind === 'attestation-document') return <AttestationDocument />;
+  if (page.kind === 'attestation-verify') return <AttestationVerification />;
   if (page.kind === 'booking') return <Booking />;
   if (page.kind === 'contact')
     return id === 'agency' ? <SmartBrief /> : <DraftForm site={names[id]} />;
@@ -908,6 +914,50 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
   );
 }
 export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
+  if (
+    id === 'academy' &&
+    [
+      'dashboard',
+      'learn',
+      'attestation-document',
+      'attestation-verify',
+    ].includes(page.kind || '')
+  )
+    return (
+      <div className="vertical-site site-academy ss-academy-campus">
+        <Header id={id} path={page.path} />
+        <main id="main" className="ss-academy-workspace">
+          {page.kind === 'dashboard' ? (
+            <h1 className="ss-learning-sr">
+              {t(
+                'Espace apprenant Smartsell Academy',
+                'Smartsell Academy learner space',
+              )}
+            </h1>
+          ) : page.kind?.startsWith('attestation-') ? (
+            <h1 className="ss-learning-sr">{page.title}</h1>
+          ) : (
+            <header className="ss-learning-lesson-heading">
+              <a href={link('academy', 'dashboard')}>
+                ← {t('Mon tableau de bord', 'My dashboard')}
+              </a>
+              <p className="micro">
+                SMARTSELL ACADEMY / {t('DÉCOUVERTE', 'INTRODUCTION')}
+              </p>
+              <h1>{page.title}</h1>
+            </header>
+          )}
+          <Content id={id} page={page} />
+        </main>
+        <footer className="ss-learning-footer">
+          <a href={link('academy')}>Smartsell Academy</a>
+          <p>{t('Apprendre. Créer. Avancer.', 'Learn. Create. Grow.')}</p>
+          <a href={link('academy', 'privacy')}>
+            {t('Vos données', 'Your data')}
+          </a>
+        </footer>
+      </div>
+    );
   return (
     <div className={`vertical-site site-${id}`}>
       <Header id={id} path={page.path} />

@@ -11,6 +11,8 @@ import '@smartsell/ui/immersive.css';
 import '@smartsell/ui/home.css';
 import '@smartsell/ui/universe.css';
 import '@smartsell/ui/refresh.css';
+import '@smartsell/ui/learning.css';
+import '@smartsell/ui/film-course.css';
 import {
   IntroCurtain,
   IntroScript,

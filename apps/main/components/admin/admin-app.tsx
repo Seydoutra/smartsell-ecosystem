@@ -4,6 +4,7 @@ import { t } from '@smartsell/routing';
 import { Icon } from '@smartsell/ui/icons';
 import { AdminAccess } from './access';
 import { Insights } from './insights';
+import { CourseAccess } from './course-access';
 import { publicationErrors } from './model';
 import { platform, platformConfigured, checked } from '@smartsell/ui/platform';
 import { modules, type Collection, type Field, type Module } from './schema';
@@ -489,7 +490,12 @@ function AdminEditor({ base, siteHref }: { base: string; siteHref: string }) {
         )}
         {!module || !collection ? (
           <section className="adm-dash">
-            {platformConfigured && <Insights />}
+            {platformConfigured && (
+              <>
+                <Insights />
+                <CourseAccess />
+              </>
+            )}
             <h1>{t('Tableau de bord', 'Dashboard')}</h1>
             <p className="adm-lead">
               {t(

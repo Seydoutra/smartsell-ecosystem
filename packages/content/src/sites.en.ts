@@ -694,7 +694,9 @@ export function getSitePages(id: VerticalId): SitePageData[] {
         p(
           `learn/${c.slug}`,
           c.title,
-          'Three practical lessons with quizzes. Your progress shows up in My space.',
+          c.full
+            ? 'Eleven modules, 120 questions and a production workshop. Lessons in French.'
+            : 'Three practical lessons with quizzes. Your progress shows up in My space.',
           'learn',
           [],
           c.slug,
@@ -711,6 +713,18 @@ export function getSitePages(id: VerticalId): SitePageData[] {
         'My space.',
         'Find your courses, completed lessons and progress.',
         'dashboard',
+      ),
+      p(
+        'attestation',
+        'My participation attestation.',
+        'Your Smartsell Academy document and its verification QR code.',
+        'attestation-document',
+      ),
+      p(
+        'verify',
+        'Verify an attestation.',
+        'Check the official Smartsell Academy participation attestation register.',
+        'attestation-verify',
       ),
       ...common,
     ];

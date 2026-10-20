@@ -124,6 +124,21 @@ L’envoi de nouveaux fichiers dans Storage reste à connecter séparément.
 
 ## Academy
 
+L’espace apprenant propose un accueil personnel, les cours ajoutés avec filtres
+« Tous / En cours / Terminés », un catalogue avec recherche sans distinction
+d’accents et filtre par parcours, les échanges avec l’équipe et le profil.
+Les cartes affichent une image, le pourcentage et le nombre de leçons terminées.
+Le bouton de reprise ouvre la première leçon manquante ; un aperçu terminé
+reste consultable. Les suggestions excluent les cours déjà ajoutés et favorisent
+les catégories puis les parcours suivis, avec un ordre stable pour les nouveaux
+comptes. Aucune progression n’est simulée pour remplir l’interface.
+
+Les pourcentages utilisent les leçons réellement validées en base, sans compter
+les doublons ni les indices retirés du catalogue. La progression globale est
+pondérée par le nombre de leçons des cours ajoutés. Les écrans privés Academy
+utilisent une navigation compacte ; les vitrines et contenus publics existants
+conservent leur présentation.
+
 Les apprenants disposent d’une inscription, d’une connexion, d’une récupération
 de mot de passe, d’un profil, de leurs modules et d’une progression synchronisée.
 Les inscriptions aux aperçus et les validations de leçons passent par des
@@ -131,15 +146,56 @@ commandes SQL qui vérifient l’identité et l’inscription. Les quiz sont vé
 par le serveur ; une validation répétée ne crée pas de doublon.
 
 Les 13 formations et leurs contenus existants sont conservés. Les trois leçons
-actuelles de chaque module restent des **aperçus gratuits**. Elles ne constituent
+actuelles de ces treize modules restent des **aperçus gratuits**. Elles ne constituent
 pas les formations accompagnées intégrales et ne délivrent pas de certificat.
 Les contenus pédagogiques d’un module déjà suivi nécessitent une nouvelle
 version de cours pour être changés, afin de préserver la progression existante.
-Les programmes payants, cohortes, paiements et certificats ne sont pas activés.
+Les programmes payants, cohortes et paiements ne sont pas activés. Les attestations
+restent réservées aux formations complètes éligibles, selon les conditions ci-dessous.
 
 Les demandes envoyées depuis l’espace apprenant sont réellement enregistrées.
 L’équipe peut suivre leur état ; l’apprenant retrouve ses propres demandes.
 Les clics vers WhatsApp restent des clics, pas des messages reçus.
+
+## Attestations de participation
+
+Appliquer après les migrations précédentes
+`supabase/migrations/20261020180047_course_participation_attestations.sql`.
+La migration ne rend aucun des 13 aperçus actuels éligible et n’émet aucun
+document de démonstration. Le panneau « Mes attestations » présente les documents
+réels du compte ; le document peut être imprimé ou enregistré en PDF depuis
+le dialogue d’impression du navigateur.
+
+Pour publier une future formation complète, gratuite ou payante, préparer son
+contenu intégral et les clés de quiz côté serveur, puis activer sa politique dans
+`private.academy_attestation_policies` avec le nombre exact de leçons. Le cours doit
+être publié avec l’accès `invitation` ; un processus administratif de confiance
+accorde l’accès intégral via `academy_enrollments.full_access_granted_at`.
+Ces réglages ne sont pas modifiables par l’apprenant. Le flux actuel de publication
+du catalogue concerne les aperçus : prévoir le flux de publication des formations
+complètes avant leur mise en vente. Aucun paiement ni octroi automatique après
+achat n’est simulé dans cette intégration.
+
+Le serveur exige un compte confirmé, un nom de profil et la validation de toutes
+les leçons après l’activation de la formation et l’octroi de l’accès intégral.
+L’achèvement d’un aperçu antérieur ne suffit pas. La dernière leçon déclenche
+l’émission ; « Actualiser mes attestations » reprend une émission éligible après
+correction du nom de profil. Une même formation ne produit qu’un seul document
+par apprenant. Le nom et le titre sont conservés tels qu’ils étaient à l’émission.
+
+Chaque document porte une référence UUID aléatoire et un QR code généré localement,
+menant à `/fr/academy/verify/?id=…` (également disponible en anglais). Cette page
+publique vérifie une référence précise et affiche uniquement le nom, la formation,
+la date, l’émetteur et l’état valide/révoqué. Elle n’expose ni e-mail ni identifiant
+de compte ; les tables et listes restent privées. La possession d’un document ou
+de son QR permet donc de consulter ces informations limitées. Une référence absente
+et une indisponibilité du service donnent des messages distincts.
+
+La commande `ecosystem_revoke_attestation(reference, reason)` est réservée au
+propriétaire global et demande un motif ; elle conserve le document avec son état
+révoqué et journalise l’action. Il n’y a pas encore d’écran de révocation dans
+l’administration. Les tests SQL locaux couvrent l’éligibilité, l’isolation, les
+refus de falsification, l’unicité, la vérification publique et la révocation.
 
 ## Statistiques et parcours
 
@@ -178,3 +234,57 @@ connexion/déconnexion, récupération d’accès, reprise de progression sur un
 navigateur, refus d’accès à l’administration, compte propriétaire, sauvegarde et
 publication, collecte refusée/acceptée et données visibles dans les statistiques.
 Aucune donnée de démonstration ne doit être injectée dans les statistiques réelles.
+
+## Première formation complète intégrée
+
+« Faire un court-métrage avec l’IA », niveau 2, est une nouvelle formation séparée
+(`court-metrage-ia-complet`). L’ancien aperçu `court-metrage-ia` est conservé.
+Le propriétaire a choisi l’accès gratuit complet pour les comptes confirmés.
+Le programme comporte 11 modules, 120 questions et les prompts du manuscrit ;
+la somme des durées conseillées est de 12 h 30. Les contenus sont en français,
+y compris quand la navigation est en anglais. Les bases du niveau 1 sont requises.
+
+L’importeur `scripts/import-film-course.py` lit le Word sans exécuter son contenu.
+Il contrôle les 11 modules, la numérotation et les 120 corrigés. Son résultat privé
+et le SQL d’import doivent rester **hors du dépôt public**. Le site et les exports
+administratifs ne contiennent que le programme public de la formation complète.
+Les aperçus gardent leur circuit d’édition et publication existant.
+
+Après la migration des attestations, appliquer
+`20261020181210_immersive_full_courses.sql`, puis le SQL privé produit par :
+
+```sh
+python3 scripts/import-film-course.py /chemin/cours.docx /dossier-prive/cours.json --sql-output /dossier-prive/cours.sql --free
+```
+
+L’import configure le cours et sa politique d’attestation. Il n’inscrit aucun
+apprenant et ne crée aucune progression ou attestation. Un cours déjà suivi est
+immuable ; une modification de son manuscrit exige une nouvelle version de cours.
+Le catalogue public conserve `access=invitation` comme type d’accès intégral ;
+`private.academy_full_courses.self_enroll=true` autorise explicitement son inscription
+gratuite. Le catalogue des aperçus ne peut pas archiver ou remplacer ce cours.
+
+L’accès au manuscrit passe par `ecosystem_read_course_module`, qui exige une
+inscription avec accès intégral et un compte confirmé. Les réponses attendues et
+explications sont retirées de cette lecture. `ecosystem_submit_course_quiz` vérifie
+toutes les réponses côté serveur et retourne les corrigés après l’envoi. Les dix
+premiers modules exigent 10/10 ; l’examen final conserve le seuil source de 14/20.
+Les modules précédents doivent être validés. L’ancienne validation à une question
+ne peut pas valider un module complet. Les nouvelles tentatives sont possibles.
+
+Le carnet est enregistré dans `academy_workbooks` avec RLS limitée au propriétaire
+des notes. L’apprenant peut en exporter le texte. Les prompts personnalisés et les
+simulations des ateliers sont temporaires ; leur manipulation ne valide pas le
+cours. Le projet de huit plans et son pack doivent toujours être relus par un pair.
+L’attestation remise concerne la participation et le parcours de connaissances ;
+elle ne prétend pas certifier une évaluation humaine du film final.
+
+L’accueil de l’administration contient un formulaire propriétaire pour accorder
+un accès intégral à un compte confirmé. Il n’encaisse aucun paiement et ne valide
+aucune leçon. Le libre accès de cette première formation rend cette opération
+facultative pour les apprenants.
+
+Le 20 octobre 2026, les migrations et le manuscrit ont été appliqués dans le projet
+MIRS prévu. Le contrôle SQL relève 11 modules, 120 questions, libre inscription
+activée, seuil final 14 et attestation activée, sans document émis. Les lectures
+anonymes privées et les commandes de validation anonymes sont refusées.

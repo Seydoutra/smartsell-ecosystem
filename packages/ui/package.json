@@ -23,7 +23,9 @@
     "./showcase": "./src/showcase.tsx",
     "./refresh.css": "./refresh.css",
     "./platform": "./src/platform/index.ts",
-    "./platform.css": "./src/platform/platform.css"
+    "./platform.css": "./src/platform/platform.css",
+    "./learning.css": "./src/platform/learning.css",
+    "./film-course.css": "./src/platform/film-course.css"
   },
   "peerDependencies": {
     "react": "^19"
@@ -32,9 +34,11 @@
     "@smartsell/content": "workspace:*",
     "@smartsell/routing": "workspace:*",
     "@smartsell/types": "workspace:*",
-    "@supabase/supabase-js": "2.118.0"
+    "@supabase/supabase-js": "2.118.0",
+    "qrcode": "1.5.4"
   },
   "devDependencies": {
+    "@types/qrcode": "1.5.6",
     "@types/react": "^19"
   }
 }

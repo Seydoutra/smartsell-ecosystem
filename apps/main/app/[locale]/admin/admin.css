@@ -1013,3 +1013,56 @@
     gap: 1rem;
   }
 }
+
+.adm-course-access {
+  margin: 25px 0;
+  padding: 25px;
+  border: 1px solid #d9c9e1;
+  border-radius: 14px;
+  background: #faf7fc;
+  color: #271535;
+}
+.adm-course-access h2 {
+  font-size: 21px;
+  margin: 0 0 14px;
+}
+.adm-course-access p {
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 14px 0;
+}
+.adm-course-access form {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: end;
+}
+.adm-course-access label {
+  display: grid;
+  gap: 7px;
+  font-size: 11px;
+  flex: 1;
+  min-width: 220px;
+}
+.adm-course-access :is(input, select) {
+  font: inherit;
+  padding: 12px;
+  border: 1px solid #947ba1;
+  border-radius: 7px;
+  background: white;
+  color: #271535;
+  min-height: 44px;
+  width: 100%;
+}
+.adm-course-access button {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 7px;
+  background: #692b84;
+  color: white;
+  min-height: 44px;
+  font-size: 12px;
+}
+.adm-course-access button:disabled {
+  opacity: 0.6;
+}
