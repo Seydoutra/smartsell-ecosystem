@@ -30,6 +30,7 @@ test('Full courses keep content private, grade all answers server-side, enforce 
       '../supabase/seed.sql',
       '../supabase/migrations/20261020180047_course_participation_attestations.sql',
       '../supabase/migrations/20261020181210_immersive_full_courses.sql',
+      '../supabase/migrations/20261020183617_guided_course_progression.sql',
     ])
       await db.exec(readFileSync(new URL(path, import.meta.url), 'utf8'));
     for (const [id, email] of [
@@ -101,6 +102,56 @@ test('Full courses keep content private, grade all answers server-side, enforce 
     assert.equal('answer' in unit.questions[0], false);
     assert.equal('explanation' in unit.questions[0], false);
     await assert.rejects(
+      db.query('select public.ecosystem_read_course_module($1,1)', [slug]),
+      /previous modules/,
+    );
+    await assert.rejects(
+      db.query('select public.ecosystem_answer_course_question($1,1,0,1)', [
+        slug,
+      ]),
+      /previous modules/,
+    );
+    for (const [questionIndex, choice] of [
+      [-1, 1],
+      [2, 1],
+      [null, 1],
+      [0, null],
+      [0, 2],
+    ])
+      await assert.rejects(
+        db.query('select public.ecosystem_answer_course_question($1,0,$2,$3)', [
+          slug,
+          questionIndex,
+          choice,
+        ]),
+        /Invalid question or choice/,
+      );
+    assert.deepEqual(
+      await scalar('select public.ecosystem_answer_course_question($1,0,0,0)', [
+        slug,
+      ]),
+      { correct: false, answer: 1, explanation: question.explanation },
+    );
+    assert.equal(
+      (
+        await scalar(
+          'select public.ecosystem_answer_course_question($1,0,0,1)',
+          [slug],
+        )
+      ).correct,
+      true,
+    );
+    assert.equal(
+      await scalar('select count(*)::int from public.academy_progress'),
+      0,
+      'practice never completes a module',
+    );
+    assert.equal(
+      await scalar('select count(*)::int from public.academy_attestations'),
+      0,
+      'practice never issues an attestation',
+    );
+    await assert.rejects(
       db.query('select public.ecosystem_complete_lesson($1,0,0)', [slug]),
       /Full assessment required/,
     );
@@ -138,6 +189,11 @@ test('Full courses keep content private, grade all answers server-side, enforce 
       '[1,1]',
     ]);
     assert.equal(
+      (await scalar('select public.ecosystem_read_course_module($1,1)', [slug]))
+        .title,
+      'Final',
+    );
+    assert.equal(
       await scalar('select count(*)::int from public.academy_attestations'),
       0,
     );
@@ -162,6 +218,12 @@ test('Full courses keep content private, grade all answers server-side, enforce 
       [alice, slug, 'Private project notes'],
     );
     await asUser(bob);
+    await assert.rejects(
+      db.query('select public.ecosystem_answer_course_question($1,0,0,1)', [
+        slug,
+      ]),
+      /Full access required/,
+    );
     assert.equal(
       await scalar('select count(*)::int from public.academy_workbooks'),
       0,
@@ -178,6 +240,12 @@ test('Full courses keep content private, grade all answers server-side, enforce 
       /row-level security/,
     );
     await asUser(null, 'anon');
+    await assert.rejects(
+      db.query('select public.ecosystem_answer_course_question($1,0,0,1)', [
+        slug,
+      ]),
+      /permission denied/,
+    );
     await assert.rejects(
       db.query('select public.ecosystem_read_course_module($1,0)', [slug]),
       /permission denied/,

@@ -251,7 +251,8 @@ administratifs ne contiennent que le programme public de la formation complète.
 Les aperçus gardent leur circuit d’édition et publication existant.
 
 Après la migration des attestations, appliquer
-`20261020181210_immersive_full_courses.sql`, puis le SQL privé produit par :
+`20261020181210_immersive_full_courses.sql`, puis
+`20261020183617_guided_course_progression.sql` et le SQL privé produit par :
 
 ```sh
 python3 scripts/import-film-course.py /chemin/cours.docx /dossier-prive/cours.json --sql-output /dossier-prive/cours.sql --free
@@ -269,8 +270,19 @@ inscription avec accès intégral et un compte confirmé. Les réponses attendue
 explications sont retirées de cette lecture. `ecosystem_submit_course_quiz` vérifie
 toutes les réponses côté serveur et retourne les corrigés après l’envoi. Les dix
 premiers modules exigent 10/10 ; l’examen final conserve le seuil source de 14/20.
-Les modules précédents doivent être validés. L’ancienne validation à une question
+Les modules précédents doivent être validés avant toute lecture du suivant,
+y compris par appel direct à la fonction. Le menu et les liens de reprise
+respectent également cet ordre. L’ancienne validation à une question
 ne peut pas valider un module complet. Les nouvelles tentatives sont possibles.
+
+La séance principale présente le contenu en courtes explications avec un guide
+virtuel illustré. La synthèse vocale française du navigateur reste facultative et
+se déclenche à la demande. Les exemples et analogies sont rattachés à leur section.
+Trois pauses de compréhension utilisent `ecosystem_answer_course_question` : cette
+fonction exige le même accès au module et retourne une correction, sans écrire de
+progression ni délivrer d’attestation. Une réponse correcte permet de continuer
+la séance ; seul le quiz du module débloque le suivant. Le support source complet
+reste consultable dans les ressources du module accessible.
 
 Le carnet est enregistré dans `academy_workbooks` avec RLS limitée au propriétaire
 des notes. L’apprenant peut en exporter le texte. Les prompts personnalisés et les

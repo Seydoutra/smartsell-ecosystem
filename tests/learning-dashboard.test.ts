@@ -98,3 +98,13 @@ test('Course search handles accents and track filters; resume URLs accept only b
   for (const invalid of [null, '', '0', '-1', '99', '2/', '2.5', 'NaN', '1e2'])
     assert.equal(resumeLesson(c, p, invalid), 2);
 });
+
+test('Full course deep links cannot open future modules; completed courses remain reviewable', () => {
+  const c = course('full', { full: true });
+  assert.equal(resumeLesson(c, { full: [] }, '3'), 0);
+  assert.equal(resumeLesson(c, { full: [0] }, '3'), 1);
+  assert.equal(resumeLesson(c, { full: [0] }, '2'), 1);
+  assert.equal(resumeLesson(c, { full: [0, 1] }, '1'), 0);
+  assert.equal(resumeLesson(c, { full: [0, 1, 2] }, '3'), 2);
+  assert.equal(resumeLesson(course('preview'), { preview: [] }, '3'), 2);
+});

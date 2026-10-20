@@ -914,6 +914,10 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
   );
 }
 export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
+  const course =
+    page.kind === 'learn'
+      ? courses.find((c) => c.slug === page.ref)
+      : undefined;
   if (
     id === 'academy' &&
     [
@@ -942,7 +946,10 @@ export function SitePage({ id, page }: { id: VerticalId; page: SitePageData }) {
                 ← {t('Mon tableau de bord', 'My dashboard')}
               </a>
               <p className="micro">
-                SMARTSELL ACADEMY / {t('DÉCOUVERTE', 'INTRODUCTION')}
+                SMARTSELL ACADEMY /{' '}
+                {course?.full
+                  ? t('FORMATION COMPLÈTE', 'FULL COURSE')
+                  : t('DÉCOUVERTE', 'INTRODUCTION')}
               </p>
               <h1>{page.title}</h1>
             </header>
