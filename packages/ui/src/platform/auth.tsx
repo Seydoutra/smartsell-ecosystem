@@ -73,11 +73,17 @@ export function AccountForm({ staff = false }: { staff?: boolean }) {
         setEmail(pending.email);
         setResendAfter(pending.resendAfter);
         setMode('verify');
+        return;
       }
     } catch {
       /* Storage is optional; never store passwords or codes. */
     }
-  }, []);
+    if (
+      !staff &&
+      new URLSearchParams(window.location.search).get('auth') === 'signup'
+    )
+      setMode('signup');
+  }, [staff]);
   useEffect(() => {
     if (mode !== 'verify') return;
     const update = () =>

@@ -164,6 +164,13 @@ function LearningDashboard() {
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [name, setName] = useState('');
   const [savedName, setSavedName] = useState('');
+  const [details, setDetails] = useState({
+    phone: '',
+    city: '',
+    country: '',
+    occupation: '',
+    learning_goal: '',
+  });
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState('');
   const [profileRetry, setProfileRetry] = useState(0);
@@ -192,7 +199,7 @@ function LearningDashboard() {
     Promise.resolve(
       platform()
         .from('profiles')
-        .select('display_name')
+        .select('display_name,phone,city,country,occupation,learning_goal')
         .eq('id', user.id)
         .single(),
     )
@@ -208,6 +215,13 @@ function LearningDashboard() {
         else {
           setName(data?.display_name || '');
           setSavedName(data?.display_name || '');
+          setDetails({
+            phone: data?.phone || '',
+            city: data?.city || '',
+            country: data?.country || '',
+            occupation: data?.occupation || '',
+            learning_goal: data?.learning_goal || '',
+          });
         }
       })
       .catch(() => {
@@ -724,7 +738,24 @@ function LearningDashboard() {
                 'Your name personalises your dashboard. Your email belongs to your confirmed account.',
               )}
             </p>
-            <p>{user?.email}</p>
+            <div className="ss-profile-identity">
+              <span aria-hidden="true">
+                {(savedName || user?.email || 'S').slice(0, 1).toUpperCase()}
+              </span>
+              <div>
+                <strong>
+                  {savedName ||
+                    t('Votre profil apprenant', 'Your learner profile')}
+                </strong>
+                <p>{user?.email}</p>
+                <small>
+                  {t(
+                    'Compte e-mail confirmé · coordonnées privées',
+                    'Confirmed email account · private contact details',
+                  )}
+                </small>
+              </div>
+            </div>
             <LearningError
               error={profileError}
               retry={() => setProfileRetry((n) => n + 1)}
@@ -745,7 +776,15 @@ function LearningDashboard() {
                     await checked(
                       await platform()
                         .from('profiles')
-                        .update({ display_name: name.trim() })
+                        .update({
+                          display_name: name.trim(),
+                          ...Object.fromEntries(
+                            Object.entries(details).map(([key, value]) => [
+                              key,
+                              value.trim(),
+                            ]),
+                          ),
+                        })
                         .eq('id', user.id)
                         .select('id')
                         .single(),
@@ -775,6 +814,94 @@ function LearningDashboard() {
                     disabled={Boolean(profileError) || busy}
                   />
                 </label>
+                <div className="ss-profile-fields">
+                  <label>
+                    {t('Adresse e-mail du compte', 'Account email')}
+                    <input
+                      value={user?.email || ''}
+                      readOnly
+                      type="email"
+                      autoComplete="email"
+                    />
+                  </label>
+                  <label>
+                    {t('Téléphone', 'Phone')}
+                    <input
+                      type="tel"
+                      value={details.phone}
+                      onChange={(e) =>
+                        setDetails((v) => ({ ...v, phone: e.target.value }))
+                      }
+                      maxLength={40}
+                      autoComplete="tel"
+                      disabled={busy || !!profileError}
+                      placeholder="+224 …"
+                    />
+                  </label>
+                  <label>
+                    {t('Ville', 'City')}
+                    <input
+                      value={details.city}
+                      onChange={(e) =>
+                        setDetails((v) => ({ ...v, city: e.target.value }))
+                      }
+                      maxLength={120}
+                      autoComplete="address-level2"
+                      disabled={busy || !!profileError}
+                    />
+                  </label>
+                  <label>
+                    {t('Pays', 'Country')}
+                    <input
+                      value={details.country}
+                      onChange={(e) =>
+                        setDetails((v) => ({ ...v, country: e.target.value }))
+                      }
+                      maxLength={120}
+                      autoComplete="country-name"
+                      disabled={busy || !!profileError}
+                    />
+                  </label>
+                  <label>
+                    {t('Métier ou activité', 'Occupation')}
+                    <input
+                      value={details.occupation}
+                      onChange={(e) =>
+                        setDetails((v) => ({
+                          ...v,
+                          occupation: e.target.value,
+                        }))
+                      }
+                      maxLength={120}
+                      autoComplete="organization-title"
+                      disabled={busy || !!profileError}
+                    />
+                  </label>
+                </div>
+                <label>
+                  {t(
+                    'Ce que je veux apprendre ou réaliser',
+                    'What I want to learn or create',
+                  )}
+                  <textarea
+                    rows={4}
+                    maxLength={800}
+                    value={details.learning_goal}
+                    onChange={(e) =>
+                      setDetails((v) => ({
+                        ...v,
+                        learning_goal: e.target.value,
+                      }))
+                    }
+                    disabled={busy || !!profileError}
+                  />
+                </label>
+                <p className="ss-profile-private">
+                  {t(
+                    'Les coordonnées et l’objectif sont facultatifs. Ils restent dans votre compte et ne figurent pas sur votre attestation publique.',
+                    'Contact details and goals are optional. They stay in your account and do not appear on your public attestation.',
+                  )}
+                </p>
                 <button
                   className="ss-learning-primary"
                   disabled={busy || Boolean(profileError)}
@@ -791,8 +918,8 @@ function LearningDashboard() {
         <p className="ss-learning-disclaimer">
           <Icon name="info" />
           {t(
-            'Les progressions concernent les leçons de découverte gratuites. Les formations accompagnées et leurs certificats se réservent auprès de Smartsell.',
-            'Progress tracks free introductory lessons. Instructor-led training and its certificates are booked with Smartsell.',
+            'Votre progression est synchronisée avec votre compte. Seules les formations complètes validées délivrent une attestation de participation vérifiable.',
+            'Your progress is synced to your account. Only completed full courses award a verifiable participation attestation.',
           )}
         </p>
       </div>

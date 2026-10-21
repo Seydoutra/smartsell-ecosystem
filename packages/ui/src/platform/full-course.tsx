@@ -8,6 +8,8 @@ import { courseProgress, resumeLesson } from './learning-model';
 import { FilmWorkshop } from './film-workshop';
 import { productionChecklist } from './film-model';
 import { GuidedLesson } from './guided-lesson';
+import { ModuleQuiz } from './course-quiz';
+import { FilmGame, FilmMissionMap } from './film-game';
 
 type Block = {
   type: string;
@@ -28,12 +30,6 @@ type Module = {
   intro: Block[];
   questions: Question[];
   passScore: number;
-};
-type Result = {
-  score: number;
-  total: number;
-  passed: boolean;
-  feedback: { correct: boolean; answer: number; explanation: string }[];
 };
 const href = (path: string) => urlFor('academy', locale, path, routingConfig);
 
@@ -134,186 +130,10 @@ export function FilmLessonBlocks({ blocks }: { blocks: Block[] }) {
     </>
   );
 }
-function ModuleQuiz({
-  module,
-  course,
-  index,
-  onPassed,
-}: {
-  module: Module;
-  course: string;
-  index: number;
-  onPassed: () => void;
-}) {
-  const [answers, setAnswers] = useState<(number | null)[]>(() =>
-    module.questions.map(() => null),
-  );
-  const [result, setResult] = useState<Result | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
-  const [cursor, setCursor] = useState(0);
-  const question = module.questions[cursor];
-  const complete = answers.filter((a) => a !== null).length;
-  const feedback = result?.feedback[cursor];
-  return (
-    <section className="film-quiz">
-      <div className="film-section-label">
-        {index === 10 ? 'EXAMEN FINAL' : 'QUIZ DU MODULE'} /{' '}
-        {module.questions.length} QUESTIONS
-      </div>
-      <h3>{t('À vous de jouer.', 'Your turn.')}</h3>
-      <p>
-        {t(
-          'Les corrigés apparaissent après l’envoi de toutes vos réponses. Vous pouvez recommencer.',
-          'Explanations appear after submitting all answers. You can retry.',
-        )}{' '}
-        {index === 10 ? '14/20 minimum.' : '10/10 pour valider ce module.'}
-      </p>
-      <div
-        className="film-question-map"
-        aria-label={t('Questions du quiz', 'Quiz questions')}
-      >
-        {module.questions.map((q, i) => (
-          <button
-            key={q.number}
-            aria-current={cursor === i ? 'step' : undefined}
-            aria-label={`${t('Question', 'Question')} ${i + 1}${answers[i] !== null ? t(', réponse renseignée', ', answered') : ''}`}
-            className={
-              result?.feedback[i]?.correct
-                ? 'is-correct'
-                : answers[i] !== null
-                  ? 'is-answered'
-                  : ''
-            }
-            onClick={() => setCursor(i)}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          if (complete !== answers.length || busy) return;
-          setBusy(true);
-          setError('');
-          try {
-            const response = await checked(
-              await platform().rpc('ecosystem_submit_course_quiz', {
-                course,
-                lesson: index,
-                answers,
-              }),
-            );
-            setResult(response as Result);
-            if (response.passed) onPassed();
-          } catch {
-            setError(
-              t(
-                'Envoi impossible. Vérifiez que les modules précédents sont validés, puis réessayez. Votre progression n’a pas été modifiée.',
-                'Unable to submit. Complete previous modules, then try again. Your progress has not changed.',
-              ),
-            );
-          } finally {
-            setBusy(false);
-          }
-        }}
-      >
-        <fieldset disabled={busy || !!result}>
-          <legend>
-            <small>
-              {question.group} · {cursor + 1}/{module.questions.length}
-            </small>
-            {question.text}
-          </legend>
-          {question.options.map((option, i) => (
-            <label
-              className={`film-answer ${answers[cursor] === i ? 'is-selected' : ''}`}
-              key={i}
-            >
-              <input
-                type="radio"
-                name={`q${cursor}`}
-                checked={answers[cursor] === i}
-                onChange={() =>
-                  setAnswers((current) =>
-                    current.map((a, j) => (j === cursor ? i : a)),
-                  )
-                }
-              />
-              <span>{String.fromCharCode(65 + i)}</span>
-              {option}
-            </label>
-          ))}
-        </fieldset>
-        {feedback && (
-          <div className="film-feedback">
-            <strong>
-              {feedback.correct
-                ? t('Bonne réponse.', 'Correct.')
-                : `${t('Réponse attendue', 'Expected answer')} : ${String.fromCharCode(65 + feedback.answer)}`}
-            </strong>
-            <p>{feedback.explanation}</p>
-          </div>
-        )}
-        <div className="film-actions">
-          <button
-            type="button"
-            disabled={cursor === 0}
-            onClick={() => setCursor((n) => n - 1)}
-          >
-            ← {t('Précédente', 'Previous')}
-          </button>
-          {cursor < module.questions.length - 1 && (
-            <button type="button" onClick={() => setCursor((n) => n + 1)}>
-              {t('Suivante', 'Next')} →
-            </button>
-          )}
-          <button disabled={busy || !!result || complete !== answers.length}>
-            {busy
-              ? t('Vérification…', 'Checking…')
-              : `${t('Envoyer mes réponses', 'Submit answers')} (${complete}/${answers.length})`}
-          </button>
-        </div>
-        {error && <p role="alert">{error}</p>}
-      </form>
-      {result && (
-        <div className="film-quiz-result" role="status">
-          <h4>
-            {result.score}/{result.total} ·{' '}
-            {result.passed
-              ? t('Module validé', 'Module completed')
-              : t('Encore un effort', 'Try again')}
-          </h4>
-          <p>
-            {result.passed
-              ? t(
-                  'Votre progression est enregistrée sur votre compte.',
-                  'Your progress is saved to your account.',
-                )
-              : t(
-                  'Parcourez les corrigés, relisez la leçon et recommencez.',
-                  'Review the explanations and lesson, then retry.',
-                )}
-          </p>
-          <button
-            onClick={() => {
-              setResult(null);
-              setAnswers(module.questions.map(() => null));
-              setCursor(0);
-            }}
-          >
-            {t('Repasser le quiz', 'Retry quiz')}
-          </button>
-        </div>
-      )}
-    </section>
-  );
-}
 export function FullCourseLearner({ course }: { course: Course }) {
   const { user, progress, loading, error, reload } = useLearning();
   const [current, setCurrent] = useState(0);
-  const [tab, setTab] = useState('lesson');
+  const [tab, setTab] = useState('play');
   const [guidePositions, setGuidePositions] = useState<Record<number, number>>(
     {},
   );
@@ -406,7 +226,7 @@ export function FullCourseLearner({ course }: { course: Course }) {
     )
       return;
     setCurrent(index);
-    setTab('lesson');
+    setTab('play');
     window.history.replaceState(null, '', `?lesson=${index + 1}`);
     heading.current?.focus();
   };
@@ -473,7 +293,7 @@ export function FullCourseLearner({ course }: { course: Course }) {
       </section>
     );
   return (
-    <div className="film-campus" data-kin-off>
+    <div className="film-campus game-campus" data-kin-off>
       <header className="film-masthead">
         <div>
           <p className="film-section-label">SMARTSELL ACADEMY / CINÉMA & IA</p>
@@ -495,6 +315,13 @@ export function FullCourseLearner({ course }: { course: Course }) {
           </span>
         </div>
       </header>
+      <FilmMissionMap
+        titles={course.lessons.map((l) => l.title)}
+        current={current}
+        next={state.next}
+        completed={progress[course.slug] || []}
+        onSelect={go}
+      />
       <div className="film-layout">
         <aside className="film-outline">
           <a href={href('dashboard')}>← {t('Mon espace', 'My space')}</a>
@@ -542,7 +369,8 @@ export function FullCourseLearner({ course }: { course: Course }) {
             aria-label={t('Sections du module', 'Module sections')}
           >
             {[
-              ['lesson', t('Avec votre guide', 'With your guide')],
+              ['play', t('Jouer la mission', 'Play the mission')],
+              ['lesson', t('Mon coach', 'My coach')],
               ['workshop', t('Expérimenter', 'Experiment')],
               ['quiz', 'Quiz'],
               ['resources', t('Carnet & ressources', 'Notebook & resources')],
@@ -565,7 +393,15 @@ export function FullCourseLearner({ course }: { course: Course }) {
             <p role="status">{t('Chargement du module…', 'Loading module…')}</p>
           ) : (
             <div key={current} className="film-content">
-              {tab === 'lesson' ? (
+              {tab === 'play' ? (
+                <FilmGame
+                  key={current}
+                  index={current}
+                  course={course.slug}
+                  userId={user!.id}
+                  onQuiz={() => setTab('quiz')}
+                />
+              ) : tab === 'lesson' ? (
                 <GuidedLesson
                   key={current}
                   course={course.slug}
@@ -619,14 +455,7 @@ export function FullCourseLearner({ course }: { course: Course }) {
                     {t('Tester mes connaissances', 'Test my knowledge')} →
                   </button>
                 </>
-              ) : tab === 'quiz' ? (
-                <ModuleQuiz
-                  module={module}
-                  course={course.slug}
-                  index={current}
-                  onPassed={reload}
-                />
-              ) : (
+              ) : tab === 'quiz' ? null : (
                 <section className="film-reading">
                   <h3>
                     {t('Mon carnet de production', 'My production notebook')}
@@ -724,6 +553,14 @@ export function FullCourseLearner({ course }: { course: Course }) {
                   </details>
                 </section>
               )}
+              <div className="film-quiz-shell" hidden={tab !== 'quiz'}>
+                <ModuleQuiz
+                  module={module}
+                  course={course.slug}
+                  index={current}
+                  onPassed={reload}
+                />
+              </div>
               {state.finished ? (
                 <section className="film-completion">
                   <h3>

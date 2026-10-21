@@ -31,6 +31,7 @@ test('Full courses keep content private, grade all answers server-side, enforce 
       '../supabase/migrations/20261020180047_course_participation_attestations.sql',
       '../supabase/migrations/20261020181210_immersive_full_courses.sql',
       '../supabase/migrations/20261020183617_guided_course_progression.sql',
+      '../supabase/migrations/20261021084451_learner_profiles_game_saves.sql',
     ])
       await db.exec(readFileSync(new URL(path, import.meta.url), 'utf8'));
     for (const [id, email] of [
@@ -99,6 +100,96 @@ test('Full courses keep content private, grade all answers server-side, enforce 
       [slug],
     );
     assert.equal(unit.blocks[0].text, 'Private lesson');
+    await db.query(
+      "update public.profiles set phone='+224 600 00 00 00',city='Conakry',country='Guinée',occupation='Créative',learning_goal='Réaliser un film' where id=$1",
+      [alice],
+    );
+    assert.equal(
+      await scalar('select phone from public.profiles where id=$1', [alice]),
+      '+224 600 00 00 00',
+    );
+    await assert.rejects(
+      db.query(
+        "update public.profiles set email='other@example.invalid' where id=$1",
+        [alice],
+      ),
+      /permission denied/,
+    );
+    await db.query('select public.ecosystem_save_training($1,0,1,$2)', [
+      slug,
+      JSON.stringify({ ratio: '9:16' }),
+    ]);
+    assert.equal(
+      await scalar('select count(*)::int from public.academy_game_saves'),
+      1,
+    );
+    await assert.rejects(
+      db.query('select public.ecosystem_save_training($1,1,1,$2)', [
+        slug,
+        '{}',
+      ]),
+      /previous modules/,
+    );
+    await assert.rejects(
+      db.query('select public.ecosystem_save_training($1,0,9,$2)', [
+        slug,
+        '{}',
+      ]),
+      /Invalid training/,
+    );
+    await assert.rejects(
+      db.query('select public.ecosystem_save_training($1,0,1,$2)', [
+        slug,
+        '[]',
+      ]),
+      /Invalid training/,
+    );
+    await assert.rejects(
+      db.query('select public.ecosystem_save_training($1,0,1,$2)', [
+        slug,
+        JSON.stringify({ oversized: 'x'.repeat(8000) }),
+      ]),
+      /Invalid training/,
+    );
+    await assert.rejects(
+      db.query(
+        'insert into public.academy_game_saves(user_id,course_slug,lesson_index,stage) values($1,$2,1,1)',
+        [alice, slug],
+      ),
+      /permission denied/,
+    );
+    await asUser(bob);
+    assert.equal(
+      await scalar('select count(*)::int from public.academy_game_saves'),
+      0,
+    );
+    assert.equal(
+      await scalar('select count(*)::int from public.profiles where id=$1', [
+        alice,
+      ]),
+      0,
+    );
+    await assert.rejects(
+      db.query('select public.ecosystem_save_training($1,0,1,$2)', [
+        slug,
+        '{}',
+      ]),
+      /Full access required/,
+    );
+    await asUser(null, 'anon');
+    await assert.rejects(
+      db.query('select * from public.academy_game_saves'),
+      /permission denied/,
+    );
+    await assert.rejects(
+      db.query('select public.ecosystem_save_training($1,0,1,$2)', [
+        slug,
+        '{}',
+      ]),
+      /permission denied/,
+    );
+    await asUser(alice);
+
     assert.equal('answer' in unit.questions[0], false);
     assert.equal('explanation' in unit.questions[0], false);
     await assert.rejects(

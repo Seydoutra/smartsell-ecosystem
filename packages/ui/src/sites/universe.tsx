@@ -1,4 +1,5 @@
 import { Icon } from '../icons';
+import { AcademyMissionPreview } from '../platform/academy-mission-preview';
 import type { VerticalId } from '@smartsell/types';
 import {
   agencyServices,
@@ -369,19 +370,25 @@ function AcademyHome() {
               )}
             </span>
             <h1 id="ac-title">
-              {t('Apprenez le digital', 'Learn digital skills')}{' '}
-              <em>{t('en le pratiquant.', 'by practising them.')}</em>
+              {t('Le digital s’apprend', 'Digital skills come alive')}{' '}
+              <em>{t('en passant à l’action.', 'when you take action.')}</em>
             </h1>
             <p>
               {t(
-                'Stratégie de contenu, rédaction, Canva, Meta, vidéo, IA et IA créative : treize formations pratiques, certifiées par Smartsell, avec 30 jours de suivi.',
-                'Content strategy, writing, Canva, Meta, video, AI and creative AI: thirteen hands-on courses, certified by Smartsell, with 30 days of follow-up.',
+                'Manipulez une scène, faites vos choix, comprenez vos erreurs et recommencez. Ici, chaque étape vous rapproche d’un savoir-faire concret, avec un coach guidé et un espace qui garde votre progression.',
+                'Shape a scene, make choices, understand your mistakes and try again. Each step builds a practical skill, with a guided coach and a space that keeps your progress.',
               )}
             </p>
             <div className="im-actions">
-              <CtaLink href={go('academy', 'courses')} tone="dark">
-                {t('Voir les modules', 'See the courses')}
+              <CtaLink
+                href={go('academy', 'courses/court-metrage-ia-complet')}
+                tone="dark"
+              >
+                {t('Commencer gratuitement', 'Start for free')}
               </CtaLink>
+              <a className="academy-demo-link" href="#ac-play">
+                {t('Essayer une mission', 'Try a mission')} ↓
+              </a>
               <CtaLink href={go('academy', 'corporate')} tone="ghost">
                 {t('Former mon équipe', 'Train my team')}
               </CtaLink>
@@ -399,15 +406,137 @@ function AcademyHome() {
             </figure>
             <span className="uv-ac-badge one">
               <Icon name="check" />{' '}
-              {t('Certificat Smartsell', 'Smartsell certificate')}
+              {t('Des missions à jouer', 'Playable missions')}
             </span>
             <span className="uv-ac-badge two">
               <Icon name="task" />{' '}
               {t('Exercices sur vos projets', 'Exercises on your projects')}
             </span>
             <span className="uv-ac-badge three">
-              <Icon name="star" /> {t('30 jours de suivi', '30-day follow-up')}
+              <Icon name="star" />{' '}
+              {t('Un coach vous guide', 'A coach guides you')}
             </span>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="academy-play-intro"
+        id="ac-play"
+        aria-labelledby="ac-play-title"
+      >
+        <div className="uv-wrap">
+          <div className="academy-play-heading">
+            <div>
+              <span className="uv-pill">
+                {t('Touchez. Testez. Comprenez.', 'Touch. Try. Understand.')}
+              </span>
+              <h2 id="ac-play-title">
+                {t('Votre première mission', 'Your first mission')}
+                <em>{t(' commence ici.', ' starts here.')}</em>
+              </h2>
+            </div>
+            <p>
+              {t(
+                'Recadrez une scène pour un écran de téléphone. Vous voyez le résultat de chaque choix, puis votre coach vous explique ce qui fonctionne. Essayez, sans créer de compte.',
+                'Reframe a scene for a phone screen. See the result of every choice, then let your coach explain what works. Try it without an account.',
+              )}
+            </p>
+          </div>
+          <AcademyMissionPreview />
+          <div className="academy-promise-grid">
+            {[
+              [
+                t('On vous explique', 'We explain'),
+                t(
+                  'Des consignes courtes, des exemples visuels et une lecture audio à activer si vous le souhaitez.',
+                  'Short instructions, visual examples and optional read-aloud guidance.',
+                ),
+              ],
+              [
+                t('Vous expérimentez', 'You experiment'),
+                t(
+                  'Un cadrage, un mouvement, une ambiance sonore : les réglages changent la scène sous vos yeux.',
+                  'Framing, movement, sound: your adjustments change the scene in front of you.',
+                ),
+              ],
+              [
+                t('Vous avancez vraiment', 'You make progress'),
+                t(
+                  'Les quiz donnent un retour immédiat. Chaque module validé débloque le suivant, à votre rythme.',
+                  'Quizzes give immediate feedback. Each passed module unlocks the next, at your pace.',
+                ),
+              ],
+            ].map(([title, body], i) => (
+              <article key={title}>
+                <span>0{i + 1}</span>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section
+        className="academy-full-course"
+        aria-labelledby="ac-featured-title"
+      >
+        <div className="uv-wrap academy-full-grid">
+          <div>
+            <span className="uv-pill">
+              {t(
+                'Formation complète · Accès gratuit · En français',
+                'Full course · Free access · In French',
+              )}
+            </span>
+            <h2 id="ac-featured-title">
+              {t('Votre idée mérite', 'Your idea deserves')}{' '}
+              <em>{t('son premier film.', 'its first film.')}</em>
+            </h2>
+            <p>
+              {t(
+                'Faire un court-métrage avec l’IA : 11 modules pour travailler l’écriture, la cohérence des personnages, l’image, le son et la livraison. Un projet fil rouge vous accompagne du premier choix au dernier quiz.',
+                'Make a short film with AI: 11 modules covering writing, character consistency, images, sound and delivery. One ongoing project takes you from your first choice to the final quiz.',
+              )}
+            </p>
+            <CtaLink
+              href={go('academy', 'courses/court-metrage-ia-complet')}
+              tone="dark"
+            >
+              {t(
+                'Découvrir le programme complet',
+                'Explore the full programme',
+              )}
+            </CtaLink>
+          </div>
+          <div className="academy-course-facts">
+            <div>
+              <b>11</b>
+              <span>
+                {t(
+                  'modules avec missions et quiz',
+                  'modules with missions and quizzes',
+                )}
+              </span>
+            </div>
+            <div>
+              <b>12 h 30</b>
+              <span>
+                {t(
+                  'de parcours indicatif, à votre rythme',
+                  'suggested learning time, at your pace',
+                )}
+              </span>
+            </div>
+            <div>
+              <b>QR</b>
+              <span>
+                {t(
+                  'Une attestation de participation vérifiable, après validation de tous les modules. Les parcours de découverte ne donnent pas d’attestation.',
+                  'A verifiable participation attestation after passing every module. Discovery courses do not award an attestation.',
+                )}
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -468,15 +597,15 @@ function AcademyHome() {
               [
                 t('Valider', 'Validate'),
                 t(
-                  'Un projet final et un certificat Smartsell.',
-                  'A final project and a Smartsell certificate.',
+                  'Des quiz pour vérifier ce que vous avez compris, avant de débloquer la suite.',
+                  'Quizzes check your understanding before unlocking the next step.',
                 ),
               ],
               [
                 t('Progresser', 'Progress'),
                 t(
-                  '30 jours de suivi et Mon espace.',
-                  '30 days of follow-up and My space.',
+                  'Retrouvez vos cours, votre carnet et vos attestations dans Mon espace.',
+                  'Find your courses, workbook and attestations in My space.',
                 ),
               ],
             ].map(([a, c], i) => (
@@ -521,12 +650,12 @@ function AcademyHome() {
       <section className="uv-ac-cta">
         <div className="uv-wrap">
           <h2>
-            {t('Votre prochaine compétence', 'Your next skill')}{' '}
-            <em>{t('commence aujourd’hui.', 'starts today.')}</em>
+            {t('Une idée en tête ?', 'Have an idea?')}{' '}
+            <em>{t('Faites-en un savoir-faire.', 'Turn it into a skill.')}</em>
           </h2>
           <div className="im-actions">
-            <CtaLink href={go('academy', 'courses')}>
-              {t('Choisir un module', 'Choose a course')}
+            <CtaLink href={go('academy', 'dashboard') + '?auth=signup'}>
+              {t('Créer mon espace gratuit', 'Create my free account')}
             </CtaLink>
             <CtaLink href={go('academy', 'dashboard')} tone="ghost">
               {t('Mon espace', 'My space')}
