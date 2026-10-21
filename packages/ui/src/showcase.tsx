@@ -1,4 +1,5 @@
 'use client';
+import { ModulePrice } from './sites/pricing';
 import { t } from '@smartsell/routing';
 import { Icon } from './icons';
 import {
@@ -623,6 +624,7 @@ export function CourseCarousel({
             </div>
             <div className="sc-course-body">
               <small>{c.track}</small>
+              <ModulePrice slug={c.slug} />
               <h3>{c.title}</h3>
               <p>{c.goal}</p>
               <div className="sc-course-foot">

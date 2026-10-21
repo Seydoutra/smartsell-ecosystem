@@ -1,0 +1,179 @@
+{
+  "version": 2,
+  "currency": "GNF",
+  "courses": [
+    {
+      "slug": "communication-digitale",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "redaction-web",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "canva-pro",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "meta-business-suite",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "montage-video",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "ia-marketing",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "prompt-engineering",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "gestion-de-crise",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "infographie-canva",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "creation-contenu-ia",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "motion-design-claude",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "garder-le-meme-visage",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "court-metrage-ia",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    },
+    {
+      "slug": "court-metrage-ia-complet",
+      "price": 0,
+      "promotion": {
+        "enabled": false,
+        "price": 0,
+        "start": "",
+        "end": ""
+      }
+    }
+  ],
+  "subscription": {
+    "status": "coming_soon",
+    "catalog": "all",
+    "plans": [
+      {
+        "id": "monthly",
+        "name": {
+          "fr": "Mensuel",
+          "en": "Monthly"
+        },
+        "durationDays": 30,
+        "price": 0
+      },
+      {
+        "id": "quarterly",
+        "name": {
+          "fr": "Trimestriel",
+          "en": "Quarterly"
+        },
+        "durationDays": 90,
+        "price": 0
+      },
+      {
+        "id": "yearly",
+        "name": {
+          "fr": "Annuel",
+          "en": "Yearly"
+        },
+        "durationDays": 365,
+        "price": 0
+      }
+    ]
+  }
+}

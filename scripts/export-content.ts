@@ -11,6 +11,7 @@ import {
   spaces,
   packs,
 } from '../packages/content/src/sites';
+import { pricingItem } from '../packages/content/src/academy-pricing';
 import { courses, corporateOffers } from '../packages/content/src/academy';
 import {
   brands,
@@ -34,6 +35,7 @@ const snapshot = {
     series: shootSeries.map((s) => ({ ...s, photos: s.photos.map(img) })),
   },
   academy: {
+    pricing: [pricingItem],
     courses: courses
       .filter((c) => !c.full)
       .map((c) => ({ ...c, photo: img(c.photo) })),

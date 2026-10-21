@@ -1,3 +1,4 @@
+import { CoursePriceNotice } from './pricing';
 import { Icon } from '../icons';
 import type { VerticalId } from '@smartsell/types';
 import { primaryVerticals } from '@smartsell/content';
@@ -672,6 +673,7 @@ function Content({ id, page }: { id: VerticalId; page: SitePageData }) {
   if (page.kind === 'course' && course)
     return (
       <div className="uv-module">
+        <CoursePriceNotice slug={course.slug} full={course.full} />
         <div className="uv-course-facts" data-reveal>
           {[
             [t('Format', 'Format'), course.format],

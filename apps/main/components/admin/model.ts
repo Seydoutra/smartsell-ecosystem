@@ -1,3 +1,8 @@
+import {
+  pricingItem,
+  pricingErrors,
+  normalizePricing,
+} from '@smartsell/content/pricing';
 import { modules, type Collection, type Field } from './schema';
 
 export type Item = Record<string, unknown>;
@@ -37,6 +42,7 @@ export const text = (v: unknown, lang: 'fr' | 'en' = 'fr'): string => {
   return Array.isArray(x) ? x.join(' · ') : x == null ? '' : String(x);
 };
 export function normalize(field: Field, value: unknown): unknown {
+  if (field.type === 'academy-pricing') return normalizePricing(value);
   if (field.type === 'group')
     return (Array.isArray(value) ? value : []).map((row) =>
       Object.fromEntries(
@@ -77,7 +83,9 @@ export function normalizeData(input: unknown): Data {
       throw new Error(`Module absent : ${m.name}`);
     clean[m.id] = {};
     for (const c of m.collections) {
-      const rows = data[m.id][c.id];
+      const rows =
+        data[m.id][c.id] ??
+        (m.id === 'academy' && c.id === 'pricing' ? [pricingItem] : undefined);
       if (!Array.isArray(rows) || rows.length > 2000)
         throw new Error(`Collection invalide : ${m.name}/${c.id}`);
       clean[m.id][c.id] = rows.map((item, i) => {
@@ -103,7 +111,8 @@ export function validateItem(
   siblings: Item[],
   ownId?: string,
 ): string[] {
-  const errors: string[] = [];
+  const errors: string[] =
+    c.id === 'pricing' ? pricingErrors(item.configuration) : [];
   for (const lang of ['fr', 'en'] as const)
     if (!text(item[c.titleKey], lang).trim())
       errors.push(`Titre requis (${lang.toUpperCase()}).`);
