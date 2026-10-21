@@ -2911,3 +2911,39 @@ html[data-theme='dark']
   img {
   filter: brightness(0) invert(1);
 }
+/* The legacy theme filter contains an ID selector inside :is(). Keep these
+   Academy surfaces out of that inversion in both themes. */
+html[data-theme] .site-academy .site-header,
+html[data-theme='dark']
+  .site-academy
+  main
+  > section:is(.uv-ac-hero, .academy-play-intro, .academy-full-course),
+html[data-theme='dark']
+  .site-academy
+  main
+  > section:is(.uv-ac-hero, .academy-play-intro, .academy-full-course)
+  :is(img, .im-cta-yellow),
+.site-academy .site-header .site-identity .brand--purple img {
+  filter: none !important;
+}
+html[data-theme='dark']
+  .site-academy
+  .site-header
+  .site-identity
+  .brand--purple
+  img {
+  filter: brightness(0) invert(1) !important;
+}
+html[data-theme='dark'] .site-academy .uv-ac-hero .uv-ac-badge:is(.one, .two) {
+  color: #241a2c;
+}
+html[data-theme='dark']
+  .site-academy
+  .uv-ac-hero
+  :is(.academy-demo-link, .im-cta-ghost) {
+  color: #e1c4f1;
+}
+html[data-theme='dark'] .site-academy .uv-ac-hero .uv-pill {
+  color: #e1c4f1;
+  background: #ffffff12;
+}
