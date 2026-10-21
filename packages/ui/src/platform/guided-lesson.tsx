@@ -2,11 +2,12 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { withBasePath, t } from '@smartsell/routing';
 import { checked, platform } from './client';
+import { AnswerCards, CorrectAnswerCelebration } from './quiz-ui';
 import { teachingMoments, type TeachingBlock } from './teaching-model';
 
 type Question = { number: number; text: string; options: string[] };
 type Feedback = { correct: boolean; answer: number; explanation: string };
-function TeacherVoice({
+export function TeacherVoice({
   text,
   onSpeaking,
 }: {
@@ -141,6 +142,7 @@ export function GuidedLesson({
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [celebration, setCelebration] = useState(0);
   const title = useRef<HTMLHeadingElement>(null);
   const moment = moments[current];
   const question =
@@ -159,6 +161,7 @@ export function GuidedLesson({
   };
   return (
     <section className="guided-class">
+      <CorrectAnswerCelebration event={celebration} />
       <div className={`teacher-presence ${speaking ? 'is-speaking' : ''}`}>
         <div className="teacher-portrait">
           <img
@@ -267,20 +270,21 @@ export function GuidedLesson({
             className="teacher-question"
             onSubmit={async (e) => {
               e.preventDefault();
-              if (choice === null || busy || preview) return;
+              if (choice === null || busy || preview || feedback?.correct)
+                return;
               setBusy(true);
               setError('');
               try {
-                setFeedback(
-                  (await checked(
-                    await platform().rpc('ecosystem_answer_course_question', {
-                      course,
-                      lesson: index,
-                      question: moment.question,
-                      choice,
-                    }),
-                  )) as Feedback,
-                );
+                const response = (await checked(
+                  await platform().rpc('ecosystem_answer_course_question', {
+                    course,
+                    lesson: index,
+                    question: moment.question,
+                    choice,
+                  }),
+                )) as Feedback;
+                setFeedback(response);
+                if (response.correct) setCelebration((n) => n + 1);
               } catch {
                 setError(
                   t(
@@ -293,28 +297,23 @@ export function GuidedLesson({
               }
             }}
           >
-            <fieldset disabled={busy}>
-              <legend>{question.text}</legend>
-              {question.options.map((option, i) => (
-                <label
-                  className={`film-answer ${choice === i ? 'is-selected' : ''}`}
-                  key={i}
-                >
-                  <input
-                    type="radio"
-                    name={`practice-${current}`}
-                    checked={choice === i}
-                    onChange={() => {
-                      setChoice(i);
-                      setFeedback(null);
-                    }}
-                  />
-                  <span>{String.fromCharCode(65 + i)}</span>
-                  {option}
-                </label>
-              ))}
-            </fieldset>
-            <button disabled={busy || choice === null || preview}>
+            <AnswerCards
+              question={question.text}
+              options={question.options}
+              name={`practice-${current}`}
+              value={choice}
+              disabled={busy || !!feedback?.correct}
+              feedback={feedback}
+              onChange={(value) => {
+                setChoice(value);
+                setFeedback(null);
+              }}
+            />
+            <button
+              disabled={
+                busy || choice === null || preview || !!feedback?.correct
+              }
+            >
               {busy
                 ? t('Je vérifie…', 'Checking…')
                 : t('Vérifier mon raisonnement', 'Check my reasoning')}
@@ -332,7 +331,10 @@ export function GuidedLesson({
               <div className="teacher-feedback" role="status">
                 <strong>
                   {feedback.correct
-                    ? t('Oui, c’est cela.', 'Yes, that’s right.')
+                    ? t(
+                        'Bravo, c’est la bonne réponse !',
+                        'Well done, that’s correct!',
+                      )
                     : t(
                         'Regardons le raisonnement.',
                         'Let’s review the reasoning.',

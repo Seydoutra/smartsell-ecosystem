@@ -1366,3 +1366,75 @@
     height: 34mm;
   }
 }
+
+.ss-profile-identity {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 25px;
+  background: #f2ecf7;
+  border: 1px solid #d8c8e4;
+  border-radius: 18px;
+  margin: 25px 0;
+  color: #3c2549;
+}
+.ss-profile-identity > span {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #692b84;
+  color: #f5e83e;
+  font-size: 30px;
+  font-weight: 600;
+}
+.ss-profile-identity strong {
+  font-size: 22px;
+}
+.ss-profile-identity p {
+  margin: 5px 0 !important;
+  overflow-wrap: anywhere;
+}
+.ss-profile-identity small {
+  font-size: 10px;
+  color: #69546f;
+}
+.ss-profile-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.ss-learner-profile textarea {
+  font: inherit;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #cbbbd3;
+  border-radius: 10px;
+  resize: vertical;
+  background: #fff;
+  color: #31213b;
+}
+.ss-profile-private {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #786480;
+}
+@media (max-width: 640px) {
+  .ss-profile-fields {
+    grid-template-columns: 1fr;
+  }
+  .ss-profile-identity {
+    padding: 18px;
+    gap: 15px;
+  }
+  .ss-profile-identity > span {
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+  }
+  .ss-profile-identity strong {
+    font-size: 18px;
+  }
+}

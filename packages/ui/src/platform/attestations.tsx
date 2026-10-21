@@ -1,6 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { locale, routingConfig, t, urlFor } from '@smartsell/routing';
+import {
+  locale,
+  routingConfig,
+  t,
+  urlFor,
+  withBasePath,
+} from '@smartsell/routing';
 import { Brand } from '../brand';
 import { Icon } from '../icons';
 import { AccountBoundary, useAccount } from './auth';
@@ -140,6 +146,27 @@ export function MyAttestations() {
           </a>
         </div>
       )}
+      <div className="ss-learning-panel">
+        <h3>
+          {t(
+            'À quoi ressemblera mon attestation ?',
+            'What will my attestation look like?',
+          )}
+        </h3>
+        <p>
+          {t(
+            'Téléchargez le spécimen pour tester le PDF et son QR code. Cet exemple est non valable et ne correspond à aucune formation validée.',
+            'Download the specimen to test the PDF and QR code. This sample is not valid and does not represent a completed course.',
+          )}
+        </p>
+        <a
+          className="ss-learning-primary"
+          href={withBasePath('/documents/attestation-specimen.pdf')}
+          download
+        >
+          {t('Télécharger le spécimen PDF', 'Download specimen PDF')} ↓
+        </a>
+      </div>
       <a className="ss-attestation-verify-link" href={href('verify')}>
         {t(
           'Vérifier l’authenticité d’une attestation',
@@ -216,6 +243,8 @@ function DocumentContent() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [retry, setRetry] = useState(0);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
   useEffect(() => {
     if (!user) return;
     let active = true;
@@ -267,15 +296,42 @@ function DocumentContent() {
           ← {t('Mes attestations', 'My attestations')}
         </a>
         {record && !record.revoked_at && qr ? (
-          <button
-            className="ss-learning-primary"
-            onClick={() => window.print()}
-          >
-            <Icon name="download" />
-            {t('Imprimer / Enregistrer en PDF', 'Print / Save as PDF')}
-          </button>
+          <>
+            <button
+              className="ss-learning-primary"
+              disabled={downloading}
+              onClick={async () => {
+                setDownloading(true);
+                setDownloadError('');
+                try {
+                  const { downloadAttestationPdf } = await import(
+                    './attestation-pdf'
+                  );
+                  await downloadAttestationPdf(record);
+                } catch {
+                  setDownloadError(
+                    t(
+                      'Téléchargement impossible. Vous pouvez utiliser l’impression pour enregistrer le PDF.',
+                      'Download unavailable. Use print to save a PDF.',
+                    ),
+                  );
+                } finally {
+                  setDownloading(false);
+                }
+              }}
+            >
+              <Icon name="download" />
+              {downloading
+                ? t('Préparation…', 'Preparing…')
+                : t('Télécharger mon PDF', 'Download my PDF')}
+            </button>
+            <button className="text-button" onClick={() => window.print()}>
+              {t('Imprimer', 'Print')}
+            </button>
+          </>
         ) : null}
       </div>
+      {downloadError && <p role="alert">{downloadError}</p>}
       {loading ? (
         <p role="status">
           {t(

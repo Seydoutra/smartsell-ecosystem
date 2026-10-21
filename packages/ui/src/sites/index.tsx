@@ -18,6 +18,7 @@ import {
   t,
 } from '@smartsell/routing';
 import { Brand } from '../brand';
+import { AcademyAccess } from '../platform/academy-access';
 import { ChangingHeadline, PreviewFrame } from '../experience';
 import { MotionLayer } from './motion';
 import { MotionText, AgencyRibbon, CampaignVisual } from './visuals';
@@ -169,6 +170,7 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
           </nav>
           <div className="site-header-tools">
             <LangSwitch />
+            {id === 'academy' && <AcademyAccess />}
             <ThemeToggle />
           </div>
           <details className="mobile-site-menu">

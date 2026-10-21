@@ -7,6 +7,7 @@ import { AccountBoundary } from './auth';
 import { useLearning, LearningError } from './use-learning';
 import { courseProgress, resumeLesson } from './learning-model';
 import { FullCourseLearner } from './full-course';
+import { AnswerCards, CorrectAnswerCelebration } from './quiz-ui';
 export { Dashboard } from './learning-dashboard';
 const href = (path: string) => urlFor('academy', locale, path, routingConfig);
 function EnrollmentCard({
@@ -73,6 +74,8 @@ function LearnerSpace({ course }: { course: Course }) {
   const [choice, setChoice] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
+  const [answerState, setAnswerState] = useState<boolean | null>(null);
+  const [celebration, setCelebration] = useState(0);
   const completed = progress[course.slug] || [];
   const content = course.lessons[current];
   const initialized = useRef('');
@@ -105,6 +108,7 @@ function LearnerSpace({ course }: { course: Course }) {
     return <EnrollmentCard course={course} onEnrolled={reload} />;
   return (
     <>
+      <CorrectAnswerCelebration event={celebration} />
       <p className="ss-lesson-state">
         {t(
           'Aperçu gratuit · 3 leçons · progression synchronisée avec votre compte. Les réponses sont vérifiées avant validation.',
@@ -131,6 +135,7 @@ function LearnerSpace({ course }: { course: Course }) {
                 setCurrent(index);
                 setChoice(null);
                 setMessage('');
+                setAnswerState(null);
               }}
             >
               {completed.includes(index)
@@ -174,7 +179,9 @@ function LearnerSpace({ course }: { course: Course }) {
                     choice,
                   }),
                 );
+                setAnswerState(!!result);
                 if (result) {
+                  setCelebration((n) => n + 1);
                   setMessage(
                     t(
                       'Bonne réponse. Leçon validée et progression enregistrée.',
@@ -201,22 +208,27 @@ function LearnerSpace({ course }: { course: Course }) {
               }
             }}
           >
-            <fieldset disabled={busy}>
-              <legend>{content.question}</legend>
-              {content.options.map((option, index) => (
-                <label className="check-line" key={option}>
-                  <input
-                    type="radio"
-                    name="answer"
-                    checked={choice === index}
-                    onChange={() => setChoice(index)}
-                    required
-                  />
-                  {option}
-                </label>
-              ))}
-            </fieldset>
-            <button className="site-button" disabled={busy || choice === null}>
+            <AnswerCards
+              question={content.question}
+              options={content.options}
+              name={`preview-${current}`}
+              value={choice}
+              disabled={busy || answerState === true}
+              feedback={
+                answerState === true && choice !== null
+                  ? { correct: true, answer: choice, explanation: '' }
+                  : null
+              }
+              onChange={(value) => {
+                setChoice(value);
+                setAnswerState(null);
+                setMessage('');
+              }}
+            />
+            <button
+              className="site-button"
+              disabled={busy || choice === null || answerState === true}
+            >
               {busy
                 ? t('Vérification…', 'Checking…')
                 : t(
@@ -233,6 +245,7 @@ function LearnerSpace({ course }: { course: Course }) {
                 setCurrent((n) => n + 1);
                 setChoice(null);
                 setMessage('');
+                setAnswerState(null);
               }}
             >
               {t('Leçon suivante', 'Next lesson')} →
