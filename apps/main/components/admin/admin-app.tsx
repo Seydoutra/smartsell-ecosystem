@@ -1,4 +1,10 @@
 'use client';
+import {
+  pricingItem,
+  pricingErrors,
+  normalizePricing,
+} from '@smartsell/content/pricing';
+import { AcademyPricingEditor } from './pricing-editor';
 import { useEffect, useMemo, useState } from 'react';
 import { t } from '@smartsell/routing';
 import { Icon } from '@smartsell/ui/icons';
@@ -27,6 +33,7 @@ const isBi = (v: unknown): v is Bi =>
   !!v && typeof v === 'object' && !Array.isArray(v) && 'fr' in v && 'en' in v;
 
 function normalize(field: Field, value: unknown): unknown {
+  if (field.type === 'academy-pricing') return normalizePricing(value);
   if (field.type === 'group') {
     const list = Array.isArray(value) ? value : [];
     return list.map((row) =>
@@ -76,6 +83,8 @@ function AdminEditor({ base, siteHref }: { base: string; siteHref: string }) {
   const [loadAttempt, setLoadAttempt] = useState(0);
   const [revisions, setRevisions] = useState<Record<string, number>>({});
   const [cloudBusy, setCloudBusy] = useState(false);
+  const [pricingBackendReady, setPricingBackendReady] =
+    useState(!platformConfigured);
   const [cloudNotice, setCloudNotice] = useState('');
   const contentUrl = `${base}/admin/content.json`;
 
@@ -105,7 +114,10 @@ function AdminEditor({ base, siteHref }: { base: string; siteHref: string }) {
         for (const m of modules) {
           clean[m.id] = {};
           for (const c of m.collections)
-            clean[m.id][c.id] = (json.data[m.id]?.[c.id] || []).map((item) =>
+            clean[m.id][c.id] = (
+              json.data[m.id]?.[c.id] ||
+              (m.id === 'academy' && c.id === 'pricing' ? [pricingItem] : [])
+            ).map((item) =>
               Object.fromEntries(
                 c.fields.map((f) => [f.key, normalize(f, item[f.key])]),
               ),
@@ -122,9 +134,32 @@ function AdminEditor({ base, siteHref }: { base: string; siteHref: string }) {
           const nextRevisions: Record<string, number> = {};
           for (const row of rows) {
             if (clean[row.segment]?.[row.collection])
-              clean[row.segment][row.collection] = row.items as Item[];
+              clean[row.segment][row.collection] =
+                row.segment === 'academy' && row.collection === 'pricing'
+                  ? (row.items as Item[]).map((item) => ({
+                      ...item,
+                      configuration: normalizePricing(item.configuration),
+                    }))
+                  : (row.items as Item[]);
             nextRevisions[`${row.segment}/${row.collection}`] = row.revision;
           }
+          const priceRow = rows.find(
+            (row) => row.segment === 'academy' && row.collection === 'pricing',
+          );
+          const ready =
+            (
+              priceRow?.items as
+                | { configuration?: { version?: number } }[]
+                | undefined
+            )?.[0]?.configuration?.version === 2;
+          setPricingBackendReady(ready);
+          if (!ready)
+            setCloudNotice(
+              t(
+                'La mise à jour des prix par module doit encore être appliquée dans Supabase. Tous les modules restent gratuits ; les changements de prix ne peuvent pas encore être enregistrés.',
+                'The module pricing migration still needs to be applied in Supabase. All modules remain free; price changes cannot yet be saved.',
+              ),
+            );
           setRevisions(nextRevisions);
           setSource(clean);
           setData(structuredClone(clean));
@@ -242,6 +277,24 @@ function AdminEditor({ base, siteHref }: { base: string; siteHref: string }) {
 
   const saveCloud = async () => {
     if (!platformConfigured || !data || !source) return;
+    if (
+      !pricingBackendReady &&
+      JSON.stringify(data.academy.pricing) !==
+        JSON.stringify(source.academy.pricing)
+    ) {
+      setCloudNotice(
+        t(
+          'La mise à jour Supabase des prix par module est nécessaire avant cet enregistrement.',
+          'The Supabase module pricing migration is required before saving these changes.',
+        ),
+      );
+      return;
+    }
+    const priceErrors = pricingErrors(data.academy.pricing[0]?.configuration);
+    if (priceErrors.length) {
+      setCloudNotice(priceErrors.join(' '));
+      return;
+    }
     setCloudBusy(true);
     setCloudNotice('');
     const saved = structuredClone(source);
@@ -545,6 +598,19 @@ function AdminEditor({ base, siteHref }: { base: string; siteHref: string }) {
               </ul>
             )}
           </section>
+        ) : module.id === 'academy' && collection.id === 'pricing' ? (
+          <AcademyPricingEditor
+            item={items[0] || pricingItem}
+            onChange={(item) =>
+              setItems(
+                [item],
+                t(
+                  'Prix et promotions modifiés',
+                  'Prices and promotions updated',
+                ),
+              )
+            }
+          />
         ) : (
           <section className="adm-list">
             <header className="adm-list-head">

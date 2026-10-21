@@ -2947,3 +2947,39 @@ html[data-theme='dark'] .site-academy .uv-ac-hero .uv-pill {
   color: #e1c4f1;
   background: #ffffff12;
 }
+
+/* Individual Academy module prices. Every module starts free. */
+.academy-module-price {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  margin: 14px 0;
+  font-size: 1rem;
+}
+.academy-module-price strong {
+  font-weight: 800;
+}
+.academy-module-price s {
+  opacity: 0.7;
+  font-size: 0.85em;
+}
+.academy-module-price small {
+  font-size: 0.72em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.academy-price-notice {
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 36px;
+}
+.academy-price-notice .academy-module-price {
+  font-size: 1.8rem;
+  margin: 0 0 12px;
+}
+.academy-price-notice p {
+  max-width: 75ch;
+  line-height: 1.7;
+}

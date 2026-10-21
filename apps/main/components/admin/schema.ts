@@ -17,7 +17,8 @@ export type FieldType =
   | 'image'
   | 'images'
   | 'video'
-  | 'group';
+  | 'group'
+  | 'academy-pricing';
 
 export type Field = {
   key: string;
@@ -191,8 +192,26 @@ export const modules: Module[] = [
   {
     id: 'academy',
     name: 'Academy',
-    tagline: t('Modules et offres entreprises', 'Courses and company offers'),
+    tagline: t(
+      'Modules, tarifs et offres entreprises',
+      'Courses, pricing and company offers',
+    ),
     collections: [
+      {
+        id: 'pricing',
+        label: t('Prix et promotions', 'Prices and promotions'),
+        singular: t('les prix des modules', 'module prices'),
+        titleKey: 'title',
+        fields: [
+          slug,
+          { key: 'title', label: 'Titre', type: 'text', i18n: true },
+          {
+            key: 'configuration',
+            label: 'Tarification',
+            type: 'academy-pricing',
+          },
+        ],
+      },
       {
         id: 'courses',
         label: t('Modules', 'Courses'),
