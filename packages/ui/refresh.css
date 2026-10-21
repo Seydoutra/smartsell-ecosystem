@@ -2892,3 +2892,22 @@ html[data-theme='dark'] .site-academy .site-header .academy-signup {
   background: #692b84;
   color: #fff;
 }
+
+/* Use the official purple asset instead of recolouring the white wordmark. */
+.site-academy .site-header .site-identity .brand--purple img,
+html[data-theme='light']
+  .site-academy
+  .site-header
+  .site-identity
+  .brand--purple
+  img {
+  filter: none;
+}
+html[data-theme='dark']
+  .site-academy
+  .site-header
+  .site-identity
+  .brand--purple
+  img {
+  filter: brightness(0) invert(1);
+}
