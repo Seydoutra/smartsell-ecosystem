@@ -147,7 +147,7 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
             href={link(id)}
             aria-label={`Smartsell ${names[id]}, ${t('accueil', 'home')}`}
           >
-            <Brand variant="white" />
+            <Brand variant={id === 'academy' ? 'purple' : 'white'} />
             <span>{names[id]}</span>
           </a>
           <nav

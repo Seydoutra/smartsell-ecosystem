@@ -359,7 +359,7 @@ export function CorporateOffers() {
 function AcademyHome() {
   return (
     <>
-      <section className="uv-ac-hero" aria-labelledby="ac-title">
+      <section className="uv-ac-hero" aria-labelledby="ac-title" data-kin-off>
         <div className="uv-wrap uv-ac-hero-grid">
           <div className="uv-ac-hero-copy">
             <span className="uv-pill">
@@ -647,7 +647,7 @@ function AcademyHome() {
         </div>
       </section>
 
-      <section className="uv-ac-cta">
+      <section className="uv-ac-cta" data-kin-off>
         <div className="uv-wrap">
           <h2>
             {t('Une idée en tête ?', 'Have an idea?')}{' '}
