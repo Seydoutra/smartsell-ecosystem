@@ -23,13 +23,13 @@ import './house-motion.css';
 export const metadata: Metadata = {
   title: {
     absolute: t(
-      'Smartsell — Un écosystème digital. Quatre univers.',
-      'Smartsell — One digital ecosystem. Four universes.',
+      'Smartsell — Un écosystème digital. Cinq univers.',
+      'Smartsell — One digital ecosystem. Five universes.',
     ),
   },
   description: t(
-    'Agency, Academy, Media et Studios : un écosystème digital qui réunit agence, formation, média et production créative, depuis Conakry.',
-    'Agency, Academy, Media and Studios: a digital ecosystem bringing together an agency, learning, media and creative production, from Conakry.',
+    'Agency, Academy, Media, Studios et Influence : un écosystème digital de création, formation, production et collaborations, depuis Conakry.',
+    'Agency, Academy, Media, Studios and Influence: a digital ecosystem for creation, learning, production and collaborations, from Conakry.',
   ),
   alternates: { canonical: withBasePath(`/${locale}/`) },
 };
@@ -83,6 +83,18 @@ const cards = [
     copy: t('Créer. Produire. Enregistrer.', 'Create. Produce. Record.'),
     label: t('Préparer ma séance', 'Plan my session'),
     href: go('studio', 'booking'),
+  },
+  {
+    name: 'Influence',
+    number: '05',
+    tone: 'agency',
+    photo: photos.phonePink,
+    copy: t(
+      'Relier les marques aux créateurs et piloter chaque collaboration.',
+      'Connect brands with creators and manage every collaboration.',
+    ),
+    label: t('Découvrir Influence', 'Discover Influence'),
+    href: withBasePath(`/${locale}/influence/`),
   },
 ];
 export default function Home() {
@@ -182,8 +194,8 @@ export default function Home() {
         <div className="house-hero-note">
           <span>
             {t(
-              'Une maison. Quatre façons d’avancer.',
-              'One house. Four ways forward.',
+              'Une maison. Cinq façons d’avancer.',
+              'One house. Five ways forward.',
             )}
           </span>
           <a href="#univers">
@@ -200,7 +212,7 @@ export default function Home() {
         <span id="ecosystem" className="house-anchor" />
         <header className="house-section-head" data-hm>
           <p className="house-label">
-            01 / {t('QUATRE UNIVERS', 'FOUR UNIVERSES')}
+            01 / {t('CINQ UNIVERS', 'FIVE UNIVERSES')}
           </p>
           <h2 id="univers-title">
             {t('Une envie.\nLa bonne porte.', 'An ambition.\nThe right door.')}

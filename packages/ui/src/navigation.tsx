@@ -73,6 +73,7 @@ export function GlobalNavigation({
                 {v.name}
               </a>
             ))}
+            <a href={withBasePath(`/${locale}/influence/`)}>Influence</a>
             <a
               href={withBasePath(`/${locale}/about/`)}
               aria-current={page === 'about' ? 'page' : undefined}
@@ -166,6 +167,15 @@ export function GlobalNavigation({
             </a>
           ))}
           <a
+            href={withBasePath(`/${locale}/influence/`)}
+            onClick={() => menu.current?.close()}
+          >
+            <span>
+              <small>05 / {t('Collaborer', 'Collaborate')}</small>Influence
+            </span>
+            <Icon name="arrowUpRight" />
+          </a>
+          <a
             href={withBasePath(`/${locale}/about/`)}
             onClick={() => menu.current?.close()}
           >
@@ -201,8 +211,8 @@ export function GlobalNavigation({
         </button>
         <p>
           {t(
-            'Une maison. Quatre façons d’avancer.',
-            'One house. Four ways forward.',
+            'Une maison. Cinq façons d’avancer.',
+            'One house. Five ways forward.',
           )}
         </p>
       </dialog>
@@ -262,8 +272,8 @@ export function GlobalNavigation({
         {results.length === 0 && (
           <p>
             {t(
-              'Aucun résultat. Essayez un autre mot ou explorez les quatre univers.',
-              'No results. Try another word or explore the four universes.',
+              'Aucun résultat. Essayez un autre mot ou explorez les cinq univers.',
+              'No results. Try another word or explore the five universes.',
             )}
           </p>
         )}

@@ -12,8 +12,10 @@ retours Auth FR/EN ont été appliqués dans le projet choisi. La clé publishab
 publique est configurée. Les lectures anonymes du catalogue réussissent ; les
 profils, rôles, inscriptions et visites privées refusent l’accès anonyme.
 
-Le compte propriétaire n’est pas encore créé/confirmé. Son rôle est réservé à
-`contact.smartsell@gmail.com`, sans confirmation forcée. Le SMTP Hostinger est
+Le compte propriétaire n’est pas encore créé/confirmé. Son rôle est désormais réservé à
+`contact@smartsell.pro` (changement demandé le 22 octobre 2026), sans confirmation forcée.
+La migration `20261022183255_smartsell_owner_contact_pro.sql` remplace la
+réservation initiale non réclamée ; aucun identifiant ni mot de passe ne change. Le SMTP Hostinger est
 enregistré et un premier e-mail a été reçu selon le test utilisateur. Les codes
 e-mail sont réglés à 6 chiffres et 600 secondes. La confirmation d'inscription
 utilise maintenant un formulaire de code ; son modèle d’e-mail sans lien est
@@ -47,7 +49,7 @@ migrations à `cpr-site` ou à `mirs-management-staging`.
 4. Renseigner uniquement l’URL du projet et une clé **publishable** active dans
    `packages/ui/src/platform/config.json`. Aucune clé secrète ou service_role
    dans ce fichier, dans GitHub ou dans le navigateur.
-5. Le propriétaire crée son compte avec `contact.smartsell@gmail.com` dans
+5. Le propriétaire crée son compte avec `contact@smartsell.pro` dans
    Academy et confirme son e-mail. La correspondance exacte avec cette adresse
    confirmée lui attribue le rôle propriétaire. Aucun autre nouvel inscrit ne
    devient administrateur. Un compte existant confirmé est pris en charge par

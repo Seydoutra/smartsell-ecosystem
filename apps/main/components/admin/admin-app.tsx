@@ -6,7 +6,7 @@ import {
 } from '@smartsell/content/pricing';
 import { AcademyPricingEditor } from './pricing-editor';
 import { useEffect, useMemo, useState } from 'react';
-import { t } from '@smartsell/routing';
+import { t, locale, withBasePath } from '@smartsell/routing';
 import { Icon } from '@smartsell/ui/icons';
 import { AdminAccess } from './access';
 import { Insights } from './insights';
@@ -434,6 +434,13 @@ function AdminEditor({ base, siteHref }: { base: string; siteHref: string }) {
         >
           <Icon name="dashboard" /> {t('Tableau de bord', 'Dashboard')}
         </button>
+        <a
+          className="adm-influence-link"
+          href={withBasePath(`/${locale}/influence/admin/`)}
+        >
+          ✦ Influence · {t('Campagnes et créateurs', 'Campaigns and creators')}{' '}
+          ↗
+        </a>
         {modules.map((m) => (
           <div
             key={m.id}

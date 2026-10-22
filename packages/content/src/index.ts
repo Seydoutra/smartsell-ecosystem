@@ -137,6 +137,23 @@ export const products = [
   },
 ] as const;
 export const searchEntries: readonly SearchEntry[] = [
+  ...[
+    ['', 'Smartsell Influence'],
+    ['creators', t('Influence · Les créateurs', 'Influence · Creators')],
+    [
+      'campaigns/new',
+      t('Influence · Créer une campagne', 'Influence · Create a campaign'),
+    ],
+    ['method', t('Influence · Notre méthode', 'Influence · Our approach')],
+  ].map(([path, title]) => ({
+    title,
+    summary: t(
+      'Campagnes, créateurs et suivi des collaborations.',
+      'Campaigns, creators and collaboration tracking.',
+    ),
+    url: withBasePath(`/${locale}/influence/${path ? path + '/' : ''}`),
+    type: 'Influence',
+  })),
   ...verticals.map((v) => ({
     title: `Smartsell ${v.name}`,
     summary: `${v.verb}. ${v.description}`,
@@ -170,8 +187,8 @@ export const searchEntries: readonly SearchEntry[] = [
       path: 'about',
       title: t('À propos de Smartsell', 'About Smartsell'),
       summary: t(
-        'Une maison, quatre univers et une même méthode.',
-        'One house, four universes and a shared method.',
+        'Une maison, cinq univers et une même méthode.',
+        'One house, five universes and a shared method.',
       ),
     },
     {
