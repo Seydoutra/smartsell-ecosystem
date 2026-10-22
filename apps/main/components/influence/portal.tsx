@@ -40,6 +40,13 @@ const status = (s: string) =>
     pending: t('En revue', 'Under review'),
     published: t('Publié', 'Published'),
   })[s] || s;
+const costLabel = (kind: string) =>
+  ({
+    creator_payment: t('Rémunération créateur', 'Creator payment'),
+    production: t('Production', 'Production'),
+    media: t('Diffusion média', 'Media spending'),
+    other: t('Autre dépense', 'Other expense'),
+  })[kind] || kind;
 export function InfluencePortal({ role }: { role: Role }) {
   const [demo, setDemo] = useState(false),
     [ready, setReady] = useState(false);
@@ -1226,17 +1233,7 @@ function Workspace({ role, demo = false }: { role: Role; demo?: boolean }) {
                           localeForDate(),
                         )}
                       </td>
-                      <td>
-                        {{
-                          creator_payment: t(
-                            'Rémunération créateur',
-                            'Creator payment',
-                          ),
-                          production: t('Production', 'Production'),
-                          media: t('Diffusion média', 'Media spending'),
-                          other: t('Autre dépense', 'Other expense'),
-                        }[c.kind] || c.kind}
-                      </td>
+                      <td>{costLabel(c.kind)}</td>
                       <td>{c.reference}</td>
                       <td>{money(c.amount_gnf)}</td>
                     </tr>
@@ -1287,14 +1284,22 @@ function Workspace({ role, demo = false }: { role: Role; demo?: boolean }) {
                   </label>
                   <label>
                     {t('Nature', 'Type')}
-                    <select name="kind">
+                    <select name="kind" defaultValue="production">
                       {['creator_payment', 'production', 'media', 'other'].map(
                         (x) => (
-                          <option key={x}>{x}</option>
+                          <option key={x} value={x}>
+                            {costLabel(x)}
+                          </option>
                         ),
                       )}
                     </select>
                   </label>
+                  <p className="inf-fine">
+                    {t(
+                      'Pour une rémunération créateur, sélectionnez la mission concernée.',
+                      'For a creator payment, select the related mission.',
+                    )}
+                  </p>
                   <Field
                     type="number"
                     name="amount_gnf"
