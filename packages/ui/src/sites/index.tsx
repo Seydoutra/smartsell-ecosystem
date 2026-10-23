@@ -17,6 +17,7 @@ import {
   managementUrl,
   locale,
   t,
+  withBasePath,
 } from '@smartsell/routing';
 import { Brand } from '../brand';
 import { AcademyAccess } from '../platform/academy-access';
@@ -134,6 +135,7 @@ function Header({ id, path }: { id: VerticalId; path: string }) {
                 {v.name}
               </a>
             ))}
+            <a href={withBasePath(`/${locale}/influence/`)}>Influence</a>
           </nav>
           <a className="global-products-link" href={link('main', 'products')}>
             {t('Produits', 'Products')} ↗

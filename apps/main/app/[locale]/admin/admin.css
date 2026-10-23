@@ -1167,3 +1167,18 @@
     align-items: flex-start;
   }
 }
+
+.adm-influence-link {
+  display: block;
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid var(--a-line);
+  border-radius: 10px;
+  color: var(--a-yellow);
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.adm-influence-link:hover {
+  background: #ffffff08;
+}

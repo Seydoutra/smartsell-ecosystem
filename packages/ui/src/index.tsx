@@ -88,6 +88,7 @@ export function Footer() {
               {v.name} ↗
             </a>
           ))}
+          <a href={withBasePath(`/${locale}/influence/`)}>Influence ↗</a>
         </nav>
         <nav aria-label={t('La maison', 'The house')}>
           <p>SMARTSELL</p>

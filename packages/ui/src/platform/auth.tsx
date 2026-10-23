@@ -56,7 +56,14 @@ export function useAccount() {
   return { user, loading, error };
 }
 
-export function AccountForm({ staff = false }: { staff?: boolean }) {
+type AccountContext = 'academy' | 'influence';
+export function AccountForm({
+  staff = false,
+  context = 'academy',
+}: {
+  staff?: boolean;
+  context?: AccountContext;
+}) {
   const [mode, setMode] = useState<'login' | 'signup' | 'forgot' | 'verify'>(
     'login',
   );
@@ -234,7 +241,9 @@ export function AccountForm({ staff = false }: { staff?: boolean }) {
       aria-labelledby="account-title"
       data-kin-off
     >
-      <p className="micro">SMARTSELL / {staff ? 'ÉQUIPE' : 'ACADEMY'}</p>
+      <p className="micro">
+        SMARTSELL / {staff ? 'ÉQUIPE' : context.toUpperCase()}
+      </p>
       <h2 id="account-title">
         {mode === 'verify'
           ? t('Confirmez votre adresse e-mail.', 'Confirm your email address.')
@@ -247,10 +256,15 @@ export function AccountForm({ staff = false }: { staff?: boolean }) {
               ? t('Retrouver votre compte', 'Recover your account')
               : staff
                 ? t('Votre espace de pilotage.', 'Your control room.')
-                : t(
-                    'Retrouvez votre espace apprenant.',
-                    'Your learner space awaits.',
-                  )}
+                : context === 'influence'
+                  ? t(
+                      'Retrouvez votre espace Influence.',
+                      'Your Influence workspace awaits.',
+                    )
+                  : t(
+                      'Retrouvez votre espace apprenant.',
+                      'Your learner space awaits.',
+                    )}
       </h2>
       <p>
         {mode === 'verify'
@@ -263,10 +277,15 @@ export function AccountForm({ staff = false }: { staff?: boolean }) {
                 'Accès réservé aux membres autorisés de l’équipe.',
                 'Access restricted to authorised team members.',
               )
-            : t(
-                'Un compte personnel pour retrouver vos modules et votre progression sur tous vos appareils.',
-                'One personal account for your courses and progress on all your devices.',
-              )}
+            : context === 'influence'
+              ? t(
+                  'Un compte Smartsell pour suivre vos campagnes, vos collaborations et leurs résultats.',
+                  'One Smartsell account to follow your campaigns, collaborations and results.',
+                )
+              : t(
+                  'Un compte personnel pour retrouver vos modules et votre progression sur tous vos appareils.',
+                  'One personal account for your courses and progress on all your devices.',
+                )}
       </p>
       {!platformConfigured ? (
         <p role="status">
@@ -426,9 +445,11 @@ export function AccountForm({ staff = false }: { staff?: boolean }) {
 export function AccountBoundary({
   children,
   staff = false,
+  context = 'academy',
 }: {
   children: ReactNode;
   staff?: boolean;
+  context?: AccountContext;
 }) {
   const { user, loading, error } = useAccount();
   const [recovery, setRecovery] = useState(false);
@@ -449,7 +470,7 @@ export function AccountBoundary({
   if (!user)
     return (
       <>
-        <AccountForm staff={staff} />
+        <AccountForm staff={staff} context={context} />
         {error && <p role="alert">{error}</p>}
       </>
     );
